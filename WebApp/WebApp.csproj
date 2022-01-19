@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="appsettings_sample.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\default_person.png" />
     <None Remove="Resources\ribbon-add.png" />
     <None Remove="Resources\ribbon-back.png" />
@@ -54,6 +58,10 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings_sample.json" />
   </ItemGroup>
 
   <ItemGroup>
