@@ -24,12 +24,20 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
+            var settingsFile = "appsettings.json";
+            var key = "AppDbContext";
+
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile(settingsFile, true, true)
                 .Build();
+            
+            var connectionString = config.GetConnectionString(key);
+            if (connectionString == null)
+            {
+                throw new InvalidOperationException($"接続文字列が見つかりません。{settingsFile} がカレントディレクトリに存在しないか、ConnectionString セクションに {key} が存在しません。");
+            }
 
-            var connectionString = config.GetConnectionString("AppDbContext");
             var serverVersion = new MariaDbServerVersion(ServerVersion.AutoDetect(connectionString));
             options.UseMySql(connectionString, serverVersion)
                    .LogTo(s => Debug.WriteLine(s), Microsoft.Extensions.Logging.LogLevel.Information)

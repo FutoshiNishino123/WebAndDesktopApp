@@ -42,9 +42,8 @@ namespace SampleData
 
             People = db.People.ToArray();
             Statuses = db.Statuses.ToArray();
-            
+
             var orders = CreateData(count);
-            
             db.AddRange(orders);
             
             db.SaveChanges();

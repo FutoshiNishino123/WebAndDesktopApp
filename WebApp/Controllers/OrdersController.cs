@@ -39,13 +39,13 @@ namespace WebApp.Controllers
                 .Take(DisplayItemsCount)
                 .ToListAsync();
 
-            var count = await _context.Orders.CountAsync();
+            var total = await _context.Orders.CountAsync();
 
             ViewBag.Page = page.Value;
-            ViewBag.Count = count;
+            ViewBag.Total = total;
+            ViewBag.Count = orders.Count;
 
-            var model = orders;
-            return View(model);
+            return View(orders);
         }
 
         [HttpGet]
@@ -66,9 +66,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var model = order;
-
-            return View(model);
+            return View(order);
         }
     }
 }

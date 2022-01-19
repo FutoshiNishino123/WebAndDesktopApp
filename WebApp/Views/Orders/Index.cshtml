@@ -1,5 +1,4 @@
-﻿@using Data.Models
-@model IEnumerable<Order>
+﻿@model IEnumerable<Data.Models.Order>
 
 @{
     ViewData["Title"] = "指図";
@@ -7,7 +6,7 @@
 
 <h1>指図</h1>
 
-<p>@(ViewBag.Count.ToString("#,#")) 件</p>
+<p>@(ViewBag.Total.ToString("#,#")) 件中 @(ViewBag.Count.ToString("#,#")) 件</p>
 
 <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(ViewBag.Page - 1)>前ページ</a>
 <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(ViewBag.Page + 1)>次ページ</a>

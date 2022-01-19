@@ -45,10 +45,9 @@ namespace SampleData
 
         public static void AddData(int count)
         {
-            var people = CreateData(count);
-
             using var db = new AppDbContext();
             
+            var people = CreateData(count);
             db.AddRange(people);
             
             db.SaveChanges();

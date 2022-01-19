@@ -20,10 +20,9 @@ namespace SampleData
 
         public static void AddData()
         {
-            var statuses = CreateData();
-
             using var db = new AppDbContext();
             
+            var statuses = CreateData();
             db.AddRange(statuses);
             
             db.SaveChanges();
