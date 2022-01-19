@@ -1,10 +1,12 @@
 ﻿using Data;
+using Data.Models;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Controllers;
 using PrismApp.Events;
+using System.Diagnostics;
 using System.Windows;
 using Unity;
 
@@ -35,10 +37,8 @@ namespace PrismApp.ViewModels
         public DelegateCommand SaveCommand => saveCommand ??= new DelegateCommand(Save, CanSave)
             .ObservesProperty(() => SaveExecuted)
             .ObservesProperty(() => Person)
-#pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
             .ObservesProperty(() => Person.FirstName)
             .ObservesProperty(() => Person.FirstKana);
-#pragma warning restore CS8602 // null 参照の可能性があるものの逆参照です。
 
         private async void Save()
         {
@@ -74,7 +74,7 @@ namespace PrismApp.ViewModels
             var person = id.HasValue ? await PersonController.GetPersonAsync(id.Value) : new();
             if (person is null)
             {
-                MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                Debug.WriteLine("レコードが見つかりません");
                 PublishGoBackEvent();
                 return;
             }

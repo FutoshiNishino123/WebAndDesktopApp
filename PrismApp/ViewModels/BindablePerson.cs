@@ -11,7 +11,7 @@ namespace PrismApp.ViewModels
     {
         #region NameRegex property
         private static Regex? nameRegex;
-        public static Regex NameRegex => nameRegex ??= new Regex(@"^(?<last>\w+)\s+(?<first>\w+)$");
+        public static Regex NameRegex => nameRegex ??= new Regex(@"^(?<last_name>\w+)\s+(?<first_name>\w+)$");
         #endregion
 
         #region Id property
@@ -46,8 +46,8 @@ namespace PrismApp.ViewModels
                 var match = NameRegex.Match(value);
                 if (match.Success)
                 {
-                    LastName = match.Groups["last"].Value;
-                    FirstName = match.Groups["first"].Value;
+                    LastName = match.Groups["last_name"].Value;
+                    FirstName = match.Groups["first_name"].Value;
                 }
                 else
                 {

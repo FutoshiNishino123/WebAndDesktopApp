@@ -75,9 +75,9 @@ namespace PrismApp.ViewModels
         {
             get
             {
-                return o =>
+                return order =>
                 {
-                    if (HideClosedOrders && o.IsClosed)
+                    if (HideClosedOrders && order.IsClosed)
                     {
                         return false;
                     }

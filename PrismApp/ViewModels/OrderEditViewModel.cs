@@ -71,9 +71,7 @@ namespace PrismApp.ViewModels
         public DelegateCommand SaveCommand => saveCommand ??= new DelegateCommand(Save, CanSave)
             .ObservesProperty(() => SaveExecuted)
             .ObservesProperty(() => Order)
-#pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
             .ObservesProperty(() => Order.Number);
-#pragma warning restore CS8602 // null 参照の可能性があるものの逆参照です。
 
         private async void Save()
         {
