@@ -34,15 +34,17 @@ namespace WebApp.Controllers
             var orders = await _context.Orders
                 .Include(o => o.Person)
                 .Include(o => o.Status)
-                .OrderByDescending(o => o.UpdatedDate)
+                .OrderByDescending(o => o.Id)
                 .Skip((page.Value - 1) * DisplayItemsCount)
                 .Take(DisplayItemsCount)
                 .ToListAsync();
 
-            var model = orders;
+            var count = await _context.Orders.CountAsync();
 
             ViewBag.Page = page.Value;
+            ViewBag.Count = count;
 
+            var model = orders;
             return View(model);
         }
 

@@ -20,6 +20,7 @@ namespace SampleData.Data
         public Family_Name family_name { get; set; }
         public First_Name first_name { get; set; }
         public Status status { get; set; }
+        public Image image { get; set; }
     }
 
     public class Family_Name
@@ -43,12 +44,17 @@ namespace SampleData.Data
         public string name { get; set; }
         public string kana { get; set; }
         public string gender { get; set; }
-        public string image { get; set; }
     }
 
     public class Status
     {
         public string[] items { get; set; }
     }
+
+    public class Image
+    {
+        public string[] items { get; set; }
+    }
+
 #pragma warning restore CS8618 // null 非許容のフィールドには、コンストラクターの終了時に null 以外の値が入っていなければなりません。Null 許容として宣言することをご検討ください。
 }

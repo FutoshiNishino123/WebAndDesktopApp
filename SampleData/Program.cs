@@ -1,4 +1,5 @@
 ﻿using Data;
+using Microsoft.Extensions.Configuration;
 using MySqlConnector;
 using SampleData;
 
@@ -25,13 +26,18 @@ void InitializeDb()
     SampleStatuses.AddData();
     SampleStatuses.PrintData();
     
-    SampleOrders.AddData(1000);
+    SampleOrders.AddData(100000);
     SampleOrders.PrintData();
 }
 
 void DeleteAllData()
 {
-    var connectionString = "Server=localhost;Database=test;User Id=nishino;Password=24no;Characterset=utf8";
+    var config = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", true, true)
+        .Build();
+
+    var connectionString = config.GetConnectionString("AppDbContext");
 
     using var connection = new MySqlConnection(connectionString);
     connection.Open();

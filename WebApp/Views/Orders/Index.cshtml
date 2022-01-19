@@ -7,8 +7,10 @@
 
 <h1>指図</h1>
 
-<a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(ViewBag.Page - 1)>前のページ</a>
-<a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(ViewBag.Page + 1)>次のページ</a>
+<p>@(ViewBag.Count.ToString("#,#")) 件</p>
+
+<a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(ViewBag.Page - 1)>前ページ</a>
+<a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(ViewBag.Page + 1)>次ページ</a>
 
 <table class="table">
     <thead>

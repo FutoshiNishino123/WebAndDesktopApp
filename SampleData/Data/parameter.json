@@ -96,146 +96,122 @@
       {
         "name": "太郎",
         "kana": "タロウ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_2.png"
+        "gender": "M"
       },
       {
         "name": "一郎",
         "kana": "イチロウ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_29.png"
+        "gender": "M"
       },
       {
         "name": "次郎",
         "kana": "ジロウ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_48.png"
+        "gender": "M"
       },
       {
         "name": "一二三",
         "kana": "ヒフミ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_59.png"
+        "gender": "M"
       },
       {
         "name": "隆二",
         "kana": "リュウジ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_63.png"
+        "gender": "M"
       },
       {
         "name": "智洋",
         "kana": "トモヒロ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_130.png"
+        "gender": "M"
       },
       {
         "name": "敏郎",
         "kana": "トシロウ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_139.png"
+        "gender": "M"
       },
       {
         "name": "源一郎",
         "kana": "ゲンイチロウ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_140.png"
+        "gender": "M"
       },
       {
         "name": "アレックス",
         "kana": "アレックス",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_152.png"
+        "gender": "M"
       },
       {
         "name": "和義",
         "kana": "カズヨシ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_175.png"
+        "gender": "M"
       },
       {
         "name": "敏和",
         "kana": "トシカズ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_231.png"
+        "gender": "M"
       },
       {
         "name": "秀樹",
         "kana": "ヒデキ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_233.png"
+        "gender": "M"
       },
       {
         "name": "拓哉",
         "kana": "タクヤ",
-        "gender": "M",
-        "image": "http://raspi/img/free/people/faces/ai/male/model_258.png"
+        "gender": "M"
       },
       {
         "name": "恵美",
         "kana": "エミ",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_3.png"
+        "gender": "F"
       },
       {
         "name": "涼",
         "kana": "リョウ",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_14.png"
+        "gender": "F"
       },
       {
         "name": "雅",
         "kana": "ミヤビ",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_50.png"
+        "gender": "F"
       },
       {
         "name": "茜",
         "kana": "アカネ",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_56.png"
+        "gender": "F"
       },
       {
         "name": "葵",
         "kana": "アオイ",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_65.png"
+        "gender": "F"
       },
       {
         "name": "緑",
         "kana": "ミドリ",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_67.png"
+        "gender": "F"
       },
       {
         "name": "香菜",
         "kana": "カナ",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_69.png"
+        "gender": "F"
       },
       {
         "name": "紗英",
         "kana": "サエ",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_106.png"
+        "gender": "F"
       },
       {
         "name": "彩",
         "kana": "アヤ",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_114.png"
+        "gender": "F"
       },
       {
         "name": "凛",
         "kana": "リン",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_138.png"
+        "gender": "F"
       },
       {
         "name": "律子",
         "kana": "リツコ",
-        "gender": "F",
-        "image": "http://raspi/img/free/people/faces/ai/female/model_142.png"
+        "gender": "F"
       }
     ]
   },
@@ -255,6 +231,34 @@
       "輸送待ち",
       "輸送中",
       "輸送済み"
+    ]
+  },
+  "image": {
+    "items": [
+      "http://raspi/img/free/people/faces/ai/male/model_2.png",
+      "http://raspi/img/free/people/faces/ai/male/model_29.png",
+      "http://raspi/img/free/people/faces/ai/male/model_48.png",
+      "http://raspi/img/free/people/faces/ai/male/model_59.png",
+      "http://raspi/img/free/people/faces/ai/male/model_63.png",
+      "http://raspi/img/free/people/faces/ai/male/model_130.png",
+      "http://raspi/img/free/people/faces/ai/male/model_139.png",
+      "http://raspi/img/free/people/faces/ai/male/model_140.png",
+      "http://raspi/img/free/people/faces/ai/male/model_152.png",
+      "http://raspi/img/free/people/faces/ai/male/model_175.png",
+      "http://raspi/img/free/people/faces/ai/male/model_231.png",
+      "http://raspi/img/free/people/faces/ai/male/model_233.png",
+      "http://raspi/img/free/people/faces/ai/male/model_258.png",
+      "http://raspi/img/free/people/faces/ai/female/model_3.png",
+      "http://raspi/img/free/people/faces/ai/female/model_14.png",
+      "http://raspi/img/free/people/faces/ai/female/model_50.png",
+      "http://raspi/img/free/people/faces/ai/female/model_56.png",
+      "http://raspi/img/free/people/faces/ai/female/model_65.png",
+      "http://raspi/img/free/people/faces/ai/female/model_67.png",
+      "http://raspi/img/free/people/faces/ai/female/model_69.png",
+      "http://raspi/img/free/people/faces/ai/female/model_106.png",
+      "http://raspi/img/free/people/faces/ai/female/model_114.png",
+      "http://raspi/img/free/people/faces/ai/female/model_138.png",
+      "http://raspi/img/free/people/faces/ai/female/model_142.png"
     ]
   }
 }

@@ -25,7 +25,7 @@ namespace SampleData
                     CreatedDate = date,
                     UpdatedDate = date,
                     ExpirationDate = i % 3 == 0 ? rand.Next() : null,
-                    Number = "SM" + i.ToString("D4"),
+                    Number = "SM" + (i + 1).ToString("D4"),
                     Person = People?.ElementAtRandom(),
                     Status = Statuses?.ElementAtRandom(),
                     Remarks = "テスト案件",
