@@ -20,18 +20,18 @@ void InitializeDb()
     DeleteAllData();
 
     SamplePeople.AddData(10);
-    SampleStatuses.AddData();
-    SampleOrders.AddData(1000);
-
     SamplePeople.PrintData();
+
+    SampleStatuses.AddData();
     SampleStatuses.PrintData();
+    
+    SampleOrders.AddData(1000);
     SampleOrders.PrintData();
 }
 
 void DeleteAllData()
 {
-    using var db = new AppDbContext();
-    var connectionString = db.ConnectionString;
+    var connectionString = "Server=localhost;Database=test;User Id=nishino;Password=24no;Characterset=utf8";
 
     using var connection = new MySqlConnection(connectionString);
     connection.Open();

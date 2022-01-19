@@ -1,7 +1,6 @@
 ﻿using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using MySqlConnector;
 using System.Diagnostics;
 
 namespace Data
@@ -23,28 +22,14 @@ namespace Data
         public DbSet<Status> Statuses { get => statuses ?? throw new InvalidOperationException(); set => statuses = value; }
         #endregion
 
-        public string ConnectionString { get; private set; }
-
-        public AppDbContext(string connectionString)
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            ConnectionString = connectionString;
-        }
-
-        public AppDbContext()
-        {
-            // NOTE: アプリケーション側のappsettings.jsonに接続文字列を含めること
-
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
 
-            ConnectionString = config.GetConnectionString("AppDbContext");
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            var connectionString = ConnectionString;
+            var connectionString = config.GetConnectionString("AppDbContext");
             var serverVersion = new MariaDbServerVersion(ServerVersion.AutoDetect(connectionString));
             options.UseMySql(connectionString, serverVersion)
                    .LogTo(s => Debug.WriteLine(s), Microsoft.Extensions.Logging.LogLevel.Information)

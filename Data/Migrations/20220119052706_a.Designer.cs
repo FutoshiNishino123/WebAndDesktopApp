@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211228025931_init")]
-    partial class init
+    [Migration("20220119052706_a")]
+    partial class a
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,17 +21,17 @@ namespace Data.Migrations
                 .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Data.Order", b =>
+            modelBuilder.Entity("Data.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("ExpiredDate")
+                    b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsClosed")
@@ -52,7 +52,7 @@ namespace Data.Migrations
                     b.Property<int?>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime(6)");
 
@@ -65,13 +65,16 @@ namespace Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Data.Person", b =>
+            modelBuilder.Entity("Data.Models.Person", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("FaceImageUrl")
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
                         .HasMaxLength(1000)
                         .HasColumnType("varchar(1000)");
 
@@ -90,13 +93,14 @@ namespace Data.Migrations
                     b.ToTable("People");
                 });
 
-            modelBuilder.Entity("Data.Status", b =>
+            modelBuilder.Entity("Data.Models.Status", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("varchar(30)");
 
@@ -105,13 +109,13 @@ namespace Data.Migrations
                     b.ToTable("Statuses");
                 });
 
-            modelBuilder.Entity("Data.Order", b =>
+            modelBuilder.Entity("Data.Models.Order", b =>
                 {
-                    b.HasOne("Data.Person", "Person")
+                    b.HasOne("Data.Models.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId");
 
-                    b.HasOne("Data.Status", "Status")
+                    b.HasOne("Data.Models.Status", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId");
 

@@ -19,7 +19,7 @@ namespace Data.Migrations
                 .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Data.Order", b =>
+            modelBuilder.Entity("Data.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +63,7 @@ namespace Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Data.Person", b =>
+            modelBuilder.Entity("Data.Models.Person", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,7 +91,7 @@ namespace Data.Migrations
                     b.ToTable("People");
                 });
 
-            modelBuilder.Entity("Data.Status", b =>
+            modelBuilder.Entity("Data.Models.Status", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,13 +107,13 @@ namespace Data.Migrations
                     b.ToTable("Statuses");
                 });
 
-            modelBuilder.Entity("Data.Order", b =>
+            modelBuilder.Entity("Data.Models.Order", b =>
                 {
-                    b.HasOne("Data.Person", "Person")
+                    b.HasOne("Data.Models.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId");
 
-                    b.HasOne("Data.Status", "Status")
+                    b.HasOne("Data.Models.Status", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId");
 

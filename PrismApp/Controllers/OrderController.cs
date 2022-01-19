@@ -40,24 +40,9 @@ namespace PrismApp.Controllers
         {
             using var db = new AppDbContext();
 
-            Order? target = null;
-            if (order.Id > 0)
-            {
-                target = await db.Orders.FirstOrDefaultAsync(o => o.Id == order.Id);
-            }
+            order.UpdatedDate = DateTime.Now;  // 自動更新されないバグの対応
 
-            if (target is null)
-            {
-                target = new Order();
-                db.Add(target);
-            }
-            
-            order.CopyPropertiesTo(target);
-
-    #region 一時的な措置
-            // TODO 更新日時の自動更新
-            target.UpdatedDate = DateTime.Now;
-    #endregion
+            db.Update(order);
 
             await db.SaveChangesAsync();
         }
@@ -74,7 +59,7 @@ namespace PrismApp.Controllers
 
             if (target is null)
             {
-                throw new InvalidOperationException("レコードが見つかりません。");
+                return;
             }
             
             db.Remove(target);

@@ -25,11 +25,7 @@ namespace Data.Models
         /// <summary>
         /// 更新日時
         /// </summary>
-        #region 一時的な措置
-        // TODO 更新日時の自動更新
-        // Pomelo.EntityFramekCore.MySqlで未実装のため自動計算されないので手動で更新している
-        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        #endregion
+        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]  // 更新されないバグあり
         [Display(Name = "更新日時")]
         public DateTime? UpdatedDate { get; set; }
 

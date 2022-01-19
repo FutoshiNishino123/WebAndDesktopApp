@@ -7,8 +7,8 @@
 
 <h1>指図</h1>
 
-<a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index" asp-route-action="next">次のページ</a>
-<a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index" asp-route-action="prev">前のページ</a>
+<a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(ViewBag.Page - 1)>前のページ</a>
+<a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(ViewBag.Page + 1)>次のページ</a>
 
 <table class="table">
     <thead>

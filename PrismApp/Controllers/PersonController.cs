@@ -11,19 +11,21 @@ namespace PrismApp.Controllers
 {
     public static class PersonController
     {
-        private static readonly Func<Person, bool> NoFilter = _ => true;
-
-        public static async Task<IEnumerable<Person>> GetPeopleAsync(Func<Person, bool>? filter = null)
+        public static async Task<IEnumerable<Person>> GetPeopleAsync()
         {
             using var db = new AppDbContext();
+
             var results = await db.People.ToListAsync();
-            return results.Where(filter ?? NoFilter);
+            
+            return results;
         }
 
         public static async Task<Person?> GetPersonAsync(int id)
         {
             using var db = new AppDbContext();
+            
             var result = await db.People.FirstOrDefaultAsync(p => p.Id == id);
+            
             return result;
         }
 
@@ -31,19 +33,7 @@ namespace PrismApp.Controllers
         {
             using var db = new AppDbContext();
 
-            Person? target = null;
-            if (person.Id > 0)
-            {
-                target = await db.People.FirstOrDefaultAsync(p => p.Id == person.Id);
-            }
-
-            if (target is null)
-            {
-                target = new Person();
-                db.Add(target);
-            }
-            
-            person.CopyPropertiesTo(target);
+            db.Update(person);
             
             await db.SaveChangesAsync();
         }
@@ -60,11 +50,11 @@ namespace PrismApp.Controllers
 
             if (target is null)
             {
-                throw new InvalidOperationException("レコードが見つかりません。");
+                return;
             }
-            
+
             db.Remove(target);
-            
+
             await db.SaveChangesAsync();
         }
     }

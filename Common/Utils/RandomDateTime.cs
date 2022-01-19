@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SampleData
+namespace Common.Utils
 {
-    internal class RandomDateTime
+    public class RandomDateTime
     {
         private readonly Random _random = new Random();
         private readonly DateTime _min;

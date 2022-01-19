@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using Common.Extensions;
+using Data;
 using Data.Models;
 
 namespace SampleData
@@ -8,10 +9,12 @@ namespace SampleData
         public static IEnumerable<Person> CreateData(int count)
         {
             var obj = Data.RootobjectLoader.Load();
+
             for (var i = 0; i < count; i++)
             {
                 var family = obj?.family_name.items.ElementAtRandom();
                 var first = obj?.first_name.items.ElementAtRandom();
+
                 var person = new Person
                 {
                     Id = i + 1,
@@ -26,6 +29,7 @@ namespace SampleData
                         _ => Gender.Unknown
                     },
                 };
+                
                 yield return person;
             }
         }
@@ -33,15 +37,20 @@ namespace SampleData
         public static void AddData(int count)
         {
             var people = CreateData(count);
+
             using var db = new AppDbContext();
+            
             db.AddRange(people);
+            
             db.SaveChanges();
         }
 
         public static void PrintData()
         {
             using var db = new AppDbContext();
+
             var people = db.People.ToList();
+            
             Console.WriteLine("--- People ---");
             foreach (var x in people)
             {

@@ -26,15 +26,22 @@ namespace WebApp.Controllers
                 page = 1;
             }
 
+            if (page <= 0)
+            {
+                return RedirectToAction("Index", 1);
+            }
+
             var orders = await _context.Orders
                 .Include(o => o.Person)
                 .Include(o => o.Status)
-                .OrderBy(o => o.UpdatedDate)
+                .OrderByDescending(o => o.UpdatedDate)
                 .Skip((page.Value - 1) * DisplayItemsCount)
                 .Take(DisplayItemsCount)
                 .ToListAsync();
 
             var model = orders;
+
+            ViewBag.Page = page.Value;
 
             return View(model);
         }
