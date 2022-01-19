@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="PrismApp.Views.Orders"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:PrismApp.ViewModels" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:prism="http://prismlibrary.com/"
+             d:DataContext="{d:DesignInstance Type=viewmodels:OrdersViewModel}"
+             mc:Ignorable="d"
+             Name="TopContext"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <ListView Name="MainList" ItemsSource="{Binding Orders, Mode=OneWay}" SelectedItem="{Binding Order}" GridViewColumnHeader.Click="MainList_Click">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <prism:InvokeCommandAction Command="{Binding ShowDetailCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn>
+                        <GridViewColumnHeader Content="クローズ" Tag="IsClosed"/>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsClosed}" Command="{Binding DataContext.SaveCommand, ElementName=TopContext}" CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="作成日" DisplayMemberBinding="{Binding CreatedDate, StringFormat=yyyy年MM月dd日}" />
+                    <GridViewColumn Header="更新日" DisplayMemberBinding="{Binding UpdatedDate, StringFormat=yyyy年MM月dd日}" />
+                    <GridViewColumn Header="期限" DisplayMemberBinding="{Binding ExpirationDate, Converter={StaticResource ExpirationDateToText}}"/>
+                    <GridViewColumn Header="番号" DisplayMemberBinding="{Binding Number}" />
+                    <GridViewColumn Header="担当者" DisplayMemberBinding="{Binding Person.Name}" />
+                    <GridViewColumn Header="ステータス" DisplayMemberBinding="{Binding Status.Text}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

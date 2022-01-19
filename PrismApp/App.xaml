@@ -1,0 +1,15 @@
+﻿<prism:PrismApplication x:Class="PrismApp.App"
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:local="clr-namespace:PrismApp"
+                        xmlns:converter="clr-namespace:PrismApp.Converters"
+                        xmlns:prism="http://prismlibrary.com/">
+    <Application.Resources>
+        <converter:ExpirationDateToTextConverter x:Key="ExpirationDateToText"/>
+        <converter:BoolToAnyVisibilityConverter x:Key="TrueToVisible" TrueTo="Visible" FalseTo="Collapsed"/>
+        <converter:BoolToAnyVisibilityConverter x:Key="FalseToVisible" TrueTo="Collapsed" FalseTo="Visible"/>
+        <converter:BoolInversionConverter x:Key="BoolInv"/>
+        <converter:EnumToBoolConverter x:Key="EnumToBool"/>
+        <converter:GenderToTextConverter x:Key="GenderToText"/>
+    </Application.Resources>
+</prism:PrismApplication>

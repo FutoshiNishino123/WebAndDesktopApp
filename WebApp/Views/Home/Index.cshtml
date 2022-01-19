@@ -1,0 +1,13 @@
+﻿@model WebApp.Models.HomeViewModel
+@{
+    ViewData["Title"] = "ホーム";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewBag.Title</h1>
+    @if (Model != null)
+    {
+        <p>@Html.Raw(Html.Encode(Model.Description).Replace("\n", "<br />"))</p>
+        <p>@Model.Version</p>
+    }
+</div>
