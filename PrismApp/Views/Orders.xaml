@@ -8,7 +8,7 @@
              xmlns:prism="http://prismlibrary.com/"
              d:DataContext="{d:DesignInstance Type=viewmodels:OrdersViewModel}"
              mc:Ignorable="d"
-             Name="TopContext"
+             Name="UserControl"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <ListView Name="MainList" ItemsSource="{Binding Orders, Mode=OneWay}" SelectedItem="{Binding Order}" GridViewColumnHeader.Click="MainList_Click">
@@ -19,11 +19,12 @@
             </i:Interaction.Triggers>
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" />
                     <GridViewColumn>
                         <GridViewColumnHeader Content="クローズ" Tag="IsClosed"/>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsClosed}" Command="{Binding DataContext.SaveCommand, ElementName=TopContext}" CommandParameter="{Binding}"/>
+                                <CheckBox IsChecked="{Binding IsClosed}" Command="{Binding DataContext.SaveCommand, ElementName=UserControl}" CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

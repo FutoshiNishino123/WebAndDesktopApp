@@ -11,17 +11,31 @@ namespace WebApp.Controllers
     {
         private readonly AppDbContext _context;
 
+        public int DisplayItemsCount { get; set; } = 100;
+
         public OrdersController(AppDbContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var model = await _context.Orders.Include(o => o.Person)
-                                             .Include(o => o.Status)
-                                             .ToListAsync();
+            if (page == null)
+            {
+                page = 1;
+            }
+
+            var orders = await _context.Orders
+                .Include(o => o.Person)
+                .Include(o => o.Status)
+                .OrderBy(o => o.UpdatedDate)
+                .Skip((page.Value - 1) * DisplayItemsCount)
+                .Take(DisplayItemsCount)
+                .ToListAsync();
+
+            var model = orders;
+
             return View(model);
         }
 
@@ -33,13 +47,17 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var model = await _context.Orders.Include(o => o.Person)
-                                             .Include(o => o.Status)
-                                             .FirstOrDefaultAsync(o => o.Id == id);
-            if (model is null)
+            var order = await _context.Orders
+                .Include(o => o.Person)
+                .Include(o => o.Status)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order is null)
             {
                 return NotFound();
             }
+
+            var model = order;
 
             return View(model);
         }

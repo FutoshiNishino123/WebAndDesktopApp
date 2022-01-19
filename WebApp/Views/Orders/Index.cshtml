@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Data.Models.Order>
+﻿@using Data.Models
+@model IEnumerable<Order>
 
 @{
     ViewData["Title"] = "指図";
@@ -6,53 +7,58 @@
 
 <h1>指図</h1>
 
-@if (Model != null)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IsClosed)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Number)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Person)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Status)
-                </th>
-            </tr>
-        </thead>
-        <tfoot></tfoot>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(model => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => item.IsClosed)
-                    </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">
-                            @Html.DisplayFor(model => item.Number)
-                        </a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => item.Person.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => item.Status.Text)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index" asp-route-action="next">次のページ</a>
+<a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index" asp-route-action="prev">前のページ</a>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsClosed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Person)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+        </tr>
+    </thead>
+    <tfoot></tfoot>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.UpdatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.IsClosed)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        @Html.DisplayFor(model => item.Number)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Person.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Status.Text)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-internal static class LinqExtensions
+namespace SampleData
 {
-    public static T ElementAtRandom<T>(this IEnumerable<T> collection)
+    internal static class LinqExtensions
     {
-        return collection.ElementAt(Random.Shared.Next(collection.Count()));
+        public static T ElementAtRandom<T>(this IEnumerable<T> collection)
+        {
+            return collection.ElementAt(Random.Shared.Next(collection.Count()));
+        }
     }
 }

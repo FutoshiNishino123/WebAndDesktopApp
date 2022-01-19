@@ -1,5 +1,6 @@
 ﻿using Data;
 using MySqlConnector;
+using SampleData;
 
 InitializeDb();
 
@@ -18,9 +19,9 @@ void InitializeDb()
 
     DeleteAllData();
 
-    SamplePeople.AddData(5);
+    SamplePeople.AddData(10);
     SampleStatuses.AddData();
-    SampleOrders.AddData(100);
+    SampleOrders.AddData(1000);
 
     SamplePeople.PrintData();
     SampleStatuses.PrintData();

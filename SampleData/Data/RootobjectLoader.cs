@@ -1,17 +1,19 @@
-﻿using SampleData.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-internal static class RootobjectLoader
+namespace SampleData.Data
 {
-    public static Rootobject? Load()
+    internal static class RootobjectLoader
     {
-        var json = File.ReadAllText("Resources/parameter.json");
-        var obj = JsonSerializer.Deserialize<Rootobject>(json);
-        return obj;
+        public static Rootobject? Load()
+        {
+            var json = File.ReadAllText("Data/parameter.json");
+            var obj = JsonSerializer.Deserialize<Rootobject>(json);
+            return obj;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MySqlConnector;
 using System.Diagnostics;
 
 namespace Data
@@ -31,7 +32,8 @@ namespace Data
 
         public AppDbContext()
         {
-            // NOTE: appsettings.json
+            // NOTE: アプリケーション側のappsettings.jsonに接続文字列を含めること
+
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
@@ -44,7 +46,6 @@ namespace Data
         {
             var connectionString = ConnectionString;
             var serverVersion = new MariaDbServerVersion(ServerVersion.AutoDetect(connectionString));
-
             options.UseMySql(connectionString, serverVersion)
                    .LogTo(s => Debug.WriteLine(s), Microsoft.Extensions.Logging.LogLevel.Information)
                    .EnableSensitiveDataLogging()
