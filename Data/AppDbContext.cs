@@ -24,18 +24,15 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var settingsFile = "appsettings.json";
-            var key = "AppDbContext";
-
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(settingsFile, true, true)
+                .AddJsonFile("appsettings.json", true, true)
                 .Build();
             
-            var connectionString = config.GetConnectionString(key);
+            var connectionString = config.GetConnectionString("AppDbContext");
             if (connectionString == null)
             {
-                throw new InvalidOperationException($"接続文字列が見つかりません。{settingsFile} がカレントディレクトリに存在しないか、ConnectionString セクションに {key} が存在しません。");
+                throw new InvalidOperationException($"ConnectionString is not found.");
             }
 
             var serverVersion = new MariaDbServerVersion(ServerVersion.AutoDetect(connectionString));

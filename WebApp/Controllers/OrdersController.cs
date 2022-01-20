@@ -11,7 +11,7 @@ namespace WebApp.Controllers
     {
         private readonly AppDbContext _context;
 
-        public int DisplayItemsCount { get; set; } = 100;
+        public int DisplayCount { get; set; } = 100;
 
         public OrdersController(AppDbContext context)
         {
@@ -28,22 +28,29 @@ namespace WebApp.Controllers
 
             if (page <= 0)
             {
-                return RedirectToAction("Index", 1);
+                return RedirectToAction("Index", null);
             }
+
+            var skipCount = (page.Value - 1) * DisplayCount;
 
             var orders = await _context.Orders
                 .Include(o => o.Person)
                 .Include(o => o.Status)
                 .OrderByDescending(o => o.Id)
-                .Skip((page.Value - 1) * DisplayItemsCount)
-                .Take(DisplayItemsCount)
+                .Skip(skipCount)
+                .Take(DisplayCount)
                 .ToListAsync();
 
             var total = await _context.Orders.CountAsync();
 
+            var firstIndex = orders.Any() ? skipCount + 1 : 0;
+            var lastIndex = orders.Any() ? skipCount + orders.Count : 0;
+
             ViewBag.Page = page.Value;
             ViewBag.Total = total;
             ViewBag.Count = orders.Count;
+            ViewBag.FirstIndex = firstIndex;
+            ViewBag.LastIndex = lastIndex;
 
             return View(orders);
         }
