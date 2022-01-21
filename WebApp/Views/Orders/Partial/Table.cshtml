@@ -25,30 +25,33 @@
     </thead>
     <tfoot></tfoot>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.UpdatedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.IsClosed)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">
-                        @Html.DisplayFor(model => item.Number)
-                    </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Person.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Status.Text)
-                </td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.UpdatedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.IsClosed)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">
+                            @Html.DisplayFor(model => item.Number)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Person.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Status.Text)
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>

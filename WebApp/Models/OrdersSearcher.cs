@@ -8,50 +8,53 @@ namespace WebApp.Models
     {
         private readonly AppDbContext _context;
 
-        public int PageItemsCount { get; set; } = 100;
-
         public OrdersSearcher(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<OrdersViewModel> FindOrdersAsync(int page, string? search)
+        public async Task<OrdersSearchViewModel> Search(OrdersSearchConditionModel condition)
         {
+            if (condition.Page <= 0)
+            {
+                throw new ArgumentException("Page must be greater than 0.", nameof(condition.Page));
+            }
+
+            if (condition.Count <= 0)
+            {
+                throw new ArgumentException("Count must be greater than 0.", nameof(condition.Count));
+            }
+
             var query = from o in _context.Orders
                         select o;
 
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(condition.Number))
             {
-                query = query.Where(o => o.Number.Contains(search));
+                query = query.Where(o => o.Number.Contains(condition.Number));
             }
             
-            var itemsCount = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling((double)itemsCount / PageItemsCount);
-            
-            var skipCount = (page - 1) * PageItemsCount;
+            var total = await query.CountAsync();
+
+            var skipCount = (condition.Page - 1) * condition.Count;
 
             query = query.Include(o => o.Person)
                          .Include(o => o.Status)
                          .OrderByDescending(o => o.Id)
                          .Skip(skipCount)
-                         .Take(PageItemsCount);
+                         .Take(condition.Count);
 
             var orders = await query.ToListAsync();
-
             var firstIndex = orders.Any() ? skipCount + 1 : 0;
             var lastIndex = orders.Any() ? skipCount + orders.Count : 0;
 
-            var model = new OrdersViewModel
+            var model = new OrdersSearchViewModel
             {
-                Orders = orders,
-                Search = search,
-                TotalPages = totalPages,
-                Page = page,
-                PrevPage = page - 1,
-                NextPage = page + 1,
-                ItemsCount = itemsCount.ToString("#,#0"),
-                FirstIndex = firstIndex.ToString("#,#0"),
-                LastIndex = lastIndex.ToString("#,#0"),
+                Condition = condition,
+                Data = orders,
+                Page = condition.Page,
+                Total = total,
+                FirstIndex = firstIndex,
+                LastIndex = lastIndex,
             };
 
             return model;
