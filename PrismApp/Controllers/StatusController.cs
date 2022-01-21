@@ -42,12 +42,7 @@ namespace PrismApp.Controllers
         {
             using var db = new AppDbContext();
 
-            Status? target = null;
-            if (id > 0)
-            {
-                target = await db.Statuses.FirstOrDefaultAsync(s => s.Id == id);
-            }
-
+            var target = id > 0 ? await db.Statuses.FirstOrDefaultAsync(s => s.Id == id) : null;
             if (target == null)
             {
                 return;
