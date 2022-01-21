@@ -1,6 +1,5 @@
 ﻿using Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Reflection;
 using WebApp.Models;
@@ -9,50 +8,38 @@ namespace WebApp.Controllers
 {
     public class OrdersController : Controller
     {
-        private readonly AppDbContext _context;
-
-        public int DisplayCount { get; set; } = 100;
+        private readonly OrdersSearcher _searcher;
 
         public OrdersController(AppDbContext context)
         {
-            _context = context;
+            _searcher = new OrdersSearcher(context);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(string? search, int? page)
         {
-            if (page == null)
+            if (page is null)
             {
                 page = 1;
             }
 
             if (page <= 0)
             {
-                return RedirectToAction("Index", null);
+                return RedirectToAction("Index", new { search = search });
             }
 
-            var skipCount = (page.Value - 1) * DisplayCount;
+            var model = await _searcher.FindOrdersAsync(page.Value, search);
 
-            var orders = await _context.Orders
-                .Include(o => o.Person)
-                .Include(o => o.Status)
-                .OrderByDescending(o => o.Id)
-                .Skip(skipCount)
-                .Take(DisplayCount)
-                .ToListAsync();
+            // todo: 消したい => ViewModelの値を利用できれば良し
+            ViewBag.Search = search;
 
-            var total = await _context.Orders.CountAsync();
+            return View(model);
+        }
 
-            var firstIndex = orders.Any() ? skipCount + 1 : 0;
-            var lastIndex = orders.Any() ? skipCount + orders.Count : 0;
-
-            ViewBag.Page = page.Value;
-            ViewBag.Total = total;
-            ViewBag.Count = orders.Count;
-            ViewBag.FirstIndex = firstIndex;
-            ViewBag.LastIndex = lastIndex;
-
-            return View(orders);
+        [HttpPost]
+        public IActionResult Index(string search)
+        {
+            return RedirectToAction("Index", new { search = search });
         }
 
         [HttpGet]
@@ -63,10 +50,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .Include(o => o.Person)
-                .Include(o => o.Status)
-                .FirstOrDefaultAsync(o => o.Id == id);
+            var order = await _searcher.FindOrderAsync(id.Value);
 
             if (order is null)
             {

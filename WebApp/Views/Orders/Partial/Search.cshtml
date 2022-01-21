@@ -1,0 +1,9 @@
+﻿@model IEnumerable<Data.Models.Order>
+
+<form asp-controller="Orders" asp-action="Index">
+    <p>
+        @Html.DisplayNameFor(model => model.Number):
+        <input type="text" name="Search" value=@(ViewBag.Search) />
+        <input type="submit" value="検索" />
+    </p>
+</form>

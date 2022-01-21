@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Data.Models.Order>
+﻿@model OrdersViewModel
 
 @{
     ViewData["Title"] = "指図";
@@ -6,60 +6,12 @@
 
 <h1>指図</h1>
 
-<p>@(ViewBag.Total.ToString("#,#")) 件中 @(ViewBag.StartIndex.ToString("#,#")) - @(ViewBag.LastIndex.ToString("#,#"))</p>
+<p>@(Model.ItemsCount) 件中 @(Model.FirstIndex) - @(Model.LastIndex)</p>
 
-<a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(ViewBag.Page - 1)>前ページ</a>
-<a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(ViewBag.Page + 1)>次ページ</a>
+<p>
+    <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-search=@(Model.Search) asp-route-page=@(Model.PrevPage) >前ページ</a>
+    <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-search=@(Model.Search) asp-route-page=@(Model.NextPage) >次ページ</a>
+</p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsClosed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Number)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Person)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-        </tr>
-    </thead>
-    <tfoot></tfoot>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.UpdatedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.IsClosed)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">
-                        @Html.DisplayFor(model => item.Number)
-                    </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Person.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Status.Text)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<partial name="Partial/Search" model=Model.Orders />
+<partial name="Partial/Table" model=Model.Orders />
