@@ -32,11 +32,10 @@ namespace WebApp.Models
             {
                 query = query.Where(o => o.Number.Contains(condition.Number));
             }
-            
+
             var total = await query.CountAsync();
 
             var skipCount = (condition.Page - 1) * condition.Count;
-
             query = query.Include(o => o.Person)
                          .Include(o => o.Status)
                          .OrderByDescending(o => o.Id)

@@ -6,23 +6,21 @@ namespace WebApp.Services
 {
     public class OrdersService : IOrdersService
     {
-        private readonly AppDbContext _context;
+        private readonly OrdersSearcher _searcher;
 
         public OrdersService(AppDbContext context)
         {
-            _context = context;
+            _searcher = new OrdersSearcher(context);
         }
 
         public async Task<OrdersSearchViewModel> SearchAsync(OrdersSearchConditionModel condition)
         {
-            var searcher = new OrdersSearcher(_context);
-            return await searcher.Search(condition);
+            return await _searcher.Search(condition);
         }
 
         public async Task<Order?> FindOrderAsync(int id)
         {
-            var searcher = new OrdersSearcher(_context);
-            return await searcher.FindOrderAsync(id);
+            return await _searcher.FindOrderAsync(id);
         }
     }
 }
