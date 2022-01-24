@@ -1,8 +1,7 @@
 ﻿@model OrdersSearchConditionModel
 
 <form asp-controller="Orders" asp-action="Index">
-    <p>
-        番号:
+    <p>番号:
         @Html.TextBoxFor(model => model.Number)
         <input type="submit" value="検索" />
     </p>
