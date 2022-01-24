@@ -71,7 +71,7 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Filter property
-        public Func<Order, bool>? Filter
+        public Func<Order, bool> Filter
         {
             get
             {
@@ -128,7 +128,8 @@ namespace PrismApp.ViewModels
 
         public async void Initialize()
         {
-            var orders = await OrderController.GetOrdersAsync(Filter);
+            var orders = await OrderController.GetOrdersAsync();
+            orders = orders.Where(Filter);
             Orders = new ObservableCollection<Order>(orders);
         }
 

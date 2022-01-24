@@ -12,9 +12,7 @@ namespace PrismApp.Controllers
 {
     public static class OrderController
     {
-        private static readonly Func<Order, bool> NoFilter = _ => true;
-
-        public static async Task<IEnumerable<Order>> GetOrdersAsync(Func<Order, bool>? filter = null)
+        public static async Task<IEnumerable<Order>> GetOrdersAsync()
         {
             using var db = new AppDbContext();
 
@@ -23,9 +21,7 @@ namespace PrismApp.Controllers
                 .Include(o => o.Status)
                 .ToListAsync();
 
-            var results = orders.Where(filter ?? NoFilter);
-
-            return results;
+            return orders;
         }
 
         public static async Task<Order?> GetOrderAsync(int id)
