@@ -13,16 +13,11 @@ namespace WebApp.Models
             _context = context;
         }
 
-        public async Task<OrdersSearchViewModel> Search(OrdersSearchConditionModel condition)
+        public async Task<OrdersViewModel> Search(OrdersSearchConditionModel condition)
         {
-            if (condition.Page <= 0)
+            if (condition.Page <= 0 || condition.Count <= 0)
             {
-                throw new ArgumentException("Page must be greater than 0.", nameof(condition.Page));
-            }
-
-            if (condition.Count <= 0)
-            {
-                throw new ArgumentException("Count must be greater than 0.", nameof(condition.Count));
+                return new OrdersViewModel();
             }
 
             var query = from o in _context.Orders
@@ -36,6 +31,7 @@ namespace WebApp.Models
             var total = await query.CountAsync();
 
             var skipCount = (condition.Page - 1) * condition.Count;
+
             query = query.Include(o => o.Person)
                          .Include(o => o.Status)
                          .OrderByDescending(o => o.Id)
@@ -45,15 +41,20 @@ namespace WebApp.Models
             var orders = await query.ToListAsync();
             var firstIndex = orders.Any() ? skipCount + 1 : 0;
             var lastIndex = orders.Any() ? skipCount + orders.Count : 0;
+            var page = condition.Page;
+            var nextPage = page + 1;
+            var prevPage = page - 1;
 
-            var model = new OrdersSearchViewModel
+            var model = new OrdersViewModel
             {
                 Condition = condition,
                 Data = orders,
-                Page = condition.Page,
-                Total = total,
-                FirstIndex = firstIndex,
-                LastIndex = lastIndex,
+                Page = page.ToString(),
+                NextPage = nextPage.ToString(),
+                PrevPage = prevPage.ToString(),
+                Total = total.ToString("#,#0"),
+                FirstIndex = firstIndex.ToString("#,#0"),
+                LastIndex = lastIndex.ToString("#,#0"),
             };
 
             return model;
@@ -61,13 +62,10 @@ namespace WebApp.Models
 
         public async Task<Order?> FindOrderAsync(int id)
         {
-            var query = from o in _context.Orders
-                        select o;
-
-            query = query.Include(o => o.Person)
-                         .Include(o => o.Status);
-
-            var order = await query.FirstOrDefaultAsync(o => o.Id == id);
+            var order = await _context.Orders
+                .Include(o => o.Person)
+                .Include(o => o.Status)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             return order;
         }

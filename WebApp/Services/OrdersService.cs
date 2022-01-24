@@ -13,7 +13,7 @@ namespace WebApp.Services
             _searcher = new OrdersSearcher(context);
         }
 
-        public async Task<OrdersSearchViewModel> SearchAsync(OrdersSearchConditionModel condition)
+        public async Task<OrdersViewModel> SearchAsync(OrdersSearchConditionModel condition)
         {
             return await _searcher.Search(condition);
         }

@@ -17,58 +17,23 @@ namespace WebApp.Controllers
             _service = service;
         }
 
-        private OrdersSearchConditionModel? GetCondition()
-        {
-            var json = HttpContext.Session.GetString("condition");
-            if (json != null)
-            {
-                var condition = JsonSerializer.Deserialize<OrdersSearchConditionModel>(json);
-                return condition;
-            }
-            return null;
-        }
-
-        private void SetCondition(OrdersSearchConditionModel condition)
-        {
-            var json = JsonSerializer.Serialize(condition);
-            HttpContext.Session.SetString("condition", json);
-        }
-
         [HttpGet]
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? page, string? number)
         {
-            if (page <= 0)
+            var condition = new OrdersSearchConditionModel
             {
-                return View(new OrdersSearchViewModel());
-            }
-
-            var condition = GetCondition();
-            if (condition != null)
-            {
-                condition.Page = page == null ? 1 : page.Value;
-                var model = await _service.SearchAsync(condition);
-                return View(model);
-            }
-            else
-            {
-                condition = new OrdersSearchConditionModel()
-                {
-                    Page = page == null ? 1 : page.Value,
-                    Count = 100,
-                };
-                var model = await _service.SearchAsync(condition);
-                return View(model);
-            }
+                Page = page ?? 1,
+                Count = 100,
+                Number = number,
+            };
+            var model = await _service.SearchAsync(condition);
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(OrdersSearchConditionModel condition)
+        public IActionResult Index(string? number)
         {
-            condition.Page = 1;
-            condition.Count = 100;
-            SetCondition(condition);
-            var model = await _service.SearchAsync(condition);
-            return View(model);
+            return RedirectToAction(nameof(Index), new { number = number });
         }
 
         [HttpGet]

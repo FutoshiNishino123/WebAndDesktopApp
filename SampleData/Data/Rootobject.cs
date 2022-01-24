@@ -10,9 +10,9 @@ namespace SampleData.Data
 
 #pragma warning disable CS8618 // null 非許容のフィールドには、コンストラクターの終了時に null 以外の値が入っていなければなりません。Null 許容として宣言することをご検討ください。
 
-    // 以下のコードは自動生成されました
+    // 以下、自動生成コード
     // 1. json文字列をコピー
-    // 2. 編集メニューより形式を選択して貼り付け
+    // 2. メニューバーより 編集 → 形式を選択して貼り付け
     // 3. JSONをクラスとして貼り付ける
 
     public class Rootobject

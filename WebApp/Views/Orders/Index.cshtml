@@ -1,4 +1,4 @@
-﻿@model OrdersSearchViewModel
+﻿@model OrdersViewModel
 
 @{
     ViewData["Title"] = "指図";
@@ -8,11 +8,11 @@
 
 @if (Model != null)
 {
-    <p>@Model.Total.ToString("#,#0") 件中 @Model.FirstIndex.ToString("#,#0") - @Model.LastIndex.ToString("#,#0")</p>
+    <p>@Model.Total 件中 @Model.FirstIndex - @Model.LastIndex</p>
 
     <p>
-        <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(Model.Page-1) >前ページ</a>
-        <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(Model.Page+1) >次ページ</a>
+        <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(Model.PrevPage) asp-route-number=@(Model.Condition?.Number) >前ページ</a>
+        <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(Model.NextPage) asp-route-number=@(Model.Condition?.Number) >次ページ</a>
     </p>
 
     <partial name="Partial/Search" model=Model.Condition />

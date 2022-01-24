@@ -18,39 +18,33 @@ namespace PrismApp.Controllers
         {
             using var db = new AppDbContext();
 
-            var query = from order in db.Orders
-                        select order;
+            var orders = await db.Orders
+                .Include(o => o.Person)
+                .Include(o => o.Status)
+                .ToListAsync();
 
-            query = query.Include(o => o.Person)
-                         .Include(o => o.Status);
+            var results = orders.Where(filter ?? NoFilter);
 
-            var results = await query.ToListAsync();
-
-            var filtered = results.Where(filter ?? NoFilter);
-
-            return filtered;
+            return results;
         }
 
         public static async Task<Order?> GetOrderAsync(int id)
         {
             using var db = new AppDbContext();
 
-            var query = from order in db.Orders
-                        select order;
+            var order = await db.Orders
+                .Include(o => o.Person)
+                .Include(o => o.Status)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
-            query = query.Include(o => o.Person)
-                         .Include(o => o.Status);
-
-            var result = await query.FirstOrDefaultAsync(o => o.Id == id);
-
-            return result;
+            return order;
         }
 
         public static async Task SaveOrderAsync(Order order)
         {
             using var db = new AppDbContext();
 
-            // 自動更新されないバグの対応
+            // NOTE: 自動更新されないバグの対応
             order.UpdatedDate = DateTime.Now;
 
             db.Update(order);
