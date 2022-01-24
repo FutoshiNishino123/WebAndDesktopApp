@@ -10,11 +10,8 @@
 {
     <p>@Model.Total 件中 @Model.FirstIndex - @Model.LastIndex</p>
 
-    <p>
-        <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(Model.PrevPage) asp-route-number=@(Model.Condition?.Number) >前ページ</a>
-        <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(Model.NextPage) asp-route-number=@(Model.Condition?.Number) >次ページ</a>
-    </p>
-
+    <partial name="Partial/PrevNext" model=Model />
     <partial name="Partial/Search" model=Model.Condition />
     <partial name="Partial/Table" model=Model.Data />
+    <partial name="Partial/PrevNext" model=Model />
 }
