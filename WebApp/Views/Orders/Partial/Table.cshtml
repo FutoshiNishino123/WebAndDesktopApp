@@ -27,28 +27,26 @@
     <tbody>
         @if (Model != null)
         {
-            @foreach (var item in Model)
+            @foreach (var order in Model)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(model => item.Id)
+                        @Html.DisplayFor(model => order.Id)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => item.UpdatedDate)
+                        @Html.DisplayFor(model => order.UpdatedDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => item.IsClosed)
+                        @Html.DisplayFor(model => order.IsClosed)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">
-                            @Html.DisplayFor(model => item.Number)
-                        </a>
+                        @Html.ActionLink(order.Number, "Details", new { id = order.Id })
                     </td>
                     <td>
-                        @Html.DisplayFor(model => item.Person.Name)
+                        @Html.DisplayFor(model => order.Person.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => item.Status.Text)
+                        @Html.DisplayFor(model => order.Status.Text)
                     </td>
                 </tr>
             }

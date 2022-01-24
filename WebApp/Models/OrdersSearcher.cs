@@ -39,11 +39,11 @@ namespace WebApp.Models
                          .Take(condition.Count);
 
             var orders = await query.ToListAsync();
-            var firstIndex = orders.Any() ? skipCount + 1 : 0;
-            var lastIndex = orders.Any() ? skipCount + orders.Count : 0;
             var page = condition.Page;
             var nextPage = page + 1;
             var prevPage = page - 1;
+            var firstIndex = skipCount + 1;
+            var lastIndex = skipCount + orders.Count;
 
             var model = new OrdersViewModel
             {
