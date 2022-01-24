@@ -9,7 +9,7 @@ namespace Common.Extensions
     {
         public static void CopyPropertiesTo(this object obj, object target)
         {
-            PropertyUtils.CopyPropertiesTo(obj, target);
+            PropertyUtils.CopyProperties(obj, target);
         }
 
         public static dynamic? GetProperty(this object obj, string propertyName)

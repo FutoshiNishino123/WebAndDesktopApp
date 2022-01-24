@@ -26,13 +26,13 @@ namespace PrismApp.ViewModels
         public IEventAggregator? EventAggregator { get; set; }
 
         #region Order property
-        private Order? order;
+        private Order? _order;
         public Order? Order
         {
-            get => order;
+            get => _order;
             set
             {
-                if (SetProperty(ref order, value))
+                if (SetProperty(ref _order, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -41,13 +41,13 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Orders property
-        private ObservableCollection<Order>? orders;
+        private ObservableCollection<Order>? _orders;
         public ObservableCollection<Order>? Orders
         {
-            get => orders;
+            get => _orders;
             set
             {
-                if (SetProperty(ref orders, value))
+                if (SetProperty(ref _orders, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -56,13 +56,13 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region HideClosedOrders property
-        private bool hideClosedOrders = true;
+        private bool _hideClosedOrders = true;
         public bool HideClosedOrders
         {
-            get => hideClosedOrders;
+            get => _hideClosedOrders;
             set
             {
-                if (SetProperty(ref hideClosedOrders, value))
+                if (SetProperty(ref _hideClosedOrders, value))
                 {
                     Initialize();
                 }
@@ -88,8 +88,8 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region ShowDetailCommand property
-        private DelegateCommand? showDetailCommand;
-        public DelegateCommand ShowDetailCommand => showDetailCommand ??= new DelegateCommand(ShowDetail, CanShowDetail);
+        private DelegateCommand? _showDetailCommand;
+        public DelegateCommand ShowDetailCommand => _showDetailCommand ??= new DelegateCommand(ShowDetail, CanShowDetail);
 
         private void ShowDetail()
         {
@@ -106,8 +106,8 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region SaveCommand property
-        private DelegateCommand<Order>? saveCommand;
-        public DelegateCommand<Order> SaveCommand => saveCommand ??= new DelegateCommand<Order>(Save, CanSave);
+        private DelegateCommand<Order>? _saveCommand;
+        public DelegateCommand<Order> SaveCommand => _saveCommand ??= new DelegateCommand<Order>(Save, CanSave);
 
         private async void Save(Order order)
         {

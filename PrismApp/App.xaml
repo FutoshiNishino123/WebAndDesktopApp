@@ -6,10 +6,10 @@
                         xmlns:prism="http://prismlibrary.com/">
     <Application.Resources>
         <converter:ExpirationDateToTextConverter x:Key="ExpirationDateToText"/>
-        <converter:BoolToAnyVisibilityConverter x:Key="TrueToVisible" TrueTo="Visible" FalseTo="Collapsed"/>
-        <converter:BoolToAnyVisibilityConverter x:Key="FalseToVisible" TrueTo="Collapsed" FalseTo="Visible"/>
-        <converter:BoolInversionConverter x:Key="BoolInv"/>
-        <converter:EnumToBoolConverter x:Key="EnumToBool"/>
+        <converter:BooleanToAnyVisibilityConverter x:Key="TrueToVisible" TrueTo="Visible" FalseTo="Collapsed"/>
+        <converter:BooleanToAnyVisibilityConverter x:Key="FalseToVisible" TrueTo="Collapsed" FalseTo="Visible"/>
+        <converter:BooleanInversionConverter x:Key="BoolInv"/>
+        <converter:EnumToBooleanConverter x:Key="EnumToBool"/>
         <converter:GenderToTextConverter x:Key="GenderToText"/>
     </Application.Resources>
 </prism:PrismApplication>

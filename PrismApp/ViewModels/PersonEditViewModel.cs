@@ -18,13 +18,13 @@ namespace PrismApp.ViewModels
         public IEventAggregator? EventAggregator { get; set; }
 
         #region Person property
-        private BindablePerson? person;
+        private BindablePerson? _person;
         public BindablePerson? Person
         {
-            get => person;
+            get => _person;
             set
             {
-                if (SetProperty(ref person, value))
+                if (SetProperty(ref _person, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -32,13 +32,22 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
+        #region SaveExecuted property
+        private bool _saveExecuted;
+        public bool SaveExecuted
+        {
+            get => _saveExecuted;
+            set => SetProperty(ref _saveExecuted, value);
+        }
+        #endregion
+
         #region SaveCommand property
-        private DelegateCommand? saveCommand;
-        public DelegateCommand SaveCommand => saveCommand ??= new DelegateCommand(Save, CanSave)
-            .ObservesProperty(() => SaveExecuted)
+        private DelegateCommand? _saveCommand;
+        public DelegateCommand SaveCommand => _saveCommand ??= new DelegateCommand(Save, CanSave)
             .ObservesProperty(() => Person)
             .ObservesProperty(() => Person.FirstName)
-            .ObservesProperty(() => Person.FirstKana);
+            .ObservesProperty(() => Person.FirstKana)
+            .ObservesProperty(() => SaveExecuted);
 
         private async void Save()
         {
@@ -46,7 +55,8 @@ namespace PrismApp.ViewModels
     
             if (Person != null)
             {
-                await PersonController.SavePersonAsync(BindablePerson.ToPerson(Person));
+                var person = BindablePerson.ToPerson(Person);
+                await PersonController.SavePersonAsync(person);
             }
 
             PublishGoBackEvent();
@@ -59,11 +69,6 @@ namespace PrismApp.ViewModels
                    && !string.IsNullOrEmpty(Person.FirstKana)
                    && !SaveExecuted;
         }
-        #endregion
-
-        #region SaveExecuted property
-        private bool saveExecuted;
-        public bool SaveExecuted { get => saveExecuted; set => SetProperty(ref saveExecuted, value); }
         #endregion
 
         private async void Initialize(int? id)

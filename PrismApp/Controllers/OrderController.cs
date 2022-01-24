@@ -18,20 +18,30 @@ namespace PrismApp.Controllers
         {
             using var db = new AppDbContext();
 
-            var results = await db.Orders.Include(o => o.Person)
-                                         .Include(o => o.Status)
-                                         .ToListAsync();
+            var query = from order in db.Orders
+                        select order;
 
-            return results.Where(filter ?? NoFilter);
+            query = query.Include(o => o.Person)
+                         .Include(o => o.Status);
+
+            var results = await query.ToListAsync();
+
+            var filtered = results.Where(filter ?? NoFilter);
+
+            return filtered;
         }
 
         public static async Task<Order?> GetOrderAsync(int id)
         {
             using var db = new AppDbContext();
 
-            var result = await db.Orders.Include(o => o.Person)
-                                        .Include(o => o.Status)
-                                        .FirstOrDefaultAsync(o => o.Id == id);
+            var query = from order in db.Orders
+                        select order;
+
+            query = query.Include(o => o.Person)
+                         .Include(o => o.Status);
+
+            var result = await query.FirstOrDefaultAsync(o => o.Id == id);
 
             return result;
         }
@@ -40,7 +50,8 @@ namespace PrismApp.Controllers
         {
             using var db = new AppDbContext();
 
-            order.UpdatedDate = DateTime.Now;  // 自動更新されないバグの対応
+            // 自動更新されないバグの対応
+            order.UpdatedDate = DateTime.Now;
 
             db.Update(order);
 
@@ -51,12 +62,12 @@ namespace PrismApp.Controllers
         {
             using var db = new AppDbContext();
 
-            var target = id > 0 ? await db.Orders.FirstOrDefaultAsync(o => o.Id == id) : null;
+            var target = await db.Orders.FirstOrDefaultAsync(o => o.Id == id);
             if (target is null)
             {
                 return;
             }
-            
+
             db.Remove(target);
 
             await db.SaveChangesAsync();

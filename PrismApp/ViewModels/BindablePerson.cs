@@ -9,26 +9,39 @@ namespace PrismApp.ViewModels
 {
     public class BindablePerson : BindableBase
     {
-        #region NameRegex property
-        private static Regex? nameRegex;
-        public static Regex NameRegex => nameRegex ??= new Regex(@"^(?<last_name>\w+)\s+(?<first_name>\w+)$");
-        #endregion
-
         #region Id property
-        private int id;
-        public int Id { get => id; set => SetProperty(ref id, value); }
+        private int _id;
+        public int Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
         #endregion
 
         #region FirstName property
-        private string? firstName;
-        public string? FirstName { get => firstName; set => SetProperty(ref firstName, value); }
+        private string? _firstName;
+        public string? FirstName
+        {
+            get => _firstName;
+            set => SetProperty(ref _firstName, value);
+        }
         #endregion
 
         #region LastName property
-        private string? lastName;
-        public string? LastName { get => lastName; set => SetProperty(ref lastName, value); }
+        private string? _lastName;
+        public string? LastName
+        {
+            get => _lastName;
+            set => SetProperty(ref _lastName, value);
+        }
         #endregion
 
+        #region NameRegex property
+        private static Regex? _nameRegex;
+        public static Regex NameRegex => _nameRegex ??= new Regex(@"^(?<last_name>\w+)\s+(?<first_name>\w+)$");
+        #endregion
+
+        #region Name property
         public string? Name
         {
             get
@@ -55,17 +68,32 @@ namespace PrismApp.ViewModels
                 }
             }
         }
+        #endregion
 
         #region FirstKana property
-        private string? firstKana;
-        public string? FirstKana { get => firstKana; set => SetProperty(ref firstKana, value); }
+        private string? _firstKana;
+        public string? FirstKana
+        {
+            get => _firstKana;
+            set => SetProperty(ref _firstKana, value);
+        }
         #endregion
 
         #region LastKana property
-        private string? lastKana;
-        public string? LastKana { get => lastKana; set => SetProperty(ref lastKana, value); }
+        private string? _lastKana;
+        public string? LastKana
+        {
+            get => _lastKana;
+            set => SetProperty(ref _lastKana, value);
+        }
         #endregion
 
+        #region KanaRegex property
+        private static Regex? _kanaRegex;
+        public static Regex KanaRegex => _kanaRegex ??= new Regex(@"^(?<last_kana>\w+)\s+(?<first_kana>\w+)$");
+        #endregion
+
+        #region Kana property
         public string? Kana
         {
             get
@@ -80,11 +108,11 @@ namespace PrismApp.ViewModels
                     return;
                 }
 
-                var match = NameRegex.Match(value);
+                var match = KanaRegex.Match(value);
                 if (match.Success)
                 {
-                    LastKana = match.Groups["last"].Value;
-                    FirstKana = match.Groups["first"].Value;
+                    LastKana = match.Groups["last_kana"].Value;
+                    FirstKana = match.Groups["first_kana"].Value;
                 }
                 else
                 {
@@ -92,15 +120,24 @@ namespace PrismApp.ViewModels
                 }
             }
         }
+        #endregion
 
         #region Gender property
-        private Gender gender;
-        public Gender Gender { get => gender; set => SetProperty(ref gender, value); }
+        private Gender _gender;
+        public Gender Gender
+        {
+            get => _gender;
+            set => SetProperty(ref _gender, value);
+        }
         #endregion
 
         #region ImageUrl property
-        private string? imageUrl;
-        public string? ImageUrl { get => imageUrl; set => SetProperty(ref imageUrl, value); }
+        private string? _imageUrl;
+        public string? ImageUrl
+        {
+            get => _imageUrl;
+            set => SetProperty(ref _imageUrl, value);
+        }
         #endregion
 
         #region Conversion method

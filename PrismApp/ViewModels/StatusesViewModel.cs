@@ -22,13 +22,13 @@ namespace PrismApp.ViewModels
         public IEventAggregator? EventAggregator { get; set; }
 
         #region Status property
-        private Status? status;
+        private Status? _status;
         public Status? Status
         {
-            get => status;
+            get => _status;
             set
             {
-                if (SetProperty(ref status, value))
+                if (SetProperty(ref _status, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -37,13 +37,13 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Statuses property
-        private ObservableCollection<Status>? statuses;
+        private ObservableCollection<Status>? _statuses;
         public ObservableCollection<Status>? Statuses
         {
-            get => statuses;
+            get => _statuses;
             set
             {
-                if (SetProperty(ref statuses, value))
+                if (SetProperty(ref _statuses, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -86,7 +86,7 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region IRibbon
-        public bool CanRefresh => true;
+        public bool CanRefresh => Statuses != null;
         public void Refresh()
         {
             if (CanRefresh)
@@ -109,7 +109,8 @@ namespace PrismApp.ViewModels
         {
             if (CanEditItem)
             {
-                NavigateToStatusEdit(Status?.Id);
+                Debug.Assert(Status != null);
+                NavigateToStatusEdit(Status.Id);
             }
         }
 

@@ -22,13 +22,13 @@ namespace PrismApp.ViewModels
         public IEventAggregator? EventAggregator { get; set; }
 
         #region Order property
-        private BindableOrder? order;
+        private BindableOrder? _order;
         public BindableOrder? Order
         {
-            get => order;
+            get => _order;
             set
             {
-                if (SetProperty(ref order, value))
+                if (SetProperty(ref _order, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -37,13 +37,13 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region People property
-        private ObservableCollection<Person>? people;
+        private ObservableCollection<Person>? _people;
         public ObservableCollection<Person>? People
         {
-            get => people;
+            get => _people;
             set
             {
-                if (SetProperty(ref people, value))
+                if (SetProperty(ref _people, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -52,13 +52,13 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Statuses property
-        private ObservableCollection<Status>? statuses;
+        private ObservableCollection<Status>? _statuses;
         public ObservableCollection<Status>? Statuses
         {
-            get => statuses;
+            get => _statuses;
             set
             {
-                if (SetProperty(ref statuses, value))
+                if (SetProperty(ref _statuses, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -66,12 +66,21 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
+        #region SaveExecuted property
+        private bool _saveExecuted;
+        public bool SaveExecuted
+        {
+            get => _saveExecuted;
+            set => SetProperty(ref _saveExecuted, value);
+        }
+        #endregion
+
         #region SaveCommand property
-        private DelegateCommand? saveCommand;
-        public DelegateCommand SaveCommand => saveCommand ??= new DelegateCommand(Save, CanSave)
-            .ObservesProperty(() => SaveExecuted)
+        private DelegateCommand? _saveCommand;
+        public DelegateCommand SaveCommand => _saveCommand ??= new DelegateCommand(Save, CanSave)
             .ObservesProperty(() => Order)
-            .ObservesProperty(() => Order.Number);
+            .ObservesProperty(() => Order.Number)
+            .ObservesProperty(() => SaveExecuted);
 
         private async void Save()
         {
@@ -79,7 +88,8 @@ namespace PrismApp.ViewModels
 
             if (Order != null)
             {
-                await OrderController.SaveOrderAsync(BindableOrder.ToOrder(Order));
+                var order = BindableOrder.ToOrder(Order);
+                await OrderController.SaveOrderAsync(order);
             }
 
             PublishGoBackEvent();
@@ -91,11 +101,6 @@ namespace PrismApp.ViewModels
                    && !string.IsNullOrEmpty(Order.Number)
                    && !SaveExecuted;
         }
-        #endregion
-
-        #region SaveExecuted property
-        private bool saveExecuted;
-        public bool SaveExecuted { get => saveExecuted; set => SetProperty(ref saveExecuted, value); }
         #endregion
 
         private async void Initialize(int? id)
@@ -114,8 +119,16 @@ namespace PrismApp.ViewModels
             }
             var people = await PersonController.GetPeopleAsync();
             var statuses = await StatusController.GetStatusesAsync();
-            order.Person = people.FirstOrDefault(p => p.Id == order.Person?.Id);
-            order.Status = statuses.FirstOrDefault(s => s.Id == order.Status?.Id);
+
+            if (order.Person != null)
+            {
+                order.Person = people.FirstOrDefault(p => p.Id == order.Person.Id);
+            }
+
+            if (order.Status != null)
+            {
+                order.Status = statuses.FirstOrDefault(s => s.Id == order.Status.Id);
+            }
 
             Order = BindableOrder.FromOrder(order);
             People = new ObservableCollection<Person>(people);

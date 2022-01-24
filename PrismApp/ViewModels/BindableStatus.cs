@@ -8,13 +8,21 @@ namespace PrismApp.ViewModels
     public class BindableStatus : BindableBase
     {
         #region Id property
-        private int id;
-        public int Id { get => id; set => SetProperty(ref id, value); }
+        private int _id;
+        public int Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
         #endregion
 
         #region Text property
-        private string? text;
-        public string? Text { get => text; set => SetProperty(ref text, value); }
+        private string? _text;
+        public string? Text
+        {
+            get => _text;
+            set => SetProperty(ref _text, value);
+        }
         #endregion
 
         #region Conversion method

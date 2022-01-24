@@ -18,13 +18,21 @@ namespace PrismApp.ViewModels
         public IEventAggregator? EventAggregator { get; set; }
 
         #region Description property
-        private string? description;
-        public string? Description { get => description; set => SetProperty(ref description, value); }
+        private string? _description;
+        public string? Description
+        {
+            get => _description;
+            set => SetProperty(ref _description, value);
+        }
         #endregion
 
         #region Version property
-        private string? version;
-        public string? Version { get => version; set => SetProperty(ref version, value); }
+        private string? _version;
+        public string? Version
+        {
+            get => _version;
+            set => SetProperty(ref _version, value);
+        }
         #endregion
 
         public async void Initialize()

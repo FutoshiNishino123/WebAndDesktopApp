@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrismApp.Models
+namespace PrismApp.ViewModels
 {
     internal class About
     {

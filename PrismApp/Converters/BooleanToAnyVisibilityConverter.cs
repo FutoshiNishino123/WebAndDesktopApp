@@ -9,7 +9,8 @@ using System.Windows.Data;
 
 namespace PrismApp.Converters
 {
-    public class BoolToAnyVisibilityConverter : IValueConverter
+    [ValueConversion(typeof(bool), typeof(Visibility))]
+    public class BooleanToAnyVisibilityConverter : IValueConverter
     {
         public Visibility? TrueTo { get; set; }
 
@@ -19,21 +20,25 @@ namespace PrismApp.Converters
         {
             if (!TrueTo.HasValue)
             {
-                throw new InvalidOperationException($"{nameof(TrueTo)}にVisibilityが設定されていません");
-            }
-            if (!FalseTo.HasValue)
-            {
-                throw new InvalidOperationException($"{nameof(FalseTo)}にVisibilityが設定されていません");
+                throw new InvalidOperationException($"{nameof(TrueTo)} に Visibility が設定されていません。");
             }
 
-            if (!(value is bool b)) { return DependencyProperty.UnsetValue; }
+            if (!FalseTo.HasValue)
+            {
+                throw new InvalidOperationException($"{nameof(FalseTo)} に Visibility が設定されていません。");
+            }
+
+            if (value is not bool b)
+            {
+                return DependencyProperty.UnsetValue;
+            }
 
             return b ? TrueTo : FalseTo;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

@@ -5,6 +5,7 @@ using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Controllers;
 using PrismApp.Events;
+using System;
 using System.Diagnostics;
 using System.Windows;
 using Unity;
@@ -96,7 +97,7 @@ namespace PrismApp.ViewModels
         public bool CanAddNewItem => false;
         public void AddNewItem()
         {
-            throw new System.NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public bool CanEditItem => Order != null && !Order.IsClosed;

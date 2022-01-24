@@ -31,18 +31,22 @@ namespace PrismApp.ViewModels
         }
 
         #region Title property
-        private string? title = "Demo";
-        public string? Title { get => title; set => SetProperty(ref title, value); }
+        private string? _title = "Demo";
+        public string? Title
+        {
+            get => _title;
+            set => SetProperty(ref _title, value);
+        }
         #endregion
 
         #region HideClosedOrders property
-        private bool hideClosedOrders = true;
+        private bool _hideClosedOrders = true;
         public bool HideClosedOrders
         {
-            get => hideClosedOrders;
+            get => _hideClosedOrders;
             set
             {
-                if (SetProperty(ref hideClosedOrders, value))
+                if (SetProperty(ref _hideClosedOrders, value))
                 {
                     EventAggregator?.GetEvent<HideClosedOrdersEvent>().Publish(value);
                 }
@@ -51,8 +55,8 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region NavigateCommand property
-        private DelegateCommand<string>? navigateCommand;
-        public DelegateCommand<string> NavigateCommand => navigateCommand ??= new(Navigate, CanNavigate);
+        private DelegateCommand<string>? _navigateCommand;
+        public DelegateCommand<string> NavigateCommand => _navigateCommand ??= new DelegateCommand<string>(Navigate, CanNavigate);
 
         private void Navigate(string path)
         {
@@ -66,8 +70,8 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region GoBackCommand property
-        private DelegateCommand? goBackCommand;
-        public DelegateCommand GoBackCommand => goBackCommand ??= new(GoBack, CanGoBack);
+        private DelegateCommand? _goBackCommand;
+        public DelegateCommand GoBackCommand => _goBackCommand ??= new DelegateCommand(GoBack, CanGoBack);
 
         private void GoBack()
         {
@@ -81,8 +85,8 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region RefreshCommand property
-        private DelegateCommand? refreshCommand;
-        public DelegateCommand RefreshCommand => refreshCommand ??= new(Refresh, CanRefresh);
+        private DelegateCommand? _refreshCommand;
+        public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(Refresh, CanRefresh);
 
         private void Refresh()
         {
@@ -96,8 +100,8 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region AddNewItemCommand property
-        private DelegateCommand? addNewItemCommand;
-        public DelegateCommand AddNewItemCommand => addNewItemCommand ??= new(AddNewItem, CanAddNewItem);
+        private DelegateCommand? _addNewItemCommand;
+        public DelegateCommand AddNewItemCommand => _addNewItemCommand ??= new DelegateCommand(AddNewItem, CanAddNewItem);
 
         private void AddNewItem()
         {
@@ -111,8 +115,8 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region EditItemCommand property
-        private DelegateCommand? editItemCommand;
-        public DelegateCommand EditItemCommand => editItemCommand ??= new(EditItem, CanEditItem);
+        private DelegateCommand? _editItemCommand;
+        public DelegateCommand EditItemCommand => _editItemCommand ??= new DelegateCommand(EditItem, CanEditItem);
 
         private void EditItem()
         {
@@ -126,8 +130,8 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region DeleteItemCommand property
-        private DelegateCommand? deleteItemCommand;
-        public DelegateCommand DeleteItemCommand => deleteItemCommand ??= new(DeleteItem, CanDeleteItem);
+        private DelegateCommand? _deleteItemCommand;
+        public DelegateCommand DeleteItemCommand => _deleteItemCommand ??= new DelegateCommand(DeleteItem, CanDeleteItem);
 
         private void DeleteItem()
         {

@@ -9,6 +9,7 @@ using System.Windows.Data;
 
 namespace PrismApp.Converters
 {
+    [ValueConversion(typeof(DateTime), typeof(string))]
     internal class ExpirationDateToTextConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -26,7 +27,7 @@ namespace PrismApp.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Common.Utils
         /// </summary>
         /// <param name="source">コピー元のオブジェクト</param>
         /// <param name="target">コピー先のオブジェクト</param>
-        public static void CopyPropertiesTo(object source, object target)
+        public static void CopyProperties(object source, object target)
         {
             if (source == null || target == null)
             {
@@ -50,7 +50,7 @@ namespace Common.Utils
             where T : class, new()
         {
             var result = new T();
-            CopyPropertiesTo(obj, result);
+            CopyProperties(obj, result);
             return result;
         }
 

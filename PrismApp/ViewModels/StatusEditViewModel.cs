@@ -21,13 +21,13 @@ namespace PrismApp.ViewModels
         public IEventAggregator? EventAggregator { get; set; }
 
         #region Status property
-        private BindableStatus? status;
+        private BindableStatus? _status;
         public BindableStatus? Status
         {
-            get => status;
+            get => _status;
             set
             {
-                if (SetProperty(ref status, value))
+                if (SetProperty(ref _status, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -36,13 +36,13 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Statuses property
-        private ObservableCollection<Status>? statuses;
+        private ObservableCollection<Status>? _statuses;
         public ObservableCollection<Status>? Statuses
         {
-            get => statuses;
+            get => _statuses;
             set
             {
-                if (SetProperty(ref statuses, value))
+                if (SetProperty(ref _statuses, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -50,12 +50,21 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
+        #region SaveExecuted property
+        private bool _saveExecuted;
+        public bool SaveExecuted
+        {
+            get => _saveExecuted;
+            set => SetProperty(ref _saveExecuted, value);
+        }
+        #endregion
+
         #region SaveCommand property
-        private DelegateCommand? saveCommand;
-        public DelegateCommand SaveCommand => saveCommand ??= new DelegateCommand(Save, CanSave)
-            .ObservesProperty(() => SaveExecuted)
+        private DelegateCommand? _saveCommand;
+        public DelegateCommand SaveCommand => _saveCommand ??= new DelegateCommand(Save, CanSave)
             .ObservesProperty(() => Status)
-            .ObservesProperty(() => Status.Text);
+            .ObservesProperty(() => Status.Text)
+            .ObservesProperty(() => SaveExecuted);
 
         private async void Save()
         {
@@ -63,7 +72,8 @@ namespace PrismApp.ViewModels
 
             if (Status != null)
             {
-                await StatusController.SaveStatusAsync(BindableStatus.ToStatus(Status));
+                var status = BindableStatus.ToStatus(Status);
+                await StatusController.SaveStatusAsync(status);
             }
 
             PublishGoBackEvent();
@@ -77,11 +87,6 @@ namespace PrismApp.ViewModels
                    && Statuses.All(s => s.Text != Status.Text)
                    && !SaveExecuted;
         }
-        #endregion
-
-        #region SaveExecuted property
-        private bool saveExecuted;
-        public bool SaveExecuted { get => saveExecuted; set => SetProperty(ref saveExecuted, value); }
         #endregion
 
         private async void Initialize(int? id)

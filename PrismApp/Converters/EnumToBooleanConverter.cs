@@ -5,7 +5,7 @@ using System.Windows.Data;
 namespace PrismApp.Converters
 {
     [ValueConversion(typeof(Enum), typeof(bool))]
-    public class EnumToBoolConverter : IValueConverter
+    public class EnumToBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

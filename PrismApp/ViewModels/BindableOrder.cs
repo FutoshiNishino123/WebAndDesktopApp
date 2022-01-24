@@ -13,48 +13,84 @@ namespace PrismApp.ViewModels
     public class BindableOrder : BindableBase
     {
         #region Id property
-        private int id;
-        public int Id { get => id; set => SetProperty(ref id, value); }
+        private int _id;
+        public int Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
         #endregion
 
         #region CreatedDate property
-        private DateTime? createdDate;
-        public DateTime? CreatedDate { get => createdDate; set => SetProperty(ref createdDate, value); }
+        private DateTime? _createdDate;
+        public DateTime? CreatedDate
+        {
+            get => _createdDate;
+            set => SetProperty(ref _createdDate, value);
+        }
         #endregion
 
         #region UpdatedDate property
-        private DateTime? updatedDate;
-        public DateTime? UpdatedDate { get => updatedDate; set => SetProperty(ref updatedDate, value); }
+        private DateTime? _updatedDate;
+        public DateTime? UpdatedDate
+        {
+            get => _updatedDate;
+            set => SetProperty(ref _updatedDate, value);
+        }
         #endregion
 
         #region Number property
-        private string? number;
-        public string? Number { get => number; set => SetProperty(ref number, value); }
+        private string? _number;
+        public string? Number
+        {
+            get => _number;
+            set => SetProperty(ref _number, value);
+        }
         #endregion
 
         #region Person property
-        private Person? person;
-        public Person? Person { get => person; set => SetProperty(ref person, value); }
+        private Person? _person;
+        public Person? Person
+        {
+            get => _person;
+            set => SetProperty(ref _person, value);
+        }
         #endregion
 
         #region Status property
-        private Status? status;
-        public Status? Status { get => status; set => SetProperty(ref status, value); }
+        private Status? _status;
+        public Status? Status
+        {
+            get => _status;
+            set => SetProperty(ref _status, value);
+        }
         #endregion
 
         #region Remarks property
-        private string? remarks;
-        public string? Remarks { get => remarks; set => SetProperty(ref remarks, value); }
+        private string? _remarks;
+        public string? Remarks
+        {
+            get => _remarks;
+            set => SetProperty(ref _remarks, value);
+        }
         #endregion
 
         #region ExpirationDate property
-        private DateTime? expirationDate;
-        public DateTime? ExpirationDate { get => expirationDate; set => SetProperty(ref expirationDate, value); }
+        private DateTime? _expirationDate;
+        public DateTime? ExpirationDate
+        {
+            get => _expirationDate;
+            set => SetProperty(ref _expirationDate, value);
+        }
         #endregion
 
         #region IsClosed property
-        private bool isClosed;
-        public bool IsClosed { get => isClosed; set => SetProperty(ref isClosed, value); }
+        private bool _isClosed;
+        public bool IsClosed
+        {
+            get => _isClosed;
+            set => SetProperty(ref _isClosed, value);
+        }
         #endregion
 
         #region Conversion method

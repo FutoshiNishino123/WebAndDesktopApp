@@ -21,13 +21,13 @@ namespace PrismApp.ViewModels
         public IEventAggregator? EventAggregator { get; set; }
 
         #region Person property
-        private Person? person;
+        private Person? _person;
         public Person? Person
         {
-            get => person;
+            get => _person;
             set
             {
-                if (SetProperty(ref person, value))
+                if (SetProperty(ref _person, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -37,13 +37,13 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region People property
-        private ObservableCollection<Person>? people;
+        private ObservableCollection<Person>? _people;
         public ObservableCollection<Person>? People
         {
-            get => people;
+            get => _people;
             set
             {
-                if (SetProperty(ref people, value))
+                if (SetProperty(ref _people, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -86,7 +86,7 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region IRibbon
-        public bool CanRefresh => true;
+        public bool CanRefresh => People != null;
         public void Refresh()
         {
             if (CanRefresh)
@@ -109,7 +109,8 @@ namespace PrismApp.ViewModels
         {
             if (CanEditItem)
             {
-                NavigateToPersonEdit(Person?.Id);
+                Debug.Assert(Person != null);
+                NavigateToPersonEdit(Person.Id);
             }
         }
 

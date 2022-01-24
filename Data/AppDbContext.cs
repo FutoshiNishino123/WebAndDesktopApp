@@ -8,18 +8,30 @@ namespace Data
     public class AppDbContext : DbContext
     {
         #region Orders property
-        private DbSet<Order>? orders;
-        public DbSet<Order> Orders { get => orders ?? throw new InvalidOperationException(); set => orders = value; }
+        private DbSet<Order>? _orders;
+        public DbSet<Order> Orders
+        {
+            get => _orders ?? throw new NullReferenceException();
+            set => _orders = value;
+        }
         #endregion
 
         #region People property
-        private DbSet<Person>? people;
-        public DbSet<Person> People { get => people ?? throw new InvalidOperationException(); set => people = value; }
+        private DbSet<Person>? _people;
+        public DbSet<Person> People
+        {
+            get => _people ?? throw new NullReferenceException();
+            set => _people = value;
+        }
         #endregion
 
         #region Statuses property
-        private DbSet<Status>? statuses;
-        public DbSet<Status> Statuses { get => statuses ?? throw new InvalidOperationException(); set => statuses = value; }
+        private DbSet<Status>? _statuses;
+        public DbSet<Status> Statuses
+        {
+            get => _statuses ?? throw new NullReferenceException();
+            set => _statuses = value;
+        }
         #endregion
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -36,6 +48,7 @@ namespace Data
             }
 
             var serverVersion = new MariaDbServerVersion(ServerVersion.AutoDetect(connectionString));
+
             options.UseMySql(connectionString, serverVersion)
                    .LogTo(s => Debug.WriteLine(s), Microsoft.Extensions.Logging.LogLevel.Information)
                    .EnableSensitiveDataLogging()
