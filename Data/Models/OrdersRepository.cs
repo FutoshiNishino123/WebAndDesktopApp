@@ -36,7 +36,7 @@ namespace Data
         public async Task SaveAsync(Order order)
         {
             // NOTE: 自動更新されないバグの対応
-            order.UpdatedDate = DateTime.Now;
+            order.Updated = DateTime.Now;
 
             _context.Update(order);
 

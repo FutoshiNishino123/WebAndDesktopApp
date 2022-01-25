@@ -3,36 +3,41 @@ using Data.Models;
 
 namespace SampleData
 {
-    internal static class SampleStatuses
+    internal class SampleStatuses
     {
-        public static IEnumerable<Status> CreateData()
+        private readonly AppDbContext _db;
+
+        public SampleStatuses(AppDbContext db)
+        {
+            _db = db;
+        }
+
+        public IEnumerable<Status> CreateData()
         {
             var obj = Data.RootobjectLoader.Load();
+            if (obj == null)
+            {
+                return Enumerable.Empty<Status>();
+            }
 
-            var statuses = obj?.status.items.Select((s, i) => new Status
+            var statuses = obj.status.items.Select((s, i) => new Status
             {
                 Id = i + 1,
                 Text = s,
             });
-
-            return statuses ?? Enumerable.Empty<Status>();
+            return statuses;
         }
 
-        public static void AddData()
+        public void AddData()
         {
-            using var db = new AppDbContext();
-            
             var statuses = CreateData();
-            db.AddRange(statuses);
-            
-            db.SaveChanges();
+            _db.AddRange(statuses);
+            _db.SaveChanges();
         }
 
-        public static void PrintData()
+        public void PrintData()
         {
-            using var db = new AppDbContext();
-            
-            var statuses = db.Statuses.ToList();
+            var statuses = _db.Statuses.ToList();
             
             Console.WriteLine("--- Statuses ---");
             foreach (var s in statuses)

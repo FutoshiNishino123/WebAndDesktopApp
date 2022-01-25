@@ -4,7 +4,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Controllers;
+using PrismApp.Models;
 using PrismApp.Events;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -53,7 +53,7 @@ namespace PrismApp.ViewModels
 
         private async void Initialize()
         {
-            var statuses = await StatusController.GetStatusesAsync();
+            var statuses = await Models.StatusesRepository.GetStatusesAsync();
             Statuses = new ObservableCollection<Status>(statuses);
         }
 
@@ -122,7 +122,7 @@ namespace PrismApp.ViewModels
                 if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Debug.Assert(Status != null);
-                    await StatusController.DeleteStatusAsync(Status.Id);
+                    await Models.StatusesRepository.DeleteStatusAsync(Status.Id);
                     Statuses?.Remove(Status);
                 }
             }

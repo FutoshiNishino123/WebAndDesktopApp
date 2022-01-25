@@ -19,15 +19,15 @@ namespace Data.Models
         /// 作成日時
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Display(Name = "作成日時")]
-        public DateTime? CreatedDate { get; set; }
+        [Display(Name = "作成")]
+        public DateTime Created { get; set; }
 
         /// <summary>
         /// 更新日時
         /// </summary>
-        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]  // 更新されないバグあり
-        [Display(Name = "更新日時")]
-        public DateTime? UpdatedDate { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Display(Name = "更新")]
+        public DateTime Updated { get; set; }
 
         /// <summary>
         /// 番号
@@ -61,7 +61,7 @@ namespace Data.Models
         /// 期限
         /// </summary>
         [Display(Name = "期限")]
-        public DateTime? ExpirationDate { get; set; }
+        public DateTime? Expiration { get; set; }
 
         /// <summary>
         /// クローズ

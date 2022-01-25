@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using PrismApp.ViewModels;
 
-namespace PrismApp.Controllers
+namespace PrismApp.Models
 {
-    internal static class AboutController
+    internal static class AboutRepository
     {
         public static async Task<About> GetAboutAsync()
         {

@@ -28,9 +28,9 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="作成日" DisplayMemberBinding="{Binding CreatedDate, StringFormat=yyyy年MM月dd日}" />
-                    <GridViewColumn Header="更新日" DisplayMemberBinding="{Binding UpdatedDate, StringFormat=yyyy年MM月dd日}" />
-                    <GridViewColumn Header="期限" DisplayMemberBinding="{Binding ExpirationDate, Converter={StaticResource ExpirationDateToText}}"/>
+                    <GridViewColumn Header="作成日" DisplayMemberBinding="{Binding Created, StringFormat=yyyy年MM月dd日}" />
+                    <GridViewColumn Header="更新日" DisplayMemberBinding="{Binding Updated, StringFormat=yyyy年MM月dd日}" />
+                    <GridViewColumn Header="期限" DisplayMemberBinding="{Binding Expiration, Converter={StaticResource ExpirationToText}}"/>
                     <GridViewColumn Header="番号" DisplayMemberBinding="{Binding Number}" />
                     <GridViewColumn Header="担当者" DisplayMemberBinding="{Binding Person.Name}" />
                     <GridViewColumn Header="ステータス" DisplayMemberBinding="{Binding Status.Text}" />

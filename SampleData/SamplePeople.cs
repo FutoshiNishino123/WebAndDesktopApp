@@ -1,28 +1,43 @@
 ﻿using Common.Extensions;
 using Data;
 using Data.Models;
+using System.Text.Json;
 
 namespace SampleData
 {
-    internal static class SamplePeople
+    internal class SamplePeople
     {
-        public static IEnumerable<Person> CreateData(int count)
+        private readonly AppDbContext _db;
+
+        public SamplePeople(AppDbContext db)
+        {
+            _db = db;
+        }
+
+        public IEnumerable<Person> CreateData(int count)
         {
             var obj = Data.RootobjectLoader.Load();
+            if (obj == null)
+            {
+                return Enumerable.Empty<Person>();
+            }
+
             var male = 0;
             var female = 0;
 
-            for (var i = 0; i < count; i++)
+            var people = Enumerable.Range(1, count).Select(id =>
             {
-                var family = obj?.family_name.items.ElementAtRandom();
-                var first = obj?.first_name.items.ElementAtRandom();
-                var image = first?.gender switch
+                var family = obj.family_name.items.ElementAtRandom();
+                var first = obj.first_name.items.ElementAtRandom();
+
+                var image = first.gender switch
                 {
-                    "M" => obj?.image.items.Where(s => s.Contains("male")).Skip(male++).FirstOrDefault(),
-                    "F" => obj?.image.items.Where(s => s.Contains("female")).Skip(female++).FirstOrDefault(),
+                    "M" => obj.image.items.Where(s => s.Contains("male")).Skip(male++).FirstOrDefault(),
+                    "F" => obj.image.items.Where(s => s.Contains("female")).Skip(female++).FirstOrDefault(),
                     _ => ""
                 };
-                var gender = first?.gender switch
+
+                var gender = first.gender switch
                 {
                     "M" => Gender.Male,
                     "F" => Gender.Female,
@@ -32,37 +47,34 @@ namespace SampleData
 
                 var person = new Person
                 {
-                    Id = i + 1,
-                    Name = $"{family?.name} {first?.name}",
-                    Kana = $"{family?.kana} {first?.kana}",
-                    ImageUrl = image,
+                    Id = id,
+                    Name = $"{family.name} {first.name}",
+                    Kana = $"{family.kana} {first.kana}",
+                    Image = image,
                     Gender = gender,
                 };
-                
-                yield return person;
-            }
+
+                return person;
+            });
+
+            return people;
         }
 
-        public static void AddData(int count)
+        public void AddData(int count)
         {
-            using var db = new AppDbContext();
-            
-            var people = CreateData(count);
-            db.AddRange(people);
-            
-            db.SaveChanges();
+            var data = CreateData(count);
+            _db.AddRange(data);
+            _db.SaveChanges();
         }
 
-        public static void PrintData()
+        public void PrintData()
         {
-            using var db = new AppDbContext();
+            var people = _db.People.ToList();
 
-            var people = db.People.ToList();
-            
             Console.WriteLine("--- People ---");
-            foreach (var x in people)
+            foreach (var p in people)
             {
-                Console.WriteLine($"{x.Name} ({x.Kana})");
+                Console.WriteLine($"{p.Name} ({p.Kana})");
             }
             Console.WriteLine("--- /People ---");
         }

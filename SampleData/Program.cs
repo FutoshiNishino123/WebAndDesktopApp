@@ -18,16 +18,24 @@ void InitializeDb()
     }
     Console.WriteLine();
 
+    Console.WriteLine("Deleting Data...");
     DeleteAllData();
+    Console.WriteLine("Done.");
 
-    SamplePeople.AddData(10);
-    SamplePeople.PrintData();
+    using var db = new AppDbContext();
+    var people = new SamplePeople(db);
+    var statuses = new SampleStatuses(db);
+    var orders = new SampleOrders(db);
 
-    SampleStatuses.AddData();
-    SampleStatuses.PrintData();
-    
-    SampleOrders.AddData(100000);
-    SampleOrders.PrintData();
+    Console.WriteLine("Adding Data...");
+    people.AddData(10);
+    statuses.AddData();
+    orders.AddData(1000);
+    Console.WriteLine("Done.");
+
+    people.PrintData();
+    statuses.PrintData();
+    orders.PrintData();
 }
 
 void DeleteAllData()

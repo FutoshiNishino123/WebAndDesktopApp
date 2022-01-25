@@ -10,7 +10,7 @@ using System.Windows.Data;
 namespace PrismApp.Converters
 {
     [ValueConversion(typeof(DateTime), typeof(string))]
-    internal class ExpirationDateToTextConverter : IValueConverter
+    internal class ExpirationToTextConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

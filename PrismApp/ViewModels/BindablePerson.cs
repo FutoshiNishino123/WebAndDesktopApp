@@ -131,16 +131,16 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region ImageUrl property
-        private string? _imageUrl;
-        public string? ImageUrl
+        #region Image property
+        private string? _image;
+        public string? Image
         {
-            get => _imageUrl;
-            set => SetProperty(ref _imageUrl, value);
+            get => _image;
+            set => SetProperty(ref _image, value);
         }
         #endregion
 
-        #region Conversion method
+        #region Mapper method
         public static BindablePerson FromPerson(Person person) => person.Copy<BindablePerson>();
 
         public static Person ToPerson(BindablePerson person) => person.Copy<Person>();

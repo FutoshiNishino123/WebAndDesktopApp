@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PrismApp.Controllers
+namespace PrismApp.Models
 {
-    public static class OrderController
+    public static class OrdersRepository
     {
         public static async Task<IEnumerable<Order>> GetOrdersAsync()
         {
@@ -39,9 +39,6 @@ namespace PrismApp.Controllers
         public static async Task SaveOrderAsync(Order order)
         {
             using var db = new AppDbContext();
-
-            // NOTE: 自動更新されないバグの対応
-            order.UpdatedDate = DateTime.Now;
 
             db.Update(order);
 

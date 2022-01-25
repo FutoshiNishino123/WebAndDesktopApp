@@ -37,10 +37,10 @@ namespace Data.Models
         public Gender Gender { get; set; }
 
         /// <summary>
-        /// 画像 URL
+        /// 画像
         /// </summary>
         [MaxLength(1000)]
-        [Display(Name = "画像 URL")]
-        public string? ImageUrl { get; set; }
+        [Display(Name = "画像")]
+        public string? Image { get; set; }
     }
 }

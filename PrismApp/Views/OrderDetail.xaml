@@ -22,7 +22,7 @@
                     <TextBlock Text="CLOSED" Foreground="Red" HorizontalAlignment="Center" Visibility="{Binding Order.IsClosed, Converter={StaticResource TrueToVisible}, Mode=OneWay}"/>
                     <TextBlock FontSize="50" Text="{Binding Order.Number}" HorizontalAlignment="Center" />
                     <TextBlock FontSize="16" Text="{Binding Order.Status.Text}" HorizontalAlignment="Center" />
-                    <TextBlock FontSize="16" Text="{Binding Order.ExpirationDate, StringFormat=yyyy/MM/dd 迄}" HorizontalAlignment="Center" />
+                    <TextBlock FontSize="16" Text="{Binding Order.Expiration, StringFormat=yyyy/MM/dd 迄}" HorizontalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Margin="20">
                     <TextBlock Text="{Binding Order.Remarks}" TextWrapping="Wrap" />
@@ -31,7 +31,7 @@
         </Grid>
         <Grid Grid.Column="1">
             <StackPanel Margin="20">
-                <Image Source="{Binding Order.Person.ImageUrl, FallbackValue={StaticResource DefaultImage},
+                <Image Source="{Binding Order.Person.Image, FallbackValue={StaticResource DefaultImage},
                     TargetNullValue={StaticResource DefaultImage}}" Width="100" Height="100" Stretch="Uniform" Margin="10" HorizontalAlignment="Center" />
                 <TextBlock Text="{Binding Order.Person.Name}" HorizontalAlignment="Center" />
             </StackPanel>

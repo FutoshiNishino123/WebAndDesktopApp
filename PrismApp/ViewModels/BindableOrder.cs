@@ -21,21 +21,21 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region CreatedDate property
-        private DateTime? _createdDate;
-        public DateTime? CreatedDate
+        #region Created property
+        private DateTime? _created;
+        public DateTime? Created
         {
-            get => _createdDate;
-            set => SetProperty(ref _createdDate, value);
+            get => _created;
+            set => SetProperty(ref _created, value);
         }
         #endregion
 
-        #region UpdatedDate property
-        private DateTime? _updatedDate;
-        public DateTime? UpdatedDate
+        #region Updated property
+        private DateTime? _updated;
+        public DateTime? Updated
         {
-            get => _updatedDate;
-            set => SetProperty(ref _updatedDate, value);
+            get => _updated;
+            set => SetProperty(ref _updated, value);
         }
         #endregion
 
@@ -75,12 +75,12 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region ExpirationDate property
-        private DateTime? _expirationDate;
-        public DateTime? ExpirationDate
+        #region Expiration property
+        private DateTime? _expiration;
+        public DateTime? Expiration
         {
-            get => _expirationDate;
-            set => SetProperty(ref _expirationDate, value);
+            get => _expiration;
+            set => SetProperty(ref _expiration, value);
         }
         #endregion
 
@@ -93,7 +93,7 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region Conversion method
+        #region Mapper method
         public static BindableOrder FromOrder(Order order) => order.Copy<BindableOrder>();
 
         public static Order ToOrder(BindableOrder order) => order.Copy<Order>();

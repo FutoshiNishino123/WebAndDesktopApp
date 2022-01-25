@@ -54,5 +54,16 @@ namespace Data
                    .EnableSensitiveDataLogging()
                    .EnableDetailedErrors();
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Order>()
+                .Property(b => b.Created)
+                .HasDefaultValueSql("NOW()");
+
+            modelBuilder.Entity<Order>()
+                .Property(p => p.Updated)
+                .HasDefaultValueSql("NOW()");
+        }
     }
 }

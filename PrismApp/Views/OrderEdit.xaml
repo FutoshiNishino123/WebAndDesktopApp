@@ -55,7 +55,7 @@
                 <WrapPanel>
                     <StackPanel Width="200" Margin="10">
                         <TextBlock Text="期限:"/>
-                        <DatePicker SelectedDate="{Binding Order.ExpirationDate}" x:Name="ExpirationDate"/>
+                        <DatePicker SelectedDate="{Binding Order.Expiration}" x:Name="ExpirationDate"/>
                     </StackPanel>
                 </WrapPanel>
                 <WrapPanel>

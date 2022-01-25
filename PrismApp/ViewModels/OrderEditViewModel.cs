@@ -4,7 +4,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Controllers;
+using PrismApp.Models;
 using PrismApp.Events;
 using System;
 using System.Collections.Generic;
@@ -89,7 +89,7 @@ namespace PrismApp.ViewModels
             if (Order != null)
             {
                 var order = BindableOrder.ToOrder(Order);
-                await OrderController.SaveOrderAsync(order);
+                await Models.OrdersRepository.SaveOrderAsync(order);
             }
 
             PublishGoBackEvent();
@@ -110,15 +110,15 @@ namespace PrismApp.ViewModels
             Statuses = null;
             SaveExecuted = false;
 
-            var order = id.HasValue ? await OrderController.GetOrderAsync(id.Value) : new();
+            var order = id.HasValue ? await Models.OrdersRepository.GetOrderAsync(id.Value) : new();
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 PublishGoBackEvent();
                 return;
             }
-            var people = await PersonController.GetPeopleAsync();
-            var statuses = await StatusController.GetStatusesAsync();
+            var people = await Models.PeopleRepository.GetPeopleAsync();
+            var statuses = await Models.StatusesRepository.GetStatusesAsync();
 
             if (order.Person != null)
             {

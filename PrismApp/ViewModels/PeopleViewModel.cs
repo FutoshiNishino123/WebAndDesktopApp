@@ -3,7 +3,7 @@ using Data.Models;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Controllers;
+using PrismApp.Models;
 using PrismApp.Events;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -53,7 +53,7 @@ namespace PrismApp.ViewModels
 
         private async void Initialize()
         {
-            var people = await PersonController.GetPeopleAsync();
+            var people = await Models.PeopleRepository.GetPeopleAsync();
             People = new ObservableCollection<Person>(people);
         }
 
@@ -122,7 +122,7 @@ namespace PrismApp.ViewModels
                 if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Debug.Assert(Person != null);
-                    await PersonController.DeletePersonAsync(Person.Id);
+                    await Models.PeopleRepository.DeletePersonAsync(Person.Id);
                     People?.Remove(Person);
                 }
             }

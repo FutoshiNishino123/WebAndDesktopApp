@@ -5,7 +5,7 @@
                         xmlns:converter="clr-namespace:PrismApp.Converters"
                         xmlns:prism="http://prismlibrary.com/">
     <Application.Resources>
-        <converter:ExpirationDateToTextConverter x:Key="ExpirationDateToText"/>
+        <converter:ExpirationToTextConverter x:Key="ExpirationToText"/>
         <converter:BooleanToAnyVisibilityConverter x:Key="TrueToVisible" TrueTo="Visible" FalseTo="Collapsed"/>
         <converter:BooleanToAnyVisibilityConverter x:Key="FalseToVisible" TrueTo="Collapsed" FalseTo="Visible"/>
         <converter:BooleanInversionConverter x:Key="BoolInv"/>

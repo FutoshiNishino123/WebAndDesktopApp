@@ -1,7 +1,7 @@
 ﻿using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Controllers;
+using PrismApp.Models;
 using PrismApp.Events;
 using System;
 using System.Collections.Generic;
@@ -37,7 +37,7 @@ namespace PrismApp.ViewModels
 
         public async void Initialize()
         {
-            var about = await AboutController.GetAboutAsync();
+            var about = await AboutRepository.GetAboutAsync();
             Description = about.Description;
             Version = about.Version;
 

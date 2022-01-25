@@ -4,7 +4,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Controllers;
+using PrismApp.Models;
 using PrismApp.Events;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -73,7 +73,7 @@ namespace PrismApp.ViewModels
             if (Status != null)
             {
                 var status = BindableStatus.ToStatus(Status);
-                await StatusController.SaveStatusAsync(status);
+                await Models.StatusesRepository.SaveStatusAsync(status);
             }
 
             PublishGoBackEvent();
@@ -95,14 +95,14 @@ namespace PrismApp.ViewModels
             Statuses = null;
             SaveExecuted = false;
 
-            var status = id.HasValue ? await StatusController.GetStatusAsync(id.Value) : new();
+            var status = id.HasValue ? await Models.StatusesRepository.GetStatusAsync(id.Value) : new();
             if (status is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 PublishGoBackEvent();
                 return;
             }
-            var statuses = await StatusController.GetStatusesAsync();
+            var statuses = await Models.StatusesRepository.GetStatusesAsync();
 
             Status = BindableStatus.FromStatus(status);
             Statuses = new ObservableCollection<Status>(statuses);

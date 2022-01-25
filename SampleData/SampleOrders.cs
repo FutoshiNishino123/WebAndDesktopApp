@@ -6,14 +6,20 @@ using Common.Utils;
 
 namespace SampleData
 {
-    internal static class SampleOrders
+    internal class SampleOrders
     {
-        private static Person[]? People { get; set; }
-        private static Status[]? Statuses { get; set; }
+        private readonly AppDbContext _db;
 
-        public static IEnumerable<Order> CreateData(int count)
+        public SampleOrders(AppDbContext db)
+        {
+            _db = db;
+        }
+
+        public IEnumerable<Order> CreateData(int count)
         {
             var rand = new RandomDateTime(DateTime.Now.AddDays(-30), DateTime.Now.AddDays(30));
+            var people = _db.People.ToArray();
+            var statuses = _db.Statuses.ToArray();
 
             for (var i = 0; i < count; i++)
             {
@@ -22,12 +28,12 @@ namespace SampleData
                 var order = new Order
                 {
                     Id = i + 1,
-                    CreatedDate = date,
-                    UpdatedDate = date,
-                    ExpirationDate = i % 3 == 0 ? rand.Next() : null,
+                    Created = date,
+                    Updated = date,
+                    Expiration = i % 3 == 0 ? rand.Next() : null,
                     Number = "SM" + (i + 1).ToString("D4"),
-                    Person = People?.ElementAtRandom(),
-                    Status = Statuses?.ElementAtRandom(),
+                    Person = people?.ElementAtRandom(),
+                    Status = statuses?.ElementAtRandom(),
                     Remarks = "テスト案件",
                     IsClosed = i % 5 == 0,
                 };
@@ -36,33 +42,25 @@ namespace SampleData
             }
         }
 
-        public static void AddData(int count)
+        public void AddData(int count)
         {
-            using var db = new AppDbContext();
-
-            People = db.People.ToArray();
-            Statuses = db.Statuses.ToArray();
-
-            var orders = CreateData(count);
-            db.AddRange(orders);
-            
-            db.SaveChanges();
+            var data = CreateData(count);
+            _db.AddRange(data);
+            _db.SaveChanges();
         }
 
-        public static void PrintData()
+        public void PrintData()
         {
-            using var db = new AppDbContext();
-
-            var orders = db.Orders
+            var orders = _db.Orders
                 .Include(o => o.Person)
                 .Include(o => o.Status)
                 .ToList();
 
             Console.WriteLine("--- Orders ---");
-            Console.WriteLine("番号, 担当者, ステータス, 備考, クローズ");
+            Console.WriteLine("番号, 作成, 更新, 担当者, ステータス");
             foreach (var o in orders)
             {
-                Console.WriteLine($"{o.Number}, {o.Person?.Name ?? "なし"}, {o.Status?.Text ?? "なし"}, {o.Remarks}, {o.IsClosed}");
+                Console.WriteLine($"{o.Number}, {o.Created}, {o.Updated}, {o.Person?.Name ?? "null"}, {o.Status?.Text ?? "null"}");
             }
             Console.WriteLine("--- /Orders ---");
         }

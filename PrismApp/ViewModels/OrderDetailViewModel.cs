@@ -3,7 +3,7 @@ using Data.Models;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Controllers;
+using PrismApp.Models;
 using PrismApp.Events;
 using System;
 using System.Diagnostics;
@@ -39,7 +39,7 @@ namespace PrismApp.ViewModels
         {
             Order = null;
 
-            var order = id.HasValue ? await OrderController.GetOrderAsync(id.Value) : null;
+            var order = id.HasValue ? await Models.OrdersRepository.GetOrderAsync(id.Value) : null;
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -117,7 +117,7 @@ namespace PrismApp.ViewModels
                 if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Debug.Assert(Order != null);
-                    await OrderController.DeleteOrderAsync(Order.Id);
+                    await Models.OrdersRepository.DeleteOrderAsync(Order.Id);
                     PublishGoBackEvent();
                 }
             }

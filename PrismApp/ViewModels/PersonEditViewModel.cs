@@ -4,7 +4,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Controllers;
+using PrismApp.Models;
 using PrismApp.Events;
 using System.Diagnostics;
 using System.Windows;
@@ -56,7 +56,7 @@ namespace PrismApp.ViewModels
             if (Person != null)
             {
                 var person = BindablePerson.ToPerson(Person);
-                await PersonController.SavePersonAsync(person);
+                await Models.PeopleRepository.SavePersonAsync(person);
             }
 
             PublishGoBackEvent();
@@ -76,7 +76,7 @@ namespace PrismApp.ViewModels
             Person = null;
             SaveExecuted = false;
 
-            var person = id.HasValue ? await PersonController.GetPersonAsync(id.Value) : new();
+            var person = id.HasValue ? await Models.PeopleRepository.GetPersonAsync(id.Value) : new();
             if (person is null)
             {
                 Debug.WriteLine("レコードが見つかりません");

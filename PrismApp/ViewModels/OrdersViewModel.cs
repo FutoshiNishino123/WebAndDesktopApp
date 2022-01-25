@@ -4,7 +4,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Controllers;
+using PrismApp.Models;
 using PrismApp.Events;
 using System;
 using System.Collections;
@@ -111,7 +111,7 @@ namespace PrismApp.ViewModels
 
         private async void Save(Order order)
         {
-            await OrderController.SaveOrderAsync(order);
+            await Models.OrdersRepository.SaveOrderAsync(order);
             PublishSituationChangedEvent();
         }
 
@@ -128,7 +128,7 @@ namespace PrismApp.ViewModels
 
         public async void Initialize()
         {
-            var orders = await OrderController.GetOrdersAsync();
+            var orders = await Models.OrdersRepository.GetOrdersAsync();
             orders = orders.Where(Filter);
             Orders = new ObservableCollection<Order>(orders);
         }
@@ -204,7 +204,7 @@ namespace PrismApp.ViewModels
                 if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Debug.Assert(Order != null);
-                    await OrderController.DeleteOrderAsync(Order.Id);
+                    await Models.OrdersRepository.DeleteOrderAsync(Order.Id);
                     Orders?.Remove(Order);
                 }
             }

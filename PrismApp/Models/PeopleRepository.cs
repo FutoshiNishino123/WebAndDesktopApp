@@ -7,49 +7,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PrismApp.Controllers
+namespace PrismApp.Models
 {
-    public static class StatusController
+    public static class PeopleRepository
     {
-        public static async Task<IEnumerable<Status>> GetStatusesAsync()
+        public static async Task<IEnumerable<Person>> GetPeopleAsync()
         {
             using var db = new AppDbContext();
 
-            var results = await db.Statuses.ToListAsync();
+            var results = await db.People.ToListAsync();
             
             return results;
         }
 
-        public static async Task<Status?> GetStatusAsync(int id)
+        public static async Task<Person?> GetPersonAsync(int id)
         {
             using var db = new AppDbContext();
             
-            var result = await db.Statuses.FirstOrDefaultAsync(s => s.Id == id);
+            var result = await db.People.FirstOrDefaultAsync(p => p.Id == id);
             
             return result;
         }
 
-        public static async Task SaveStatusAsync(Status status)
+        public static async Task SavePersonAsync(Person person)
         {
             using var db = new AppDbContext();
 
-            db.Update(status);
+            db.Update(person);
             
             await db.SaveChangesAsync();
         }
 
-        public static async Task DeleteStatusAsync(int id)
+        public static async Task DeletePersonAsync(int id)
         {
             using var db = new AppDbContext();
 
-            var target = await db.Statuses.FirstOrDefaultAsync(s => s.Id == id);
-            if (target == null)
+            var target = await db.People.FirstOrDefaultAsync(p => p.Id == id);
+            if (target is null)
             {
                 return;
             }
 
             db.Remove(target);
-            
+
             await db.SaveChangesAsync();
         }
     }
