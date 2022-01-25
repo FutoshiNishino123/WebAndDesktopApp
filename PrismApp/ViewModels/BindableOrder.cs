@@ -94,9 +94,9 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Mapper method
-        public static BindableOrder FromOrder(Order order) => order.Copy<BindableOrder>();
+        public static BindableOrder FromOrder(Order order) => order.Map<BindableOrder>();
 
-        public static Order ToOrder(BindableOrder order) => order.Copy<Order>();
+        public static Order ToOrder(BindableOrder order) => order.Map<Order>();
         #endregion
     }
 }

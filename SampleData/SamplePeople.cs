@@ -56,7 +56,13 @@ namespace SampleData
                 return person;
             });
 
-            return people;
+            var wildcard = new Person
+            {
+                Name = "*",
+                Kana = "未指定",
+            };
+
+            return people.Append(wildcard);
         }
 
         public void AddData(int count)

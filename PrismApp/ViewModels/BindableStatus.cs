@@ -26,9 +26,9 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Mapper method
-        public static BindableStatus FromStatus(Status status) => status.Copy<BindableStatus>();
+        public static BindableStatus FromStatus(Status status) => status.Map<BindableStatus>();
 
-        public static Status ToStatus(BindableStatus status) => status.Copy<Status>();
+        public static Status ToStatus(BindableStatus status) => status.Map<Status>();
         #endregion
     }
 }

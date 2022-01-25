@@ -41,12 +41,12 @@ namespace Common.Utils
         }
 
         /// <summary>
-        /// 同名かつ同型のPublicプロパティをコピーしたクローンを作成します。
+        /// 同名かつ同型のPublicプロパティをマッピングしたオブジェクトを作成します。
         /// </summary>
-        /// <typeparam name="T">クローンオブジェクトの型</typeparam>
-        /// <param name="obj">コピー元オブジェクト</param>
-        /// <returns>クローンオブジェクト</returns>
-        public static T Copy<T>(object obj)
+        /// <typeparam name="T">マッピング先のオブジェクトの型</typeparam>
+        /// <param name="obj">マッピング元のオブジェクト</param>
+        /// <returns>プロパティをマッピングしたオブジェクト</returns>
+        public static T Map<T>(object obj)
             where T : class, new()
         {
             var result = new T();

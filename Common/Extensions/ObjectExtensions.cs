@@ -22,10 +22,10 @@ namespace Common.Extensions
             return PropertyUtils.HasProperty(obj, propertyName);
         }
 
-        public static T Copy<T>(this object obj)
+        public static T Map<T>(this object obj)
             where T : class, new()
         {
-            return PropertyUtils.Copy<T>(obj);
+            return PropertyUtils.Map<T>(obj);
         }
     }
 }

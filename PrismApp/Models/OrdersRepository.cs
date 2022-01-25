@@ -19,6 +19,7 @@ namespace PrismApp.Models
             var orders = await db.Orders
                 .Include(o => o.Person)
                 .Include(o => o.Status)
+                .OrderByDescending(o => o.Id)
                 .ToListAsync();
 
             return orders;

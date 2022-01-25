@@ -141,9 +141,9 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Mapper method
-        public static BindablePerson FromPerson(Person person) => person.Copy<BindablePerson>();
+        public static BindablePerson FromPerson(Person person) => person.Map<BindablePerson>();
 
-        public static Person ToPerson(BindablePerson person) => person.Copy<Person>();
+        public static Person ToPerson(BindablePerson person) => person.Map<Person>();
         #endregion
     }
 }

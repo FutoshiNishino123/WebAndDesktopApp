@@ -12,7 +12,7 @@
             <TextBlock Text="変更は禁止されています。" Foreground="Red" Margin="10" Visibility="{Binding Order.IsClosed, Converter={StaticResource TrueToVisible}, Mode=OneWay, FallbackValue=Collapsed}" />
             <StackPanel Width="200" Margin="10" HorizontalAlignment="Left">
                 <TextBlock>
-                    <Run Text="指図番号:"/>
+                    <Run Text="番号:"/>
                     <Run Text="*" Foreground="Red"/>
                 </TextBlock>
                 <TextBox Text="{Binding Order.Number, UpdateSourceTrigger=PropertyChanged}" />

@@ -27,7 +27,7 @@
                     <TextBlock Text="{Binding Order.Updated, StringFormat=yyyy/MM/dd HH:mm:ss 更新}" Margin="5" />
                 </StackPanel>
                 <StackPanel>
-                    <TextBlock Text="{Binding Order.Remarks}" Margin="5" />
+                    <TextBlock Text="{Binding Order.Remarks}" Margin="5" MaxWidth="200" TextWrapping="Wrap"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
