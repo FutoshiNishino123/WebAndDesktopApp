@@ -20,7 +20,7 @@ namespace PrismApp.Models
             return results;
         }
 
-        public static async Task<Person?> GetPersonAsync(int id)
+        public static async Task<Person?> FindPersonAsync(int id)
         {
             using var db = new AppDbContext();
             

@@ -15,10 +15,10 @@ namespace PrismApp.ViewModels
     public class PeopleViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
-        public IRegionManager? RegionManager { get; set; }
+        public IRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator? EventAggregator { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         #region Person property
         private Person? _person;
@@ -53,20 +53,20 @@ namespace PrismApp.ViewModels
 
         private async void Initialize()
         {
-            var people = await Models.PeopleRepository.GetPeopleAsync();
+            var people = await PeopleRepository.GetPeopleAsync();
             People = new ObservableCollection<Person>(people);
         }
 
         private void PublishSituationChangedEvent()
         {
-            EventAggregator?.GetEvent<SituationChangedEvent>().Publish();
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
         private void NavigateToPersonEdit(int? id)
         {
             var parameters = new NavigationParameters();
             parameters.Add("id", id);
-            RegionManager?.RequestNavigate(RegionNames.ContentRegion, "PersonEdit", parameters);
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "PersonEdit", parameters);
         }
 
         #region INavigationAware
@@ -122,7 +122,7 @@ namespace PrismApp.ViewModels
                 if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Debug.Assert(Person != null);
-                    await Models.PeopleRepository.DeletePersonAsync(Person.Id);
+                    await PeopleRepository.DeletePersonAsync(Person.Id);
                     People?.Remove(Person);
                 }
             }

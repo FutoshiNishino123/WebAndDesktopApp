@@ -1,4 +1,5 @@
 using Data;
+using Data.Models;
 using WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);

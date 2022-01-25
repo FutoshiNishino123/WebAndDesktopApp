@@ -15,10 +15,10 @@ namespace PrismApp.ViewModels
     public class OrderDetailViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
-        public IRegionManager? RegionManager { get; set; }
+        public IRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator? EventAggregator { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         #region Order property
         private Order? order;
@@ -39,7 +39,7 @@ namespace PrismApp.ViewModels
         {
             Order = null;
 
-            var order = id.HasValue ? await Models.OrdersRepository.GetOrderAsync(id.Value) : null;
+            var order = id.HasValue ? await OrdersRepository.FindOrderAsync(id.Value) : null;
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -52,19 +52,19 @@ namespace PrismApp.ViewModels
 
         private void PublishGoBackEvent()
         {
-            EventAggregator?.GetEvent<GoBackEvent>().Publish();
+            EventAggregator.GetEvent<GoBackEvent>().Publish();
         }
 
         private void PublishSituationChangedEvent()
         {
-            EventAggregator?.GetEvent<SituationChangedEvent>().Publish();
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
         private void NavigateToOrderEdit(int? id)
         {
             var parameters = new NavigationParameters();
             parameters.Add("id", id);
-            RegionManager?.RequestNavigate(RegionNames.ContentRegion, "OrderEdit", parameters);
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "OrderEdit", parameters);
         }
 
         #region INavigationAware
@@ -90,7 +90,8 @@ namespace PrismApp.ViewModels
         {
             if (CanRefresh)
             {
-                Initialize(Order?.Id);
+                Debug.Assert(Order != null);
+                Initialize(Order.Id);
             }
         }
 
@@ -105,7 +106,8 @@ namespace PrismApp.ViewModels
         {
             if (CanEditItem)
             {
-                NavigateToOrderEdit(Order?.Id);
+                Debug.Assert(Order != null);
+                NavigateToOrderEdit(Order.Id);
             }
         }
 
@@ -117,7 +119,7 @@ namespace PrismApp.ViewModels
                 if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Debug.Assert(Order != null);
-                    await Models.OrdersRepository.DeleteOrderAsync(Order.Id);
+                    await OrdersRepository.DeleteOrderAsync(Order.Id);
                     PublishGoBackEvent();
                 }
             }

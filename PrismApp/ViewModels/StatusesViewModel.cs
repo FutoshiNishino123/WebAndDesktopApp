@@ -16,10 +16,10 @@ namespace PrismApp.ViewModels
     public class StatusesViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
-        public IRegionManager? RegionManager { get; set; }
+        public IRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator? EventAggregator { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         #region Status property
         private Status? _status;
@@ -53,20 +53,20 @@ namespace PrismApp.ViewModels
 
         private async void Initialize()
         {
-            var statuses = await Models.StatusesRepository.GetStatusesAsync();
+            var statuses = await StatusesRepository.GetStatusesAsync();
             Statuses = new ObservableCollection<Status>(statuses);
         }
 
         private void PublishSituationChangedEvent()
         {
-            EventAggregator?.GetEvent<SituationChangedEvent>().Publish();
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
         private void NavigateToStatusEdit(int? id)
         {
             var parameters = new NavigationParameters();
             parameters.Add("id", id);
-            RegionManager?.RequestNavigate(RegionNames.ContentRegion, "StatusEdit", parameters);
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "StatusEdit", parameters);
         }
 
         #region INavigationAware
@@ -122,7 +122,7 @@ namespace PrismApp.ViewModels
                 if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Debug.Assert(Status != null);
-                    await Models.StatusesRepository.DeleteStatusAsync(Status.Id);
+                    await StatusesRepository.DeleteStatusAsync(Status.Id);
                     Statuses?.Remove(Status);
                 }
             }

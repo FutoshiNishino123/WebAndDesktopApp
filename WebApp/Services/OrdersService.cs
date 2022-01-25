@@ -15,7 +15,7 @@ namespace WebApp.Services
 
         public async Task<OrdersViewModel> SearchAsync(OrdersSearchConditionModel condition)
         {
-            return await _searcher.Search(condition);
+            return await _searcher.SearchOrdersAsync(condition);
         }
 
         public async Task<Order?> FindOrderAsync(int id)

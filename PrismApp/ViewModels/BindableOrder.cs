@@ -22,8 +22,8 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Created property
-        private DateTime? _created;
-        public DateTime? Created
+        private DateTime _created;
+        public DateTime Created
         {
             get => _created;
             set => SetProperty(ref _created, value);
@@ -31,8 +31,8 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Updated property
-        private DateTime? _updated;
-        public DateTime? Updated
+        private DateTime _updated;
+        public DateTime Updated
         {
             get => _updated;
             set => SetProperty(ref _updated, value);

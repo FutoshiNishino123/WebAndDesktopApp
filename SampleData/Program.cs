@@ -1,4 +1,5 @@
 ﻿using Data;
+using Data.Models;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
 using SampleData;

@@ -20,7 +20,7 @@ namespace PrismApp.Models
             return results;
         }
 
-        public static async Task<Status?> GetStatusAsync(int id)
+        public static async Task<Status?> FindStatusAsync(int id)
         {
             using var db = new AppDbContext();
             

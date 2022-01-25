@@ -20,11 +20,11 @@ namespace SampleData
                 return Enumerable.Empty<Status>();
             }
 
-            var statuses = obj.status.items.Select((s, i) => new Status
+            var statuses = obj.status.items.Select(s => new Status
             {
-                Id = i + 1,
                 Text = s,
             });
+
             return statuses;
         }
 

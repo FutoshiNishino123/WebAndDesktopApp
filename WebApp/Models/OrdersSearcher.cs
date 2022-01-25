@@ -13,7 +13,7 @@ namespace WebApp.Models
             _context = context;
         }
 
-        public async Task<OrdersViewModel> Search(OrdersSearchConditionModel condition)
+        public async Task<OrdersViewModel> SearchOrdersAsync(OrdersSearchConditionModel condition)
         {
             if (condition.Page <= 0 || condition.Count <= 0)
             {

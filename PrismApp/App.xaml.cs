@@ -1,4 +1,5 @@
-﻿using Prism.Ioc;
+﻿using Data.Models;
+using Prism.Ioc;
 using Prism.Regions;
 using Prism.Unity;
 using PrismApp.Views;

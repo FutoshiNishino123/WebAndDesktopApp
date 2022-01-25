@@ -15,7 +15,7 @@ namespace PrismApp.ViewModels
     internal class HomeViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IEventAggregator? EventAggregator { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         #region Description property
         private string? _description;
@@ -46,7 +46,7 @@ namespace PrismApp.ViewModels
 
         private void PublishSituationChangedEvent()
         {
-            EventAggregator?.GetEvent<SituationChangedEvent>().Publish();
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
         #region INavigationAware

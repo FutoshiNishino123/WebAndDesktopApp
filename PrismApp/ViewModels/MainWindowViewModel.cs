@@ -16,23 +16,23 @@ namespace PrismApp.ViewModels
     internal class MainWindowViewModel : BindableBase
     {
         [Dependency]
-        public IRegionManager? RegionManager { get; set; }
+        public IRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator? EventAggregator { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         private object? ContentRegionDataContext
         {
             get
             {
-                var view = RegionManager?.Regions[RegionNames.ContentRegion].ActiveViews.FirstOrDefault();
+                var view = RegionManager.Regions[RegionNames.ContentRegion].ActiveViews.FirstOrDefault();
                 return (view as FrameworkElement)?.DataContext;
             }
         }
 
         #region Title property
-        private string? _title = "Demo";
-        public string? Title
+        private string _title = "Demo";
+        public string Title
         {
             get => _title;
             set => SetProperty(ref _title, value);
@@ -48,7 +48,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _hideClosedOrders, value))
                 {
-                    EventAggregator?.GetEvent<HideClosedOrdersEvent>().Publish(value);
+                    EventAggregator.GetEvent<HideClosedOrdersEvent>().Publish(value);
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace PrismApp.ViewModels
 
         private void Navigate(string path)
         {
-            RegionManager?.RequestNavigate(RegionNames.ContentRegion, path);
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, path);
         }
 
         private bool CanNavigate(string path)
@@ -75,12 +75,12 @@ namespace PrismApp.ViewModels
 
         private void GoBack()
         {
-            RegionManager?.Regions[RegionNames.ContentRegion].NavigationService.Journal.GoBack();
+            RegionManager.Regions[RegionNames.ContentRegion].NavigationService.Journal.GoBack();
         }
 
         private bool CanGoBack()
         {
-            return RegionManager?.Regions[RegionNames.ContentRegion].NavigationService.Journal.CanGoBack ?? false;
+            return RegionManager.Regions[RegionNames.ContentRegion].NavigationService.Journal.CanGoBack;
         }
         #endregion
 

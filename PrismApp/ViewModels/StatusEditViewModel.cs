@@ -18,7 +18,7 @@ namespace PrismApp.ViewModels
     public class StatusEditViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IEventAggregator? EventAggregator { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         #region Status property
         private BindableStatus? _status;
@@ -70,11 +70,9 @@ namespace PrismApp.ViewModels
         {
             SaveExecuted = true;
 
-            if (Status != null)
-            {
-                var status = BindableStatus.ToStatus(Status);
-                await Models.StatusesRepository.SaveStatusAsync(status);
-            }
+            Debug.Assert(Status != null);
+            var status = BindableStatus.ToStatus(Status);
+            await StatusesRepository.SaveStatusAsync(status);
 
             PublishGoBackEvent();
         }
@@ -95,14 +93,14 @@ namespace PrismApp.ViewModels
             Statuses = null;
             SaveExecuted = false;
 
-            var status = id.HasValue ? await Models.StatusesRepository.GetStatusAsync(id.Value) : new();
+            var status = id.HasValue ? await StatusesRepository.FindStatusAsync(id.Value) : new Status();
             if (status is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 PublishGoBackEvent();
                 return;
             }
-            var statuses = await Models.StatusesRepository.GetStatusesAsync();
+            var statuses = await StatusesRepository.GetStatusesAsync();
 
             Status = BindableStatus.FromStatus(status);
             Statuses = new ObservableCollection<Status>(statuses);
@@ -110,12 +108,12 @@ namespace PrismApp.ViewModels
 
         private void PublishGoBackEvent()
         {
-            EventAggregator?.GetEvent<GoBackEvent>().Publish();
+            EventAggregator.GetEvent<GoBackEvent>().Publish();
         }
 
         private void PublishSituationChangedEvent()
         {
-            EventAggregator?.GetEvent<SituationChangedEvent>().Publish();
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
         #region INavigationAware

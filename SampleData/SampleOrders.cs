@@ -21,25 +21,22 @@ namespace SampleData
             var people = _db.People.ToArray();
             var statuses = _db.Statuses.ToArray();
 
-            for (var i = 0; i < count; i++)
+            var orders = Enumerable.Range(0, count).Select(i =>
             {
-                var date = rand.Next();
-
                 var order = new Order
                 {
-                    Id = i + 1,
-                    Created = date,
-                    Updated = date,
                     Expiration = i % 3 == 0 ? rand.Next() : null,
-                    Number = "SM" + (i + 1).ToString("D4"),
+                    Number = "SM" + i.ToString("D4"),
                     Person = people?.ElementAtRandom(),
                     Status = statuses?.ElementAtRandom(),
                     Remarks = "テスト案件",
                     IsClosed = i % 5 == 0,
                 };
-                
-                yield return order;
-            }
+
+                return order;
+            });
+
+            return orders;
         }
 
         public void AddData(int count)

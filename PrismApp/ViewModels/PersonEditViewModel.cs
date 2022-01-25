@@ -15,7 +15,7 @@ namespace PrismApp.ViewModels
     public class PersonEditViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IEventAggregator? EventAggregator { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         #region Person property
         private BindablePerson? _person;
@@ -52,12 +52,10 @@ namespace PrismApp.ViewModels
         private async void Save()
         {
             SaveExecuted = true;
-    
-            if (Person != null)
-            {
-                var person = BindablePerson.ToPerson(Person);
-                await Models.PeopleRepository.SavePersonAsync(person);
-            }
+
+            Debug.Assert(Person != null);
+            var person = BindablePerson.ToPerson(Person);
+            await PeopleRepository.SavePersonAsync(person);
 
             PublishGoBackEvent();
         }
@@ -76,7 +74,7 @@ namespace PrismApp.ViewModels
             Person = null;
             SaveExecuted = false;
 
-            var person = id.HasValue ? await Models.PeopleRepository.GetPersonAsync(id.Value) : new();
+            var person = id.HasValue ? await PeopleRepository.FindPersonAsync(id.Value) : new Person();
             if (person is null)
             {
                 Debug.WriteLine("レコードが見つかりません");
@@ -89,12 +87,12 @@ namespace PrismApp.ViewModels
 
         private void PublishGoBackEvent()
         {
-            EventAggregator?.GetEvent<GoBackEvent>().Publish();
+            EventAggregator.GetEvent<GoBackEvent>().Publish();
         }
 
         private void PublishSituationChangedEvent()
         {
-            EventAggregator?.GetEvent<SituationChangedEvent>().Publish();
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
         #region INavigationAware

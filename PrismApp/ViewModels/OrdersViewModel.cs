@@ -17,13 +17,13 @@ using Unity;
 
 namespace PrismApp.ViewModels
 {
-    public class OrdersViewModel : BindableBase, INavigationAware, IRibbon 
+    public class OrdersViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
-        public IRegionManager? RegionManager { get; set; }
+        public IRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator? EventAggregator { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         #region Order property
         private Order? _order;
@@ -70,23 +70,6 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region Filter property
-        public Func<Order, bool> Filter
-        {
-            get
-            {
-                return order =>
-                {
-                    if (HideClosedOrders && order.IsClosed)
-                    {
-                        return false;
-                    }
-                    return true;
-                };
-            }
-        }
-        #endregion
-
         #region ShowDetailCommand property
         private DelegateCommand? _showDetailCommand;
         public DelegateCommand ShowDetailCommand => _showDetailCommand ??= new DelegateCommand(ShowDetail, CanShowDetail);
@@ -111,7 +94,7 @@ namespace PrismApp.ViewModels
 
         private async void Save(Order order)
         {
-            await Models.OrdersRepository.SaveOrderAsync(order);
+            await OrdersRepository.SaveOrderAsync(order);
             PublishSituationChangedEvent();
         }
 
@@ -128,28 +111,33 @@ namespace PrismApp.ViewModels
 
         public async void Initialize()
         {
-            var orders = await Models.OrdersRepository.GetOrdersAsync();
-            orders = orders.Where(Filter);
+            var orders = await OrdersRepository.GetOrdersAsync();
+
+            if (HideClosedOrders)
+            {
+                orders = orders.Where(o => !o.IsClosed);
+            }
+
             Orders = new ObservableCollection<Order>(orders);
         }
 
         private void PublishSituationChangedEvent()
         {
-            EventAggregator?.GetEvent<SituationChangedEvent>().Publish();
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
         private void NavigateToOrderDetail(int? id)
         {
             var parameters = new NavigationParameters();
             parameters.Add("id", id);
-            RegionManager?.RequestNavigate(RegionNames.ContentRegion, "OrderDetail", parameters);
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "OrderDetail", parameters);
         }
 
         private void NavigateToOrderEdit(int? id)
         {
             var parameters = new NavigationParameters();
             parameters.Add("id", id);
-            RegionManager?.RequestNavigate(RegionNames.ContentRegion, "OrderEdit", parameters);
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "OrderEdit", parameters);
         }
 
         #region INavigationAware
@@ -192,7 +180,8 @@ namespace PrismApp.ViewModels
         {
             if (CanEditItem)
             {
-                NavigateToOrderEdit(Order?.Id);
+                Debug.Assert(Order != null);
+                NavigateToOrderEdit(Order.Id);
             }
         }
 
@@ -204,7 +193,7 @@ namespace PrismApp.ViewModels
                 if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Debug.Assert(Order != null);
-                    await Models.OrdersRepository.DeleteOrderAsync(Order.Id);
+                    await OrdersRepository.DeleteOrderAsync(Order.Id);
                     Orders?.Remove(Order);
                 }
             }

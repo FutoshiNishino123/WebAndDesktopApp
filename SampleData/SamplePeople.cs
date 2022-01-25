@@ -25,7 +25,7 @@ namespace SampleData
             var male = 0;
             var female = 0;
 
-            var people = Enumerable.Range(1, count).Select(id =>
+            var people = Enumerable.Range(0, count).Select(i =>
             {
                 var family = obj.family_name.items.ElementAtRandom();
                 var first = obj.first_name.items.ElementAtRandom();
@@ -47,7 +47,6 @@ namespace SampleData
 
                 var person = new Person
                 {
-                    Id = id,
                     Name = $"{family.name} {first.name}",
                     Kana = $"{family.kana} {first.kana}",
                     Image = image,

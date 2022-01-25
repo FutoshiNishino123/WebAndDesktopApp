@@ -24,7 +24,7 @@ namespace PrismApp.Models
             return orders;
         }
 
-        public static async Task<Order?> GetOrderAsync(int id)
+        public static async Task<Order?> FindOrderAsync(int id)
         {
             using var db = new AppDbContext();
 

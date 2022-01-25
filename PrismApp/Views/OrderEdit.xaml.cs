@@ -24,15 +24,5 @@ namespace PrismApp.Views
         {
             InitializeComponent();
         }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            // 日付選択時の初期値に前回の設定値が入ってしまうのでリセット
-            if (ExpirationDate.SelectedDate == null)
-            {
-                ExpirationDate.SelectedDate = DateTime.Now;
-                ExpirationDate.SelectedDate = null;
-            }
-        }
     }
 }
