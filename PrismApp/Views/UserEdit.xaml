@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="PrismApp.Views.UserEdit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:PrismApp.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:UserEditViewModel}"
+             d:DesignHeight="550" d:DesignWidth="600">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Width="400" HorizontalAlignment="Left">
+        <StackPanel Margin="10">
+            
+            <!--メールアドレス-->
+            <StackPanel Margin="10">
+                <TextBlock><Run Text="メールアドレス:"/><Run Text="*" Foreground="Red"/></TextBlock>
+                <TextBox Text="{Binding User.EmailAddress, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <!--パスワード-->
+            <StackPanel Margin="10">
+                <TextBlock><Run Text="パスワード:"/><Run Text="*" Foreground="Red"/></TextBlock>
+                <TextBox Text="{Binding User.PasswordRaw, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <!--姓・名-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="10">
+                    <TextBlock Text="姓:"/>
+                    <TextBox Text="{Binding User.LastName, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1"  Margin="10">
+                    <TextBlock><Run Text="名:"/><Run Text="*" Foreground="Red"/></TextBlock>
+                    <TextBox Text="{Binding User.FirstName, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </Grid>
+            
+            <!--セイ・メイ-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="10">
+                    <TextBlock Text="セイ:"/>
+                    <TextBox Text="{Binding User.LastKana, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="10">
+                    <TextBlock><Run Text="メイ:"/><Run Text="*" Foreground="Red"/></TextBlock>
+                    <TextBox Text="{Binding User.FirstKana, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </Grid>
+            
+            <!--性別-->
+            <StackPanel Margin="10">
+                <TextBlock Text="性別:"/>
+                <WrapPanel>
+                    <RadioButton Margin="5" Content="男" IsChecked="{Binding User.Gender, Converter={StaticResource EnumToBool}, ConverterParameter=Male}" />
+                    <RadioButton Margin="5" Content="女" IsChecked="{Binding User.Gender, Converter={StaticResource EnumToBool}, ConverterParameter=Female}" />
+                    <RadioButton Margin="5" Content="その他" IsChecked="{Binding User.Gender, Converter={StaticResource EnumToBool}, ConverterParameter=Other}" />
+                </WrapPanel>
+            </StackPanel>
+            
+            <!--画像URL-->
+            <StackPanel Margin="10">
+                <TextBlock Text="画像URL:"/>
+                <TextBox Height="40" Text="{Binding User.Image}" TextWrapping="Wrap" />
+            </StackPanel>
+            
+            <!--保存-->
+            <Button Width="100" Height="30" Margin="10" Content="保存" Command="{Binding SaveCommand}" HorizontalAlignment="Left" />
+            
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

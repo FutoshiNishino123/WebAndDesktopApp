@@ -12,29 +12,30 @@ void InitializeDb()
     // `dotnet ef database update`
 
     Console.Write("すべてのデータを削除して新しいデータを登録します。続行しますか？(y/n): ");
-    if (Console.ReadKey().Key != ConsoleKey.Y)
+    var key = Console.ReadKey().Key;
+    Console.WriteLine();
+    if (key != ConsoleKey.Y)
     {
-        Console.WriteLine("\nキャンセルされました。");
+        Console.WriteLine("キャンセルされました。");
         return;
     }
-    Console.WriteLine();
 
     Console.WriteLine("Deleting Data...");
     DeleteAllData();
     Console.WriteLine("Done.");
 
     using var db = new AppDbContext();
-    var people = new SamplePeople(db);
+    var users = new SampleUsers(db);
     var statuses = new SampleStatuses(db);
     var orders = new SampleOrders(db);
 
     Console.WriteLine("Adding Data...");
-    people.AddData(10);
+    users.AddData(5);
     statuses.AddData();
-    orders.AddData(1000);
+    orders.AddData(100);
     Console.WriteLine("Done.");
 
-    people.PrintData();
+    users.PrintData();
     statuses.PrintData();
     orders.PrintData();
 }
@@ -54,7 +55,7 @@ void DeleteAllData()
     using var command = connection.CreateCommand();
     command.CommandText = "SET FOREIGN_KEY_CHECKS = 0;"
                           + "DELETE FROM Orders;"
-                          + "DELETE FROM People;"
+                          + "DELETE FROM Users;"
                           + "DELETE FROM Statuses;"
                           + "SET FOREIGN_KEY_CHECKS = 1;";
     command.ExecuteNonQuery();

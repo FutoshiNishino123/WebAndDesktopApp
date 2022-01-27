@@ -24,5 +24,14 @@ namespace PrismApp.Views
         {
             InitializeComponent();
         }
+
+        private void MainList_Click(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is GridViewColumnHeader header)
+            {
+                ListViewUtils.SortByProperty(MainList, header);
+                MainList.UnselectAll();
+            }
+        }
     }
 }

@@ -48,12 +48,12 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region Person property
-        private Person? _person;
-        public Person? Person
+        #region User property
+        private User? _user;
+        public User? User
         {
-            get => _person;
-            set => SetProperty(ref _person, value);
+            get => _user;
+            set => SetProperty(ref _user, value);
         }
         #endregion
 

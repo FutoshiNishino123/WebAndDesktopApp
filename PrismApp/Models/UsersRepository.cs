@@ -9,55 +9,55 @@ using System.Threading.Tasks;
 
 namespace PrismApp.Models
 {
-    public static class StatusesRepository
+    public static class UsersRepository
     {
-        public static async Task<IEnumerable<Status>> GetStatusesAsync()
+        public static async Task<IEnumerable<User>> GetUsersAsync()
         {
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-                var statuses = db.Statuses.OrderBy(s => s.Id).ToList();
-                return statuses;
+                var users = db.Users.OrderBy(u => u.Id).ToList();
+                return users;
             });
         }
 
-        public static async Task<Status?> FindStatusAsync(int id)
+        public static async Task<User?> FindUserAsync(int id)
         {
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-                var status = db.Statuses.FirstOrDefault(s => s.Id == id);
-                return status;
+                var user = db.Users.FirstOrDefault(u => u.Id == id);
+                return user;
             });
         }
 
-        public static async Task SaveStatusAsync(Status status)
+        public static async Task SaveUserAsync(User user)
         {
             await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-                if (db.Statuses.Any(s => s.Id != status.Id && s.Text == status.Text))
+                if (db.Users.Any(u => u.Id != user.Id && u.EmailAddress == user.EmailAddress))
                 {
-                    throw new InvalidOperationException("同じステータス名を複数登録することはできません。");
+                    throw new InvalidOperationException("同じメールアドレスを複数登録することはできません。");
                 }
-                db.Update(status);
+                db.Update(user);
                 db.SaveChanges();
             });
         }
 
-        public static async Task DeleteStatusAsync(int id)
+        public static async Task DeleteUserAsync(int id)
         {
             await Task.Run(() =>
             {
                 using var db = new AppDbContext();
 
-                var status = db.Statuses.FirstOrDefault(s => s.Id == id);
-                if (status == null)
+                var user = db.Users.FirstOrDefault(u => u.Id == id);
+                if (user is null)
                 {
                     throw new InvalidOperationException("削除する対象が見つかりません。");
                 }
 
-                db.Remove(status);
+                db.Remove(user);
                 db.SaveChanges();
             });
         }

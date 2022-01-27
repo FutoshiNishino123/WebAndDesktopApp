@@ -14,16 +14,18 @@
             <prism:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="Home"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        
         <Ribbon x:Name="Ribbon" Background="White">
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu Visibility="Collapsed" />
             </Ribbon.ApplicationMenu>
+            
             <RibbonTab Header="ホーム" >
                 <RibbonGroup Header="ナビ">
                     <RibbonButton Label="戻る" LargeImageSource="../Resources/ribbon-back.png" Command="{Binding GoBackCommand}"/>
@@ -38,15 +40,17 @@
                     <RibbonButton Label="編集" SmallImageSource="../Resources/ribbon-edit.png" Command="{Binding EditItemCommand}"/>
                     <RibbonButton Label="削除" SmallImageSource="../Resources/ribbon-delete.png" Command="{Binding DeleteItemCommand}"/>
                 </RibbonGroup>
-                <RibbonGroup Header="管理者">
-                    <RibbonButton Label="担当者" SmallImageSource="../Resources/ribbon-users.png" Command="{Binding NavigateCommand}" CommandParameter="People"/>
+                <RibbonGroup Header="管理者" Visibility="{Binding UseAdminRibbonGroup, Converter={StaticResource TrueToVisible}}">
+                    <RibbonButton Label="担当者" SmallImageSource="../Resources/ribbon-users.png" Command="{Binding NavigateCommand}" CommandParameter="Users"/>
                     <RibbonButton Label="ステータス" SmallImageSource="../Resources/ribbon-upload.png" Command="{Binding NavigateCommand}" CommandParameter="Statuses"/>
                 </RibbonGroup>
-                <RibbonGroup Header="指図">
+                <RibbonGroup Header="指図" Visibility="{Binding UseOrdersRibbonGroup, Converter={StaticResource TrueToVisible}}">
                     <RibbonCheckBox Label="クローズ表示" IsChecked="{Binding HideClosedOrders, Converter={StaticResource BoolInv}}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
-        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion"/>
+        
+        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static viewmodels:RegionNames.ContentRegion}"/>
+        
     </Grid>
 </RibbonWindow>

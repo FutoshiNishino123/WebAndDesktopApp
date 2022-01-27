@@ -9,22 +9,24 @@ using PrismApp.Events;
 using System.Diagnostics;
 using System.Windows;
 using Unity;
+using Common.Utils;
+using System;
 
 namespace PrismApp.ViewModels
 {
-    public class PersonEditViewModel : BindableBase, INavigationAware
+    public class UserEditViewModel : BindableBase, INavigationAware
     {
         [Dependency]
         public IEventAggregator EventAggregator { get; set; }
 
-        #region Person property
-        private BindablePerson? _person;
-        public BindablePerson? Person
+        #region User property
+        private BindableUser? _user;
+        public BindableUser? User
         {
-            get => _person;
+            get => _user;
             set
             {
-                if (SetProperty(ref _person, value))
+                if (SetProperty(ref _user, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -44,45 +46,59 @@ namespace PrismApp.ViewModels
         #region SaveCommand property
         private DelegateCommand? _saveCommand;
         public DelegateCommand SaveCommand => _saveCommand ??= new DelegateCommand(Save, CanSave)
-            .ObservesProperty(() => Person)
-            .ObservesProperty(() => Person.FirstName)
-            .ObservesProperty(() => Person.FirstKana)
+            .ObservesProperty(() => User)
+            .ObservesProperty(() => User.EmailAddress)
+            .ObservesProperty(() => User.Password)
+            .ObservesProperty(() => User.FirstName)
+            .ObservesProperty(() => User.FirstKana)
             .ObservesProperty(() => SaveExecuted);
 
         private async void Save()
         {
             SaveExecuted = true;
 
-            Debug.Assert(Person != null);
-            var person = BindablePerson.ToPerson(Person);
-            await PeopleRepository.SavePersonAsync(person);
+            Debug.Assert(User != null);
+            var user = BindableUser.ToUser(User);
+
+            try
+            {
+                await UsersRepository.SaveUserAsync(user);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                SaveExecuted = false;
+                return;
+            }
 
             PublishGoBackEvent();
         }
 
         private bool CanSave()
         {
-            return Person != null
-                   && !string.IsNullOrEmpty(Person.FirstName)
-                   && !string.IsNullOrEmpty(Person.FirstKana)
+            return User != null
+                   && !string.IsNullOrEmpty(User.EmailAddress)
+                   && !string.IsNullOrEmpty(User.PasswordRaw)
+                   && !string.IsNullOrEmpty(User.FirstName)
+                   && !string.IsNullOrEmpty(User.FirstKana)
                    && !SaveExecuted;
         }
         #endregion
 
         private async void Initialize(int? id)
         {
-            Person = null;
+            User = null;
             SaveExecuted = false;
 
-            var person = id.HasValue ? await PeopleRepository.FindPersonAsync(id.Value) : new Person();
-            if (person is null)
+            var user = id.HasValue ? await UsersRepository.FindUserAsync(id.Value) : new User();
+            if (user is null)
             {
-                Debug.WriteLine("レコードが見つかりません");
+                MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 PublishGoBackEvent();
                 return;
             }
 
-            Person = BindablePerson.FromPerson(person);
+            User = BindableUser.FromUser(user);
         }
 
         private void PublishGoBackEvent()

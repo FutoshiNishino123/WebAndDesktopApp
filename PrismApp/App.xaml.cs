@@ -36,8 +36,8 @@ namespace PrismApp
             containerRegistry.RegisterForNavigation<OrderDetail>();
             containerRegistry.RegisterForNavigation<Statuses>();
             containerRegistry.RegisterForNavigation<StatusEdit>();
-            containerRegistry.RegisterForNavigation<People>();
-            containerRegistry.RegisterForNavigation<PersonEdit>();
+            containerRegistry.RegisterForNavigation<Users>();
+            containerRegistry.RegisterForNavigation<UserEdit>();
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Unity;
+using System;
 
 namespace PrismApp.ViewModels
 {
@@ -28,21 +29,6 @@ namespace PrismApp.ViewModels
             set
             {
                 if (SetProperty(ref _status, value))
-                {
-                    PublishSituationChangedEvent();
-                }
-            }
-        }
-        #endregion
-
-        #region Statuses property
-        private ObservableCollection<Status>? _statuses;
-        public ObservableCollection<Status>? Statuses
-        {
-            get => _statuses;
-            set
-            {
-                if (SetProperty(ref _statuses, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -72,7 +58,17 @@ namespace PrismApp.ViewModels
 
             Debug.Assert(Status != null);
             var status = BindableStatus.ToStatus(Status);
-            await StatusesRepository.SaveStatusAsync(status);
+
+            try
+            {
+                await StatusesRepository.SaveStatusAsync(status);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                SaveExecuted = false;
+                return;
+            }
 
             PublishGoBackEvent();
         }
@@ -80,9 +76,7 @@ namespace PrismApp.ViewModels
         private bool CanSave()
         {
             return Status != null
-                   && Statuses != null
                    && !string.IsNullOrEmpty(Status.Text)
-                   && Statuses.All(s => s.Text != Status.Text)
                    && !SaveExecuted;
         }
         #endregion
@@ -90,7 +84,6 @@ namespace PrismApp.ViewModels
         private async void Initialize(int? id)
         {
             Status = null;
-            Statuses = null;
             SaveExecuted = false;
 
             var status = id.HasValue ? await StatusesRepository.FindStatusAsync(id.Value) : new Status();
@@ -100,10 +93,8 @@ namespace PrismApp.ViewModels
                 PublishGoBackEvent();
                 return;
             }
-            var statuses = await StatusesRepository.GetStatusesAsync();
 
             Status = BindableStatus.FromStatus(status);
-            Statuses = new ObservableCollection<Status>(statuses);
         }
 
         private void PublishGoBackEvent()

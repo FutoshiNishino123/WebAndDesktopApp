@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\default_person.png" />
     <None Remove="Resources\ribbon-add.png" />
     <None Remove="Resources\ribbon-back.png" />
     <None Remove="Resources\ribbon-delete.png" />
@@ -30,9 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\default_person.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\ribbon-add.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

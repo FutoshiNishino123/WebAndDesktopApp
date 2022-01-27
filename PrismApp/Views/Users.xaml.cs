@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,20 +16,15 @@ using System.Windows.Shapes;
 namespace PrismApp.Views
 {
     /// <summary>
-    /// Orders.xaml の相互作用ロジック
+    /// Users.xaml の相互作用ロジック
     /// </summary>
-    public partial class Orders : UserControl
+    public partial class Users : UserControl
     {
-        public Orders()
+        public Users()
         {
             InitializeComponent();
         }
 
-        /// <summary>
-        /// リストビューのヘッダーをクリックしてデータをソートします。
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void MainList_Click(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource is GridViewColumnHeader header)

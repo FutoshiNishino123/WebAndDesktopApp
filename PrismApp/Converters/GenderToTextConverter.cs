@@ -11,12 +11,12 @@ namespace PrismApp.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch ((Gender)value)
+            return (Gender)value switch
             {
-                case Gender.Male: return "男";
-                case Gender.Female: return "女";
-                case Gender.Other: return "その他";
-                default: return "不明";
+                Gender.Male => "男",
+                Gender.Female => "女",
+                Gender.Other => "他",
+                _ => "？",
             };
         }
 

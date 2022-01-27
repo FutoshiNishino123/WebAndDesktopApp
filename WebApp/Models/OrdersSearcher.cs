@@ -32,7 +32,7 @@ namespace WebApp.Models
 
             var skipCount = (condition.Page - 1) * condition.Count;
 
-            query = query.Include(o => o.Person)
+            query = query.Include(o => o.User)
                          .Include(o => o.Status)
                          .OrderByDescending(o => o.Id)
                          .Skip(skipCount)
@@ -63,7 +63,7 @@ namespace WebApp.Models
         public async Task<Order?> FindOrderAsync(int id)
         {
             var order = await _context.Orders
-                .Include(o => o.Person)
+                .Include(o => o.User)
                 .Include(o => o.Status)
                 .FirstOrDefaultAsync(o => o.Id == id);
 

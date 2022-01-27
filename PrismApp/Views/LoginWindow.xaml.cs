@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace PrismApp.Views
 {
     /// <summary>
-    /// People.xaml の相互作用ロジック
+    /// LoginWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class People : UserControl
+    public partial class LoginWindow : Window
     {
-        public People()
+        public LoginWindow()
         {
             InitializeComponent();
         }

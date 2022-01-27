@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace PrismApp.Views
 {
     /// <summary>
-    /// PersonEdit.xaml の相互作用ロジック
+    /// UserEdit.xaml の相互作用ロジック
     /// </summary>
-    public partial class PersonEdit : UserControl
+    public partial class UserEdit : UserControl
     {
-        public PersonEdit()
+        public UserEdit()
         {
             InitializeComponent();
         }

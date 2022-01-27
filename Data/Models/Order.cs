@@ -41,7 +41,7 @@ namespace Data.Models
         /// 担当者
         /// </summary>
         [Display(Name = "担当者")]
-        public Person? Person { get; set; }
+        public User? User { get; set; }
 
         /// <summary>
         /// ステータス

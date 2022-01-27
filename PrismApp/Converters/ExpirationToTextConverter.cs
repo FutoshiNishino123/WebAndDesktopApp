@@ -19,10 +19,8 @@ namespace PrismApp.Converters
                 var days = (date - DateTime.Today).Days;
                 return days >= 0 ? $"残り {days} 日" : $"{Math.Abs(days)} 日 超過";
             }
-            else
-            {
-                return "";
-            }
+
+            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

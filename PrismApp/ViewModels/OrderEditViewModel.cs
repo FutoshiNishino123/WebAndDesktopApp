@@ -36,14 +36,14 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region People property
-        private ObservableCollection<Person>? _people;
-        public ObservableCollection<Person>? People
+        #region Users property
+        private ObservableCollection<User>? _users;
+        public ObservableCollection<User>? Users
         {
-            get => _people;
+            get => _users;
             set
             {
-                if (SetProperty(ref _people, value))
+                if (SetProperty(ref _users, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -88,7 +88,17 @@ namespace PrismApp.ViewModels
 
             Debug.Assert(Order != null);
             var order = BindableOrder.ToOrder(Order);
-            await OrdersRepository.SaveOrderAsync(order);
+
+            try
+            {
+                await OrdersRepository.SaveOrderAsync(order);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                SaveExecuted = false;
+                return;
+            }
 
             PublishGoBackEvent();
         }
@@ -104,7 +114,7 @@ namespace PrismApp.ViewModels
         private async void Initialize(int? id)
         {
             Order = null;
-            People = null;
+            Users = null;
             Statuses = null;
             SaveExecuted = false;
 
@@ -115,12 +125,12 @@ namespace PrismApp.ViewModels
                 PublishGoBackEvent();
                 return;
             }
-            var people = await PeopleRepository.GetPeopleAsync();
+            var users = await UsersRepository.GetUsersAsync();
             var statuses = await StatusesRepository.GetStatusesAsync();
 
-            if (order.Person != null)
+            if (order.User != null)
             {
-                order.Person = people.FirstOrDefault(p => p.Id == order.Person.Id);
+                order.User = users.FirstOrDefault(p => p.Id == order.User.Id);
             }
 
             if (order.Status != null)
@@ -129,7 +139,7 @@ namespace PrismApp.ViewModels
             }
 
             Order = BindableOrder.FromOrder(order);
-            People = new ObservableCollection<Person>(people);
+            Users = new ObservableCollection<User>(users);
             Statuses = new ObservableCollection<Status>(statuses);
         }
 

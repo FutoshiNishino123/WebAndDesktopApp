@@ -1,6 +1,5 @@
 ﻿using Data;
 using Data.Models;
-using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -10,11 +9,12 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
 using Unity;
+using Prism.Commands;
 using System;
 
 namespace PrismApp.ViewModels
 {
-    public class StatusesViewModel : BindableBase, INavigationAware, IRibbon
+    public class UsersViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
         public IRegionManager RegionManager { get; set; }
@@ -22,14 +22,30 @@ namespace PrismApp.ViewModels
         [Dependency]
         public IEventAggregator EventAggregator { get; set; }
 
-        #region Status property
-        private Status? _status;
-        public Status? Status
+        #region User property
+        private User? _user;
+        public User? User
         {
-            get => _status;
+            get => _user;
             set
             {
-                if (SetProperty(ref _status, value))
+                if (SetProperty(ref _user, value))
+                {
+                    PublishSituationChangedEvent();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Users property
+        private ObservableCollection<User>? _users;
+        public ObservableCollection<User>? Users
+        {
+            get => _users;
+            set
+            {
+                if (SetProperty(ref _users, value))
                 {
                     PublishSituationChangedEvent();
                 }
@@ -37,25 +53,26 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region Statuses property
-        private ObservableCollection<Status>? _statuses;
-        public ObservableCollection<Status>? Statuses
+        #region SaveCommand property
+        private DelegateCommand<User>? _saveCommand;
+        public DelegateCommand<User> SaveCommand => _saveCommand ??= new DelegateCommand<User>(Save, CanSave);
+
+        private async void Save(User user)
         {
-            get => _statuses;
-            set
-            {
-                if (SetProperty(ref _statuses, value))
-                {
-                    PublishSituationChangedEvent();
-                }
-            }
+            await UsersRepository.SaveUserAsync(user);
+            PublishSituationChangedEvent();
+        }
+
+        private bool CanSave(User user)
+        {
+            return true;
         }
         #endregion
 
         private async void Initialize()
         {
-            var statuses = await StatusesRepository.GetStatusesAsync();
-            Statuses = new ObservableCollection<Status>(statuses);
+            var users = await UsersRepository.GetUsersAsync();
+            Users = new ObservableCollection<User>(users);
         }
 
         private void PublishSituationChangedEvent()
@@ -63,11 +80,11 @@ namespace PrismApp.ViewModels
             EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
-        private void NavigateToStatusEdit(int? id)
+        private void NavigateToUserEdit(int? id)
         {
             var parameters = new NavigationParameters();
             parameters.Add("id", id);
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "StatusEdit", parameters);
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "UserEdit", parameters);
         }
 
         #region INavigationAware
@@ -87,7 +104,7 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region IRibbon
-        public bool CanRefresh => Statuses != null;
+        public bool CanRefresh => Users != null;
         public void Refresh()
         {
             if (CanRefresh)
@@ -101,21 +118,21 @@ namespace PrismApp.ViewModels
         {
             if (CanAddNewItem)
             {
-                NavigateToStatusEdit(null);
+                NavigateToUserEdit(null);
             }
         }
 
-        public bool CanEditItem => Status != null;
+        public bool CanEditItem => User != null;
         public void EditItem()
         {
             if (CanEditItem)
             {
-                Debug.Assert(Status != null);
-                NavigateToStatusEdit(Status.Id);
+                Debug.Assert(User != null);
+                NavigateToUserEdit(User.Id);
             }
         }
 
-        public bool CanDeleteItem => Status != null;
+        public bool CanDeleteItem => User != null;
         public async void DeleteItem()
         {
             if (!CanDeleteItem)
@@ -128,11 +145,11 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            Debug.Assert(Status != null);
+            Debug.Assert(User != null);
 
             try
             {
-                await StatusesRepository.DeleteStatusAsync(Status.Id);
+                await UsersRepository.DeleteUserAsync(User.Id);
             }
             catch (Exception e)
             {
@@ -140,7 +157,7 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            Statuses?.Remove(Status);
+            Users?.Remove(User);
         }
         #endregion
     }

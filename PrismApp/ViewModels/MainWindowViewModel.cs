@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using Data.Models;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -30,12 +31,39 @@ namespace PrismApp.ViewModels
             }
         }
 
+        #region CurrentUser property
+        private User? _currentUser;
+        public User? CurrentUser
+        {
+            get => _currentUser;
+            set => SetProperty(ref _currentUser, value);
+        }
+        #endregion
+
         #region Title property
         private string _title = "Demo";
         public string Title
         {
             get => _title;
             set => SetProperty(ref _title, value);
+        }
+        #endregion
+
+        #region UseAdminRibbonGroup property
+        private bool _useAdminRibbonGroup;
+        public bool UseAdminRibbonGroup
+        {
+            get => _useAdminRibbonGroup;
+            set => SetProperty(ref _useAdminRibbonGroup, value);
+        }
+        #endregion
+
+        #region UseOrdersRibbonGroup property
+        private bool _useOrdersRibbonGroup;
+        public bool UseOrdersRibbonGroup
+        {
+            get => _useOrdersRibbonGroup;
+            set => SetProperty(ref _useOrdersRibbonGroup, value);
         }
         #endregion
 
@@ -148,6 +176,11 @@ namespace PrismApp.ViewModels
         {
             ea.GetEvent<GoBackEvent>().Subscribe(GoBack);
             ea.GetEvent<SituationChangedEvent>().Subscribe(RefreshRibbon);
+            ea.GetEvent<UseOrdersRibbonGroupEvent>().Subscribe(b => UseOrdersRibbonGroup = b);
+            ea.GetEvent<UseAdminRibbonGroupEvent>().Subscribe(b => UseAdminRibbonGroup = b);
+
+            ea.GetEvent<UseAdminRibbonGroupEvent>().Publish(true);
+
         }
 
         private void RefreshRibbon()

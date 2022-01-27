@@ -7,49 +7,57 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=viewmodels:OrderEditViewModel}"
              d:DesignHeight="500" d:DesignWidth="800" >
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Width="400" HorizontalAlignment="Left">
         <StackPanel Margin="10" IsEnabled="{Binding Order.IsClosed, Converter={StaticResource BoolInv}, Mode=OneWay}">
+            
+            <!--編集禁止メッセージ-->
             <TextBlock Text="変更は禁止されています。" Foreground="Red" Margin="10" Visibility="{Binding Order.IsClosed, Converter={StaticResource TrueToVisible}, Mode=OneWay, FallbackValue=Collapsed}" />
-            <StackPanel Width="200" Margin="10" HorizontalAlignment="Left">
-                <TextBlock>
-                    <Run Text="番号:"/>
-                    <Run Text="*" Foreground="Red"/>
-                </TextBlock>
+
+            <!--番号-->
+            <StackPanel Margin="10">
+                <TextBlock><Run Text="番号:"/><Run Text="*" Foreground="Red"/></TextBlock>
                 <TextBox Text="{Binding Order.Number, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
-            <StackPanel Width="200" Margin="10" HorizontalAlignment="Left">
+
+            <!--担当者-->
+            <StackPanel Margin="10">
                 <TextBlock Text="担当者:"/>
-                <ComboBox ItemsSource="{Binding People}" SelectedValue="{Binding Order.Person}">
+                <ComboBox ItemsSource="{Binding Users}" SelectedValue="{Binding Order.User}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock>
-                                <Run Text="{Binding Id}"/>. <Run Text="{Binding Name}"/> (<Run Text="{Binding Kana}"/>)
-                            </TextBlock>
+                            <TextBlock><Run Text="{Binding Name}"/> (<Run Text="{Binding Kana}"/>)</TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
-            <StackPanel Width="200" Margin="10" HorizontalAlignment="Left">
+            
+            <!--ステータス-->
+            <StackPanel Margin="10">
                 <TextBlock Text="ステータス:"/>
-                <ComboBox ItemsSource="{Binding Statuses}" SelectedValue="{Binding Order.Status}">
-                    <ComboBox.ItemTemplate>
+                <ComboBox ItemsSource="{Binding Statuses}" SelectedValue="{Binding Order.Status}" DisplayMemberPath="Text">
+                    <!--<ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock>
-                                <Run Text="{Binding Id}"/>. <Run Text="{Binding Text}"/>
-                            </TextBlock>
+                            <TextBlock Text="{Binding Text}" />
                         </DataTemplate>
-                    </ComboBox.ItemTemplate>
+                    </ComboBox.ItemTemplate>-->
                 </ComboBox>
             </StackPanel>
-            <StackPanel Width="200" Margin="10" HorizontalAlignment="Left">
+            
+            <!--期限-->
+            <StackPanel Margin="10">
                 <TextBlock Text="期限:" />
                 <DatePicker SelectedDate="{Binding Order.Expiration}" />
             </StackPanel>
-            <StackPanel Width="400" Margin="10" HorizontalAlignment="Left">
+            
+            <!--備考-->
+            <StackPanel Margin="10">
                 <TextBlock Text="備考:" />
                 <TextBox Height="80" Text="{Binding Order.Remarks}" TextWrapping="Wrap" AcceptsReturn="True" />
             </StackPanel>
+            
+            <!--保存-->
             <Button Width="100" Height="30" Margin="10" Content="保存" Command="{Binding SaveCommand}" HorizontalAlignment="Left" />
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>

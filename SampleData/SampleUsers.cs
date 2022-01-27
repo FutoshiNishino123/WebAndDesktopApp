@@ -1,31 +1,32 @@
 ﻿using Common.Extensions;
+using Common.Utils;
 using Data;
 using Data.Models;
 using System.Text.Json;
 
 namespace SampleData
 {
-    internal class SamplePeople
+    internal class SampleUsers
     {
         private readonly AppDbContext _db;
 
-        public SamplePeople(AppDbContext db)
+        public SampleUsers(AppDbContext db)
         {
             _db = db;
         }
 
-        public IEnumerable<Person> CreateData(int count)
+        public IEnumerable<User> CreateData(int count)
         {
             var obj = Data.RootobjectLoader.Load();
             if (obj == null)
             {
-                return Enumerable.Empty<Person>();
+                return Enumerable.Empty<User>();
             }
 
             var male = 0;
             var female = 0;
 
-            var people = Enumerable.Range(0, count).Select(i =>
+            var users = Enumerable.Range(0, count).Select(i =>
             {
                 var family = obj.family_name.items.ElementAtRandom();
                 var first = obj.first_name.items.ElementAtRandom();
@@ -45,24 +46,29 @@ namespace SampleData
                     _ => Gender.Unknown
                 };
 
-                var person = new Person
+                var user = new User
                 {
+                    EmailAddress = "sample" + i + "@hallo.co.jp",
+                    Password = PasswordUtils.GetHashValue(i.ToString()),
                     Name = $"{family.name} {first.name}",
                     Kana = $"{family.kana} {first.kana}",
                     Image = image,
                     Gender = gender,
                 };
 
-                return person;
+                return user;
             });
 
-            var wildcard = new Person
+            var admin = new User
             {
-                Name = "*",
-                Kana = "未指定",
+                EmailAddress = "admin",
+                Password = PasswordUtils.GetHashValue("admin"),
+                IsAdmin = true,
+                Name = "admin",
+                Kana = "",
             };
 
-            return people.Append(wildcard);
+            return users.Append(admin);
         }
 
         public void AddData(int count)
@@ -74,14 +80,14 @@ namespace SampleData
 
         public void PrintData()
         {
-            var people = _db.People.ToList();
+            var users = _db.Users.ToList();
 
-            Console.WriteLine("--- People ---");
-            foreach (var p in people)
+            Console.WriteLine("--- Users ---");
+            foreach (var u in users)
             {
-                Console.WriteLine($"{p.Name} ({p.Kana})");
+                Console.WriteLine($"{u.Name} ({u.Kana})");
             }
-            Console.WriteLine("--- /People ---");
+            Console.WriteLine("--- /Users ---");
         }
     }
 }

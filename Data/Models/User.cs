@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Models
 {
     /// <summary>
-    /// 人
+    /// ユーザ
     /// </summary>
-    public class Person
+    public class User
     {
         /// <summary>
         /// ID
@@ -13,6 +14,28 @@ namespace Data.Models
         [Key]
         [Display(Name = "ID")]
         public int Id { get; set; }
+
+        /// <summary>
+        /// メールアドレス
+        /// </summary>
+        [Required]
+        [MaxLength(50)]
+        [Display(Name = "メールアドレス")]
+        public string? EmailAddress { get; set; }
+
+        /// <summary>
+        /// パスワード（ハッシュ値）
+        /// </summary>
+        [Required]
+        [MaxLength(100)]
+        [Display(Name = "パスワード")]
+        public string? Password { get; set; }
+
+        /// <summary>
+        /// 管理者
+        /// </summary>
+        [Display(Name = "管理者")]
+        public bool IsAdmin { get; set; }
 
         /// <summary>
         /// 名前

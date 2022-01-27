@@ -14,51 +14,64 @@ namespace PrismApp.Models
     {
         public static async Task<IEnumerable<Order>> GetOrdersAsync()
         {
-            using var db = new AppDbContext();
+            return await Task.Run(() =>
+            {
+                using var db = new AppDbContext();
 
-            var orders = await db.Orders
-                .Include(o => o.Person)
-                .Include(o => o.Status)
-                .OrderByDescending(o => o.Id)
-                .ToListAsync();
+                var orders = db.Orders
+                    .Include(o => o.User)
+                    .Include(o => o.Status)
+                    .OrderByDescending(o => o.Id)
+                    .ToList();
 
-            return orders;
+                return orders;
+            });
         }
 
         public static async Task<Order?> FindOrderAsync(int id)
         {
-            using var db = new AppDbContext();
+            return await Task.Run(() =>
+            {
+                using var db = new AppDbContext();
 
-            var order = await db.Orders
-                .Include(o => o.Person)
-                .Include(o => o.Status)
-                .FirstOrDefaultAsync(o => o.Id == id);
+                var order = db.Orders
+                    .Include(o => o.User)
+                    .Include(o => o.Status)
+                    .FirstOrDefault(o => o.Id == id);
 
-            return order;
+                return order;
+            });
         }
 
         public static async Task SaveOrderAsync(Order order)
         {
-            using var db = new AppDbContext();
-
-            db.Update(order);
-
-            await db.SaveChangesAsync();
+            await Task.Run(() =>
+            {
+                using var db = new AppDbContext();
+                if (db.Orders.Any(o => o.Id != order.Id && o.Number == order.Number))
+                {
+                    throw new InvalidOperationException("同じ番号を複数登録することはできません。");
+                }
+                db.Update(order);
+                db.SaveChanges();
+            });
         }
 
         public static async Task DeleteOrderAsync(int id)
         {
-            using var db = new AppDbContext();
-
-            var target = await db.Orders.FirstOrDefaultAsync(o => o.Id == id);
-            if (target is null)
+            await Task.Run(() =>
             {
-                return;
-            }
+                using var db = new AppDbContext();
 
-            db.Remove(target);
+                var order = db.Orders.FirstOrDefault(o => o.Id == id);
+                if (order is null)
+                {
+                    throw new InvalidOperationException("削除する対象が見つかりません。");
+                }
 
-            await db.SaveChangesAsync();
+                db.Remove(order);
+                db.SaveChanges();
+            });
         }
     }
 }

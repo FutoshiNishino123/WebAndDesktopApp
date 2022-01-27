@@ -144,6 +144,7 @@ namespace PrismApp.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             Initialize();
+            EventAggregator.GetEvent<UseOrdersRibbonGroupEvent>().Publish(true);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -153,6 +154,7 @@ namespace PrismApp.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
+            EventAggregator.GetEvent<UseOrdersRibbonGroupEvent>().Publish(false);
         }
         #endregion
 
@@ -188,15 +190,29 @@ namespace PrismApp.ViewModels
         public bool CanDeleteItem => Order != null && !Order.IsClosed;
         public async void DeleteItem()
         {
-            if (CanDeleteItem)
+            if (!CanDeleteItem)
             {
-                if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    Debug.Assert(Order != null);
-                    await OrdersRepository.DeleteOrderAsync(Order.Id);
-                    Orders?.Remove(Order);
-                }
+                return;
             }
+
+            if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            
+            Debug.Assert(Order != null);
+
+            try
+            {
+                await OrdersRepository.DeleteOrderAsync(Order.Id);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Orders?.Remove(Order);
         }
         #endregion
     }

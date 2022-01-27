@@ -16,12 +16,12 @@ namespace Data
         }
         #endregion
 
-        #region People property
-        private DbSet<Person>? _people;
-        public DbSet<Person> People
+        #region Users property
+        private DbSet<User>? _users;
+        public DbSet<User> Users
         {
-            get => _people ?? throw new NullReferenceException();
-            set => _people = value;
+            get => _users ?? throw new NullReferenceException();
+            set => _users = value;
         }
         #endregion
 
@@ -55,15 +55,27 @@ namespace Data
                    .EnableDetailedErrors();
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder model)
         {
-            modelBuilder.Entity<Order>()
-                .Property(b => b.Created)
-                .HasDefaultValueSql("NOW()");
+            model.Entity<Order>()
+                 .Property(o => o.Created)
+                 .HasDefaultValueSql("NOW()");
 
-            modelBuilder.Entity<Order>()
-                .Property(p => p.Updated)
-                .HasDefaultValueSql("NOW()");
+            model.Entity<Order>()
+                 .Property(o => o.Updated)
+                 .HasDefaultValueSql("NOW()");
+
+            model.Entity<Order>()
+                 .HasIndex(o => o.Number)
+                 .IsUnique();
+
+            model.Entity<User>()
+                 .HasIndex(u => u.EmailAddress)
+                 .IsUnique();
+
+            model.Entity<Status>()
+                 .HasIndex(s => s.Text)
+                 .IsUnique();
         }
     }
 }

@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Number)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Person)
+                @Html.DisplayNameFor(model => model.User)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -43,7 +43,7 @@
                         @Html.ActionLink(order.Number, "Details", new { id = order.Id })
                     </td>
                     <td>
-                        @Html.DisplayFor(model => order.Person.Name)
+                        @Html.DisplayFor(model => order.User.Name)
                     </td>
                     <td>
                         @Html.DisplayFor(model => order.Status.Text)

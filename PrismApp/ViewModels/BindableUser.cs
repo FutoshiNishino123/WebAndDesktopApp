@@ -4,17 +4,60 @@ using Data.Models;
 using Prism.Mvvm;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Common.Utils;
 
 namespace PrismApp.ViewModels
 {
-    public class BindablePerson : BindableBase
+    public class BindableUser : BindableBase
     {
         #region Id property
-        private int _id;
-        public int Id
+        private string? _id;
+        public string? Id
         {
             get => _id;
             set => SetProperty(ref _id, value);
+        }
+        #endregion
+
+        #region EmailAddress property
+        private string? _emailAddress;
+        public string? EmailAddress
+        {
+            get => _emailAddress;
+            set => SetProperty(ref _emailAddress, value);
+        }
+        #endregion
+
+        #region Password property
+        private string? _password;
+        public string? Password
+        {
+            get => _password;
+            set => SetProperty(ref _password, value);
+        }
+        #endregion
+
+        #region PasswordRaw property
+        private string? _passwordRaw;
+        public string? PasswordRaw
+        {
+            get => _passwordRaw;
+            set
+            {
+                if (SetProperty(ref _passwordRaw, value))
+                {
+                    Password = value is null ? null : PasswordUtils.GetHashValue(value);
+                }
+            }
+        }
+        #endregion
+
+        #region IsAdmin property
+        private bool _isAdmin;
+        public bool IsAdmin
+        {
+            get => _isAdmin;
+            set => SetProperty(ref _isAdmin, value);
         }
         #endregion
 
@@ -141,9 +184,9 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Mapper method
-        public static BindablePerson FromPerson(Person person) => person.Map<BindablePerson>();
+        public static BindableUser FromUser(User user) => user.Map<BindableUser>();
 
-        public static Person ToPerson(BindablePerson person) => person.Map<Person>();
+        public static User ToUser(BindableUser user) => user.Map<User>();
         #endregion
     }
 }
