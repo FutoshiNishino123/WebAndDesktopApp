@@ -17,7 +17,7 @@ namespace SampleData
 
         public IEnumerable<Order> CreateData(int count)
         {
-            var rand = new RandomDate(DateTime.Now.AddDays(-30), DateTime.Now.AddDays(30));
+            var expiration = new RandomDate(DateTime.Today.AddDays(-30), DateTime.Today.AddDays(30));
             var people = _db.Users.ToArray();
             var statuses = _db.Statuses.ToArray();
 
@@ -25,7 +25,7 @@ namespace SampleData
             {
                 var order = new Order
                 {
-                    Expiration = i % 3 == 0 ? rand.Next() : null,
+                    Expiration = i % 3 == 0 ? expiration.Next() : null,
                     Number = "SM" + i.ToString("D4"),
                     User = people?.ElementAtRandom(),
                     Status = statuses?.ElementAtRandom(),

@@ -41,7 +41,7 @@
                     <RibbonButton Label="削除" SmallImageSource="../Resources/ribbon-delete.png" Command="{Binding DeleteItemCommand}"/>
                 </RibbonGroup>
                 <RibbonGroup Header="管理者" Visibility="{Binding LogInUser.Account.IsAdmin, Converter={StaticResource TrueToVisible}, FallbackValue=Collapsed}">
-                    <RibbonButton Label="担当者" SmallImageSource="../Resources/ribbon-users.png" Command="{Binding NavigateCommand}" CommandParameter="Users"/>
+                    <RibbonButton Label="ユーザ" SmallImageSource="../Resources/ribbon-users.png" Command="{Binding NavigateCommand}" CommandParameter="Users"/>
                     <RibbonButton Label="ステータス" SmallImageSource="../Resources/ribbon-upload.png" Command="{Binding NavigateCommand}" CommandParameter="Statuses"/>
                 </RibbonGroup>
                 <RibbonGroup Header="指図" Visibility="{Binding UseOrdersFunction, Converter={StaticResource TrueToVisible}}">
