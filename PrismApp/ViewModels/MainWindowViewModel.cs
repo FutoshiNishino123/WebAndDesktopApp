@@ -180,7 +180,6 @@ namespace PrismApp.ViewModels
             ea.GetEvent<UseAdminRibbonGroupEvent>().Subscribe(b => UseAdminRibbonGroup = b);
 
             ea.GetEvent<UseAdminRibbonGroupEvent>().Publish(true);
-
         }
 
         private void RefreshRibbon()

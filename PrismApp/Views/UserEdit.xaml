@@ -10,16 +10,22 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" Width="400" HorizontalAlignment="Left">
         <StackPanel Margin="10">
             
-            <!--メールアドレス-->
+            <!--管理者-->
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <TextBlock Text="管理者:"/>
+                <CheckBox Margin="10,2,0,0" IsChecked="{Binding Account.IsAdmin, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <!--アカウントID-->
             <StackPanel Margin="10">
-                <TextBlock><Run Text="メールアドレス:"/><Run Text="*" Foreground="Red"/></TextBlock>
-                <TextBox Text="{Binding User.EmailAddress, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock><Run Text="アカウントID:"/><Run Text="*" Foreground="Red"/></TextBlock>
+                <TextBox Text="{Binding Account.Id, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
             <!--パスワード-->
             <StackPanel Margin="10">
                 <TextBlock><Run Text="パスワード:"/><Run Text="*" Foreground="Red"/></TextBlock>
-                <TextBox Text="{Binding User.PasswordRaw, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Text="{Binding Account.Password, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
             <!--姓・名-->

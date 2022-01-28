@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using Common.Utils;
+using Data;
 using Data.Models;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
@@ -8,7 +9,8 @@ InitializeDb();
 
 void InitializeDb()
 {
-    // サンプルデータを登録する前にDataプロジェクトからデータベースをマイグレーション
+    // 最初にDataプロジェクトからデータベースをマイグレーションすること
+    // `dotnet ef add migrations Sample`
     // `dotnet ef database update`
 
     Console.Write("すべてのデータを削除して新しいデータを登録します。続行しますか？(y/n): ");
@@ -55,6 +57,7 @@ void DeleteAllData()
     using var command = connection.CreateCommand();
     command.CommandText = "SET FOREIGN_KEY_CHECKS = 0;"
                           + "DELETE FROM Orders;"
+                          + "DELETE FROM Accounts;"
                           + "DELETE FROM Users;"
                           + "DELETE FROM Statuses;"
                           + "SET FOREIGN_KEY_CHECKS = 1;";

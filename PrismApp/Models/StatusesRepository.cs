@@ -58,6 +58,10 @@ namespace PrismApp.Models
                 }
 
                 db.Remove(status);
+                
+                // 参照を解除
+                db.Orders.Where(o => o.Status.Id == id).ForEachAsync(o => o.Status = null).Wait();
+
                 db.SaveChanges();
             });
         }

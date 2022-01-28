@@ -12,14 +12,6 @@
         <ListView Name="MainList" ItemsSource="{Binding Users, Mode=OneWay}" SelectedItem="{Binding User}" GridViewColumnHeader.Click="MainList_Click">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn>
-                        <GridViewColumnHeader Content="管理者"/>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsAdmin}" Command="{Binding DataContext.SaveCommand, ElementName=ControlRoot}" CommandParameter="{Binding}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" />
                     <GridViewColumn Header="名前" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="カナ" DisplayMemberBinding="{Binding Kana}" />

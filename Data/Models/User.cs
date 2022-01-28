@@ -16,26 +16,10 @@ namespace Data.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// メールアドレス
+        /// アカウント
         /// </summary>
-        [Required]
-        [MaxLength(50)]
-        [Display(Name = "メールアドレス")]
-        public string? EmailAddress { get; set; }
-
-        /// <summary>
-        /// パスワード（ハッシュ値）
-        /// </summary>
-        [Required]
-        [MaxLength(100)]
-        [Display(Name = "パスワード")]
-        public string? Password { get; set; }
-
-        /// <summary>
-        /// 管理者
-        /// </summary>
-        [Display(Name = "管理者")]
-        public bool IsAdmin { get; set; }
+        [Display(Name = "アカウント")]
+        public Account? Account { get; set; }
 
         /// <summary>
         /// 名前

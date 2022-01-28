@@ -11,6 +11,7 @@ using System.Windows;
 using Unity;
 using Common.Utils;
 using System;
+using System.Threading.Tasks;
 
 namespace PrismApp.ViewModels
 {
@@ -34,6 +35,15 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
+        #region Account property
+        private BindableAccount? _account;
+        public BindableAccount? Account
+        {
+            get => _account;
+            set => SetProperty(ref _account, value);
+        }
+        #endregion
+
         #region SaveExecuted property
         private bool _saveExecuted;
         public bool SaveExecuted
@@ -46,11 +56,11 @@ namespace PrismApp.ViewModels
         #region SaveCommand property
         private DelegateCommand? _saveCommand;
         public DelegateCommand SaveCommand => _saveCommand ??= new DelegateCommand(Save, CanSave)
-            .ObservesProperty(() => User)
-            .ObservesProperty(() => User.EmailAddress)
-            .ObservesProperty(() => User.Password)
             .ObservesProperty(() => User.FirstName)
             .ObservesProperty(() => User.FirstKana)
+            .ObservesProperty(() => Account.Id)
+            .ObservesProperty(() => Account.RawPassword)
+            .ObservesProperty(() => Account.Password)
             .ObservesProperty(() => SaveExecuted);
 
         private async void Save()
@@ -59,6 +69,11 @@ namespace PrismApp.ViewModels
 
             Debug.Assert(User != null);
             var user = BindableUser.ToUser(User);
+
+            Debug.Assert(Account != null);
+            var account = BindableAccount.ToAccount(Account);
+
+            user.Account = account;
 
             try
             {
@@ -77,10 +92,12 @@ namespace PrismApp.ViewModels
         private bool CanSave()
         {
             return User != null
-                   && !string.IsNullOrEmpty(User.EmailAddress)
-                   && !string.IsNullOrEmpty(User.PasswordRaw)
+                   && Account != null
                    && !string.IsNullOrEmpty(User.FirstName)
                    && !string.IsNullOrEmpty(User.FirstKana)
+                   && !string.IsNullOrEmpty(Account.Id)
+                   && !string.IsNullOrEmpty(Account.Password)
+                   && !string.IsNullOrEmpty(Account.RawPassword)
                    && !SaveExecuted;
         }
         #endregion
@@ -90,7 +107,7 @@ namespace PrismApp.ViewModels
             User = null;
             SaveExecuted = false;
 
-            var user = id.HasValue ? await UsersRepository.FindUserAsync(id.Value) : new User();
+            var user = id.HasValue ? await UsersRepository.FindUserWithAccountAsync(id.Value) : new User();
             if (user is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -99,6 +116,7 @@ namespace PrismApp.ViewModels
             }
 
             User = BindableUser.FromUser(user);
+            Account = BindableAccount.FromAccount(user.Account ?? new Account());
         }
 
         private void PublishGoBackEvent()

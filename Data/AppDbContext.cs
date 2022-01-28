@@ -7,32 +7,10 @@ namespace Data
 {
     public class AppDbContext : DbContext
     {
-        #region Orders property
-        private DbSet<Order>? _orders;
-        public DbSet<Order> Orders
-        {
-            get => _orders ?? throw new NullReferenceException();
-            set => _orders = value;
-        }
-        #endregion
-
-        #region Users property
-        private DbSet<User>? _users;
-        public DbSet<User> Users
-        {
-            get => _users ?? throw new NullReferenceException();
-            set => _users = value;
-        }
-        #endregion
-
-        #region Statuses property
-        private DbSet<Status>? _statuses;
-        public DbSet<Status> Statuses
-        {
-            get => _statuses ?? throw new NullReferenceException();
-            set => _statuses = value;
-        }
-        #endregion
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
@@ -67,10 +45,6 @@ namespace Data
 
             model.Entity<Order>()
                  .HasIndex(o => o.Number)
-                 .IsUnique();
-
-            model.Entity<User>()
-                 .HasIndex(u => u.EmailAddress)
                  .IsUnique();
 
             model.Entity<Status>()

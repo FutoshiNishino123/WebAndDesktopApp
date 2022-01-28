@@ -4,60 +4,26 @@ using Data.Models;
 using Prism.Mvvm;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Common.Utils;
 
 namespace PrismApp.ViewModels
 {
     public class BindableUser : BindableBase
     {
         #region Id property
-        private string? _id;
-        public string? Id
+        private int _id;
+        public int Id
         {
             get => _id;
             set => SetProperty(ref _id, value);
         }
         #endregion
 
-        #region EmailAddress property
-        private string? _emailAddress;
-        public string? EmailAddress
+        #region Account property
+        private Account? _account;
+        public Account? Account
         {
-            get => _emailAddress;
-            set => SetProperty(ref _emailAddress, value);
-        }
-        #endregion
-
-        #region Password property
-        private string? _password;
-        public string? Password
-        {
-            get => _password;
-            set => SetProperty(ref _password, value);
-        }
-        #endregion
-
-        #region PasswordRaw property
-        private string? _passwordRaw;
-        public string? PasswordRaw
-        {
-            get => _passwordRaw;
-            set
-            {
-                if (SetProperty(ref _passwordRaw, value))
-                {
-                    Password = value is null ? null : PasswordUtils.GetHashValue(value);
-                }
-            }
-        }
-        #endregion
-
-        #region IsAdmin property
-        private bool _isAdmin;
-        public bool IsAdmin
-        {
-            get => _isAdmin;
-            set => SetProperty(ref _isAdmin, value);
+            get => _account;
+            set => SetProperty(ref _account, value);
         }
         #endregion
 

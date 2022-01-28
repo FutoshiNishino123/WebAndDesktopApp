@@ -2,6 +2,7 @@
 using Common.Utils;
 using Data;
 using Data.Models;
+using System.Data.Entity;
 using System.Text.Json;
 
 namespace SampleData
@@ -46,10 +47,15 @@ namespace SampleData
                     _ => Gender.Unknown
                 };
 
+                var account = new Account
+                {
+                    Id = "sample" + i,
+                    Password = PasswordUtils.GetHashValue("sample" + i),
+                };
+
                 var user = new User
                 {
-                    EmailAddress = "sample" + i + "@hallo.co.jp",
-                    Password = PasswordUtils.GetHashValue(i.ToString()),
+                    Account = account,
                     Name = $"{family.name} {first.name}",
                     Kana = $"{family.kana} {first.kana}",
                     Image = image,
@@ -59,16 +65,20 @@ namespace SampleData
                 return user;
             });
 
-            var admin = new User
+            var adminAccount = new Account
             {
-                EmailAddress = "admin",
+                Id = "admin",
                 Password = PasswordUtils.GetHashValue("admin"),
                 IsAdmin = true,
+            };
+            var adminUser = new User
+            {
+                Account = adminAccount,
                 Name = "admin",
-                Kana = "",
+                Kana = "admin",
             };
 
-            return users.Append(admin);
+            return users.Prepend(adminUser);
         }
 
         public void AddData(int count)
@@ -80,12 +90,12 @@ namespace SampleData
 
         public void PrintData()
         {
-            var users = _db.Users.ToList();
+            var users = _db.Users.Include(u => u.Account).ToList();
 
             Console.WriteLine("--- Users ---");
             foreach (var u in users)
             {
-                Console.WriteLine($"{u.Name} ({u.Kana})");
+                Console.WriteLine($"{u.Account?.Id}: {u.Name} ({u.Kana})");
             }
             Console.WriteLine("--- /Users ---");
         }

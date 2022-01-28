@@ -20,7 +20,7 @@ namespace PrismApp
     {
         protected override Window CreateShell()
         {
-            return Container.Resolve<MainWindow>();
+            return Container.Resolve<LoginWindow>();
         }
 
         protected override void InitializeShell(Window shell)

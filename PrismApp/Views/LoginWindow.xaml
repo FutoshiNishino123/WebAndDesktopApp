@@ -3,10 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PrismApp.Views"
+        xmlns:viewmodels="clr-namespace:PrismApp.ViewModels"
         mc:Ignorable="d"
-        Title="LoginWindow" d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+        d:DataContext="{d:DesignInstance Type=viewmodels:LoginWindowViewModel}"
+        Title="{Binding Title}" Height="200" Width="300">
+    <StackPanel Margin="10">
+
+        <!--ユーザID-->
+        <StackPanel Margin="10">
+            <TextBlock Text="ユーザID:"/>
+            <TextBox Text="{Binding UserId, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <!--パスワード-->
+        <StackPanel Margin="10">
+            <TextBlock Text="パスワード:"/>
+            <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
         
-    </Grid>
+        <!--ログイン-->
+        <Button Content="ログイン" Width="100" Margin="10" Command="{Binding LoginCommand}"/>
+
+    </StackPanel>
 </Window>
