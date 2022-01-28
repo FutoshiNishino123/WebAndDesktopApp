@@ -30,7 +30,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _order, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
@@ -45,7 +45,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _users, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _statuses, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            PublishGoBackEvent();
+            GoBack();
         }
 
         private bool CanSave()
@@ -122,7 +122,7 @@ namespace PrismApp.ViewModels
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                PublishGoBackEvent();
+                GoBack();
                 return;
             }
             var users = await UsersRepository.GetUsersAsync();
@@ -143,12 +143,12 @@ namespace PrismApp.ViewModels
             Statuses = new ObservableCollection<Status>(statuses);
         }
 
-        private void PublishGoBackEvent()
+        private void GoBack()
         {
             EventAggregator.GetEvent<GoBackEvent>().Publish();
         }
 
-        private void PublishSituationChangedEvent()
+        private void RaiseSituationChanged()
         {
             EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
@@ -156,6 +156,8 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            RaiseSituationChanged();
+
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
         }

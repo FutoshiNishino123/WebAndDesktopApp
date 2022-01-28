@@ -29,6 +29,7 @@ namespace SampleData
 
             var users = Enumerable.Range(0, count).Select(i =>
             {
+                var rand = new RandomDate(DateTime.Now.AddDays(-20000), DateTime.Now.AddDays(8000));
                 var family = obj.family_name.items.ElementAtRandom();
                 var first = obj.first_name.items.ElementAtRandom();
 
@@ -58,8 +59,9 @@ namespace SampleData
                     Account = account,
                     Name = $"{family.name} {first.name}",
                     Kana = $"{family.kana} {first.kana}",
-                    Image = image,
                     Gender = gender,
+                    BirthDate = rand.Next(),
+                    Image = image,
                 };
 
                 return user;

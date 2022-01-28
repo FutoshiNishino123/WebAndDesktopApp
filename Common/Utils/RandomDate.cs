@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Common.Utils
 {
-    public class RandomDateTime
+    public class RandomDate
     {
         private readonly Random _random = new Random();
         private readonly DateTime _min;
         private readonly DateTime _max;
 
-        public RandomDateTime(DateTime min, DateTime max)
+        public RandomDate(DateTime min, DateTime max)
         {
             _min = min;
             _max = max;
@@ -21,7 +21,8 @@ namespace Common.Utils
         public DateTime Next()
         {
             var span = _max - _min;
-            var seconds = _random.Next((int)span.TotalSeconds);
+            var rand = _random.NextDouble();
+            var seconds = span.TotalSeconds * rand;
             var result = _min.AddSeconds(seconds);
             return result;
         }

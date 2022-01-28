@@ -34,7 +34,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _order, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
@@ -49,26 +49,13 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _orders, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
         #endregion
 
-        #region HideClosedOrders property
-        private bool _hideClosedOrders = true;
-        public bool HideClosedOrders
-        {
-            get => _hideClosedOrders;
-            set
-            {
-                if (SetProperty(ref _hideClosedOrders, value))
-                {
-                    Initialize();
-                }
-            }
-        }
-        #endregion
+        public OrderFilter? Filter { get; set; }
 
         #region ShowDetailCommand property
         private DelegateCommand? _showDetailCommand;
@@ -95,7 +82,7 @@ namespace PrismApp.ViewModels
         private async void Save(Order order)
         {
             await OrdersRepository.SaveOrderAsync(order);
-            PublishSituationChangedEvent();
+            RaiseSituationChanged();
         }
 
         private bool CanSave(Order order)
@@ -106,24 +93,38 @@ namespace PrismApp.ViewModels
 
         public OrdersViewModel(IEventAggregator ea)
         {
-            ea.GetEvent<HideClosedOrdersEvent>().Subscribe(value => HideClosedOrders = value);
+            ea.GetEvent<OrderFilterChangedEvent>().Subscribe(filter =>
+            {
+                Filter = filter;
+                Initialize();
+            });
         }
 
         public async void Initialize()
         {
             var orders = await OrdersRepository.GetOrdersAsync();
 
-            if (HideClosedOrders)
+            if (Filter != null)
             {
-                orders = orders.Where(o => !o.IsClosed);
+                orders = orders.Where(Filter.Filter);
             }
 
             Orders = new ObservableCollection<Order>(orders);
         }
 
-        private void PublishSituationChangedEvent()
+        private void RaiseSituationChanged()
         {
             EventAggregator.GetEvent<SituationChangedEvent>().Publish();
+        }
+
+        private void PublishNavigatedToOrdersEvent()
+        {
+            EventAggregator.GetEvent<NavigatedToOrdersEvent>().Publish();
+        }
+
+        private void PublishNavigatedFromOrdersEvent()
+        {
+            EventAggregator.GetEvent<NavigatedFromOrdersEvent>().Publish();
         }
 
         private void NavigateToOrderDetail(int? id)
@@ -143,8 +144,10 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            RaiseSituationChanged();
+            PublishNavigatedToOrdersEvent();
+
             Initialize();
-            EventAggregator.GetEvent<UseOrdersRibbonGroupEvent>().Publish(true);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -154,7 +157,7 @@ namespace PrismApp.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            EventAggregator.GetEvent<UseOrdersRibbonGroupEvent>().Publish(false);
+            PublishNavigatedFromOrdersEvent();
         }
         #endregion
 

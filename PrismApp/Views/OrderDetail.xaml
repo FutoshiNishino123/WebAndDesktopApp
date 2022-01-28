@@ -15,33 +15,36 @@
         <StackPanel>
 
             <!--CLOSED-->
-            <TextBlock FontSize="16" Text="CLOSED" Foreground="Red" Margin="5" HorizontalAlignment="Center" 
+            <TextBlock FontSize="16" Text="CLOSED" Foreground="Red" Margin="5"  
                        Visibility="{Binding Order.IsClosed, Converter={StaticResource TrueToVisible}, Mode=OneWay, FallbackValue=Collapsed}"/>
 
             <!--番号-->
-            <TextBlock FontSize="30" Text="{Binding Order.Number}" Margin="5" HorizontalAlignment="Center"/>
+            <TextBlock FontSize="30" Text="{Binding Order.Number}" Margin="5" />
 
             <!--ステータス-->
-            <TextBlock FontSize="16" Text="{Binding Order.Status.Text}" Margin="5" HorizontalAlignment="Center"/>
+            <TextBlock FontSize="16" Text="{Binding Order.Status.Text}" Margin="5" />
 
             <!--期限-->
-            <TextBlock FontSize="16" Text="{Binding Order.Expiration, StringFormat=yyyy/MM/dd 〆}" Foreground="Red" Margin="5" HorizontalAlignment="Center"/>
+            <TextBlock FontSize="16" Text="{Binding Order.Expiration, StringFormat=yyyy/MM/dd 〆}" Foreground="Red" Margin="5" />
 
             <!--ユーザ名-->
-            <TextBlock FontSize="16" Text="{Binding Order.User.Name}" Margin="5" HorizontalAlignment="Center"/>
+            <TextBlock FontSize="16" Text="{Binding Order.User.Name}" Margin="5" />
+
+            <!--ユーザ名-->
+            <TextBlock FontSize="16" Text="{Binding Order.User.Kana}" Margin="5" />
 
             <!--ユーザ画像 (クソ重い）-->
             <!--<Image Source="{Binding Order.User.Image, FallbackValue={StaticResource DefaultImage}, TargetNullValue={StaticResource DefaultImage}}"
                        Width="100" Height="100" Stretch="Uniform" Margin="5" />-->
 
             <!--備考-->
-            <TextBlock Text="{Binding Order.Remarks}" Margin="5" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding Order.Remarks}" Margin="5"  TextWrapping="Wrap"/>
 
             <!--作成-->
-            <TextBlock Text="{Binding Order.Created, StringFormat=yyyy/MM/dd HH:mm:ss 作成}" Margin="5" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Order.Created, StringFormat=yyyy/MM/dd HH:mm:ss 作成}" Margin="5" />
 
             <!--更新-->
-            <TextBlock Text="{Binding Order.Updated, StringFormat=yyyy/MM/dd HH:mm:ss 更新}" Margin="5" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Order.Updated, StringFormat=yyyy/MM/dd HH:mm:ss 更新}" Margin="5" />
 
         </StackPanel>
     </ScrollViewer>

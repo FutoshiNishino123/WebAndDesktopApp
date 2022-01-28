@@ -18,6 +18,7 @@ namespace Data.Models
         /// <summary>
         /// アカウント
         /// </summary>
+        [Required]
         [Display(Name = "アカウント")]
         public Account? Account { get; set; }
 
@@ -42,6 +43,12 @@ namespace Data.Models
         /// </summary>
         [Display(Name = "性別")]
         public Gender Gender { get; set; }
+
+        /// <summary>
+        /// 生年月日
+        /// </summary>
+        [Display(Name = "生年月日")]
+        public DateTime? BirthDate { get; set; }
 
         /// <summary>
         /// 画像

@@ -31,15 +31,6 @@ namespace PrismApp.ViewModels
             }
         }
 
-        #region CurrentUser property
-        private User? _currentUser;
-        public User? CurrentUser
-        {
-            get => _currentUser;
-            set => SetProperty(ref _currentUser, value);
-        }
-        #endregion
-
         #region Title property
         private string _title = "Demo";
         public string Title
@@ -49,34 +40,34 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region UseAdminRibbonGroup property
-        private bool _useAdminRibbonGroup;
-        public bool UseAdminRibbonGroup
+        #region LogInUser property
+        private User? _logInUser;
+        public User? LogInUser
         {
-            get => _useAdminRibbonGroup;
-            set => SetProperty(ref _useAdminRibbonGroup, value);
+            get => _logInUser;
+            set => SetProperty(ref _logInUser, value);
         }
         #endregion
 
-        #region UseOrdersRibbonGroup property
-        private bool _useOrdersRibbonGroup;
-        public bool UseOrdersRibbonGroup
+        #region UseOrdersFunction property
+        private bool _useOrdersFunction;
+        public bool UseOrdersFunction
         {
-            get => _useOrdersRibbonGroup;
-            set => SetProperty(ref _useOrdersRibbonGroup, value);
+            get => _useOrdersFunction;
+            set => SetProperty(ref _useOrdersFunction, value);
         }
         #endregion
 
-        #region HideClosedOrders property
-        private bool _hideClosedOrders = true;
-        public bool HideClosedOrders
+        #region ShowClosed property
+        private bool _showClosed;
+        public bool ShowClosed
         {
-            get => _hideClosedOrders;
+            get => _showClosed;
             set
             {
-                if (SetProperty(ref _hideClosedOrders, value))
+                if (SetProperty(ref _showClosed, value))
                 {
-                    EventAggregator.GetEvent<HideClosedOrdersEvent>().Publish(value);
+                    PublishOrderFilterChangedEvent();
                 }
             }
         }
@@ -175,14 +166,25 @@ namespace PrismApp.ViewModels
         public MainWindowViewModel(IEventAggregator ea)
         {
             ea.GetEvent<GoBackEvent>().Subscribe(GoBack);
-            ea.GetEvent<SituationChangedEvent>().Subscribe(RefreshRibbon);
-            ea.GetEvent<UseOrdersRibbonGroupEvent>().Subscribe(b => UseOrdersRibbonGroup = b);
-            ea.GetEvent<UseAdminRibbonGroupEvent>().Subscribe(b => UseAdminRibbonGroup = b);
+            ea.GetEvent<SituationChangedEvent>().Subscribe(RefreshCommands);
+            ea.GetEvent<NavigatedToOrdersEvent>().Subscribe(() => UseOrdersFunction = true);
+            ea.GetEvent<NavigatedFromOrdersEvent>().Subscribe(() => UseOrdersFunction = false);
+            ea.GetEvent<LogInEvent>().Subscribe(user => LogInUser = user);
+            ea.GetEvent<LogOutEvent>().Subscribe(() => LogInUser = null);
 
-            ea.GetEvent<UseAdminRibbonGroupEvent>().Publish(true);
+            // TODO: 用が済んだら消す
+            //ea.GetEvent<LogInEvent>().Publish(new User { Account = new Account { IsAdmin = true } });   
         }
 
-        private void RefreshRibbon()
+        private void PublishOrderFilterChangedEvent()
+        {
+            EventAggregator.GetEvent<OrderFilterChangedEvent>().Publish(new OrderFilter
+            {
+                ShowClosed = ShowClosed,
+            });
+        }
+
+        private void RefreshCommands()
         {
             GoBackCommand.RaiseCanExecuteChanged();
             RefreshCommand.RaiseCanExecuteChanged();

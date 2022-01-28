@@ -31,7 +31,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _user, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
@@ -47,33 +47,17 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _users, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
         #endregion
 
-        private async void Initialize()
-        {
-            var users = await UsersRepository.GetUsersAsync();
-            Users = new ObservableCollection<User>(users);
-        }
-
-        private void PublishSituationChangedEvent()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
-        }
-
-        private void NavigateToUserEdit(int? id)
-        {
-            var parameters = new NavigationParameters();
-            parameters.Add("id", id);
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "UserEdit", parameters);
-        }
-
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            RaiseSituationChanged();
+
             Initialize();
         }
 
@@ -144,5 +128,23 @@ namespace PrismApp.ViewModels
             Users?.Remove(User);
         }
         #endregion
+
+        private async void Initialize()
+        {
+            var users = await UsersRepository.GetUsersAsync();
+            Users = new ObservableCollection<User>(users);
+        }
+
+        private void RaiseSituationChanged()
+        {
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
+        }
+
+        private void NavigateToUserEdit(int? id)
+        {
+            var parameters = new NavigationParameters();
+            parameters.Add("id", id);
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "UserEdit", parameters);
+        }
     }
 }

@@ -7,9 +7,12 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="10">
-        <TextBlock Text="ホーム" Height="40" FontSize="24" VerticalAlignment="Top" />
-        <TextBlock Text="{Binding Description}" Margin="0,50,0,40" TextWrapping="Wrap"/>
-        <TextBlock Text="{Binding Version}" Height="30" VerticalAlignment="Bottom" />
-    </Grid>
+    <DockPanel Margin="10">
+        <StackPanel DockPanel.Dock="Top" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <TextBlock FontSize="30" Text="ホーム" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Description}" MaxWidth="300" TextWrapping="Wrap"/>
+        </StackPanel>
+        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Version}" Height="30" HorizontalAlignment="Center" />
+        <Button Content="ログイン" Width="50" Height="20" Command="{Binding NavigateCommand}" CommandParameter="LogIn"/>
+    </DockPanel>
 </UserControl>

@@ -30,7 +30,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _status, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
@@ -70,7 +70,7 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            PublishGoBackEvent();
+            GoBack();
         }
 
         private bool CanSave()
@@ -90,19 +90,19 @@ namespace PrismApp.ViewModels
             if (status is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                PublishGoBackEvent();
+                GoBack();
                 return;
             }
 
             Status = BindableStatus.FromStatus(status);
         }
 
-        private void PublishGoBackEvent()
+        private void GoBack()
         {
             EventAggregator.GetEvent<GoBackEvent>().Publish();
         }
 
-        private void PublishSituationChangedEvent()
+        private void RaiseSituationChanged()
         {
             EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
@@ -110,6 +110,8 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            RaiseSituationChanged();
+
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
         }

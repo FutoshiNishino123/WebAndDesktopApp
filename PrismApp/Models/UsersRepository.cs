@@ -17,17 +17,20 @@ namespace PrismApp.Models
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-                var users = db.Users.OrderBy(u => u.Id).ToList();
+                var users = db.Users.Include(u => u.Account)
+                                    .OrderBy(u => u.Id)
+                                    .ToList();
                 return users;
             });
         }
 
-        public static async Task<User?> FindUserWithAccountAsync(int id)
+        public static async Task<User?> FindUserAsync(int id)
         {
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-                var user = db.Users.Include(u => u.Account).FirstOrDefault(u => u.Id == id);
+                var user = db.Users.Include(u => u.Account)
+                                   .FirstOrDefault(u => u.Id == id);
                 return user;
             });
         }
@@ -37,7 +40,8 @@ namespace PrismApp.Models
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-                var user = db.Users.FirstOrDefault(u => u.Account.Id == accountId
+                var user = db.Users.Include(u => u.Account)
+                                   .FirstOrDefault(u => u.Account.Id == accountId
                                                         && u.Account.Password == password);
                 return user;
             });
@@ -48,7 +52,16 @@ namespace PrismApp.Models
             await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-                db.Update(user);
+
+                if (db.Users.Any(u => u.Id == user.Id))
+                {
+                    db.Users.Update(user);
+                }
+                else
+                {
+                    db.Users.Add(user);
+                }
+
                 db.SaveChanges();
             });
         }

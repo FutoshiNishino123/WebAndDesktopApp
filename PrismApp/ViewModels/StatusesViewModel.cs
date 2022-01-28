@@ -31,7 +31,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _status, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
@@ -46,7 +46,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _statuses, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace PrismApp.ViewModels
             Statuses = new ObservableCollection<Status>(statuses);
         }
 
-        private void PublishSituationChangedEvent()
+        private void RaiseSituationChanged()
         {
             EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
@@ -73,6 +73,8 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            RaiseSituationChanged();
+
             Initialize();
         }
 

@@ -29,7 +29,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _user, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
@@ -40,7 +40,13 @@ namespace PrismApp.ViewModels
         public BindableAccount? Account
         {
             get => _account;
-            set => SetProperty(ref _account, value);
+            set
+            {
+                if (SetProperty(ref _account, value))
+                {
+                    RaiseSituationChanged();
+                }
+            }
         }
         #endregion
 
@@ -49,7 +55,13 @@ namespace PrismApp.ViewModels
         public bool SaveExecuted
         {
             get => _saveExecuted;
-            set => SetProperty(ref _saveExecuted, value);
+            set
+            {
+                if (SetProperty(ref _saveExecuted, value))
+                {
+                    RaiseSituationChanged();
+                }
+            }
         }
         #endregion
 
@@ -60,7 +72,6 @@ namespace PrismApp.ViewModels
             .ObservesProperty(() => User.FirstKana)
             .ObservesProperty(() => Account.Id)
             .ObservesProperty(() => Account.RawPassword)
-            .ObservesProperty(() => Account.Password)
             .ObservesProperty(() => SaveExecuted);
 
         private async void Save()
@@ -86,52 +97,26 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            PublishGoBackEvent();
+            GoBack();
         }
 
         private bool CanSave()
         {
-            return User != null
+            return !SaveExecuted
+                   && User != null
                    && Account != null
                    && !string.IsNullOrEmpty(User.FirstName)
                    && !string.IsNullOrEmpty(User.FirstKana)
                    && !string.IsNullOrEmpty(Account.Id)
-                   && !string.IsNullOrEmpty(Account.Password)
-                   && !string.IsNullOrEmpty(Account.RawPassword)
-                   && !SaveExecuted;
+                   && !string.IsNullOrEmpty(Account.RawPassword);
         }
         #endregion
-
-        private async void Initialize(int? id)
-        {
-            User = null;
-            SaveExecuted = false;
-
-            var user = id.HasValue ? await UsersRepository.FindUserWithAccountAsync(id.Value) : new User();
-            if (user is null)
-            {
-                MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                PublishGoBackEvent();
-                return;
-            }
-
-            User = BindableUser.FromUser(user);
-            Account = BindableAccount.FromAccount(user.Account ?? new Account());
-        }
-
-        private void PublishGoBackEvent()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
-        }
-
-        private void PublishSituationChangedEvent()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
-        }
 
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            RaiseSituationChanged();
+
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
         }
@@ -145,5 +130,32 @@ namespace PrismApp.ViewModels
         {
         }
         #endregion
+
+        private async void Initialize(int? id)
+        {
+            User = null;
+            SaveExecuted = false;
+
+            var user = id.HasValue ? await UsersRepository.FindUserAsync(id.Value) : new User();
+            if (user is null)
+            {
+                MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                GoBack();
+                return;
+            }
+
+            User = BindableUser.FromUser(user);
+            Account = BindableAccount.FromAccount(user.Account ?? new Account());
+        }
+
+        private void GoBack()
+        {
+            EventAggregator.GetEvent<GoBackEvent>().Publish();
+        }
+
+        private void RaiseSituationChanged()
+        {
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
+        }
     }
 }

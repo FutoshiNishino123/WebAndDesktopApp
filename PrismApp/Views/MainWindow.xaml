@@ -40,12 +40,12 @@
                     <RibbonButton Label="編集" SmallImageSource="../Resources/ribbon-edit.png" Command="{Binding EditItemCommand}"/>
                     <RibbonButton Label="削除" SmallImageSource="../Resources/ribbon-delete.png" Command="{Binding DeleteItemCommand}"/>
                 </RibbonGroup>
-                <RibbonGroup Header="管理者" Visibility="{Binding UseAdminRibbonGroup, Converter={StaticResource TrueToVisible}}">
+                <RibbonGroup Header="管理者" Visibility="{Binding LogInUser.Account.IsAdmin, Converter={StaticResource TrueToVisible}, FallbackValue=Collapsed}">
                     <RibbonButton Label="担当者" SmallImageSource="../Resources/ribbon-users.png" Command="{Binding NavigateCommand}" CommandParameter="Users"/>
                     <RibbonButton Label="ステータス" SmallImageSource="../Resources/ribbon-upload.png" Command="{Binding NavigateCommand}" CommandParameter="Statuses"/>
                 </RibbonGroup>
-                <RibbonGroup Header="指図" Visibility="{Binding UseOrdersRibbonGroup, Converter={StaticResource TrueToVisible}}">
-                    <RibbonCheckBox Label="クローズ表示" IsChecked="{Binding HideClosedOrders, Converter={StaticResource BoolInv}}"/>
+                <RibbonGroup Header="指図" Visibility="{Binding UseOrdersFunction, Converter={StaticResource TrueToVisible}}">
+                    <RibbonCheckBox Label="クローズ表示" IsChecked="{Binding ShowClosed}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>

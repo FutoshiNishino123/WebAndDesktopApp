@@ -20,7 +20,7 @@ namespace PrismApp
     {
         protected override Window CreateShell()
         {
-            return Container.Resolve<LoginWindow>();
+            return Container.Resolve<MainWindow>();
         }
 
         protected override void InitializeShell(Window shell)
@@ -31,6 +31,7 @@ namespace PrismApp
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<Home>();
+            containerRegistry.RegisterForNavigation<LogIn>();
             containerRegistry.RegisterForNavigation<Orders>();
             containerRegistry.RegisterForNavigation<OrderEdit>();
             containerRegistry.RegisterForNavigation<OrderDetail>();

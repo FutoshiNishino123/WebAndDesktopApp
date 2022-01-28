@@ -2,7 +2,7 @@
 
 namespace PrismApp.Events
 {
-    internal class UseOrdersRibbonGroupEvent : PubSubEvent<bool>
+    internal class LogOutEvent : PubSubEvent
     {
     }
 }

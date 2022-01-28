@@ -29,7 +29,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref order, value))
                 {
-                    PublishSituationChangedEvent();
+                    RaiseSituationChanged();
                 }
             }
         }
@@ -43,19 +43,19 @@ namespace PrismApp.ViewModels
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                PublishGoBackEvent();
+                GoBack();
                 return;
             }
 
             Order = order;
         }
 
-        private void PublishGoBackEvent()
+        private void GoBack()
         {
             EventAggregator.GetEvent<GoBackEvent>().Publish();
         }
 
-        private void PublishSituationChangedEvent()
+        private void RaiseSituationChanged()
         {
             EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
@@ -70,6 +70,8 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            RaiseSituationChanged();
+
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
         }
@@ -120,7 +122,7 @@ namespace PrismApp.ViewModels
                 {
                     Debug.Assert(Order != null);
                     await OrdersRepository.DeleteOrderAsync(Order.Id);
-                    PublishGoBackEvent();
+                    GoBack();
                 }
             }
         }

@@ -4,6 +4,7 @@ using Data.Models;
 using Prism.Mvvm;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System;
 
 namespace PrismApp.ViewModels
 {
@@ -137,6 +138,15 @@ namespace PrismApp.ViewModels
         {
             get => _gender;
             set => SetProperty(ref _gender, value);
+        }
+        #endregion
+
+        #region BirthDate property
+        private DateTime? _birthDate;
+        public DateTime? BirthDate
+        {
+            get => _birthDate;
+            set => SetProperty(ref _birthDate, value);
         }
         #endregion
 

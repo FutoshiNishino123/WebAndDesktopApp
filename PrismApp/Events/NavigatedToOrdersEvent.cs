@@ -2,7 +2,7 @@
 
 namespace PrismApp.Events
 {
-    internal class HideClosedOrdersEvent : PubSubEvent<bool>
+    internal class NavigatedToOrdersEvent : PubSubEvent
     {
     }
 }

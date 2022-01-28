@@ -9,11 +9,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
+using Prism.Commands;
 
 namespace PrismApp.ViewModels
 {
     internal class HomeViewModel : BindableBase, INavigationAware
     {
+        [Dependency]
+        public IRegionManager RegionManager { get; set; }
+
         [Dependency]
         public IEventAggregator EventAggregator { get; set; }
 
@@ -35,16 +39,29 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
+        #region NavigateCommand property
+        private DelegateCommand<string>? _navigateCommand;
+        public DelegateCommand<string> NavigateCommand => _navigateCommand ??= new DelegateCommand<string>(Navigate, CanNavigate);
+
+        private void Navigate(string path)
+        {
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, path);
+        }
+
+        private bool CanNavigate(string path)
+        {
+            return true;
+        }
+        #endregion
+
         public async void Initialize()
         {
             var about = await AboutRepository.GetAboutAsync();
             Description = about.Description;
             Version = about.Version;
-
-            PublishSituationChangedEvent();
         }
 
-        private void PublishSituationChangedEvent()
+        private void RaiseSituationChanged()
         {
             EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
@@ -52,6 +69,8 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            RaiseSituationChanged();
+
             Initialize();
         }
 

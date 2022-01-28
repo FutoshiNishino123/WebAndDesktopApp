@@ -1,8 +1,11 @@
 ﻿using Common.Utils;
 using Data.Models;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
+using Prism.Regions;
+using PrismApp.Events;
 using PrismApp.Models;
 using System;
 using System.Diagnostics;
@@ -11,16 +14,13 @@ using Unity;
 
 namespace PrismApp.ViewModels
 {
-    public class LoginWindowViewModel : BindableBase
+    public class LogInViewModel : BindableBase
     {
-        #region Title property
-        private string? _title = "ログイン";
-        public string? Title
-        {
-            get => _title;
-            set => SetProperty(ref _title, value);
-        }
-        #endregion
+        [Dependency]
+        public IRegionManager RegionManager { get; set; }
+
+        [Dependency]
+        public IEventAggregator EventAggregator { get; set; }
 
         #region UserId property
         private string? _userId;
@@ -51,21 +51,28 @@ namespace PrismApp.ViewModels
             Debug.Assert(UserId != null);
             Debug.Assert(Password != null);
 
-            User? loginUser;
+            User? user;
             try
             {
                 var hash = PasswordUtils.GetHashValue(Password);
-                loginUser = await UsersRepository.FindUserAsync(UserId, hash);
+                user = await UsersRepository.FindUserAsync(UserId, hash);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (loginUser != null)
+            if (user == null)
             {
-                Debug.WriteLine(loginUser.Name);
+                MessageBox.Show("ユーザID または パスワード が正しくありません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            else
+            {
+                MessageBox.Show("ログインしました。", "情報", MessageBoxButton.OK, MessageBoxImage.Information);
+                RaiseLogInUser(user);
+                GoBack();
             }
         }
 
@@ -75,5 +82,15 @@ namespace PrismApp.ViewModels
                    && !string.IsNullOrEmpty(Password);
         }
         #endregion
+
+        private void RaiseLogInUser(User user)
+        {
+            EventAggregator.GetEvent<LogInEvent>().Publish(user);
+        }
+
+        private void GoBack()
+        {
+            EventAggregator.GetEvent<GoBackEvent>().Publish();
+        }
     }
 }

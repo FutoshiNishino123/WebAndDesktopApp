@@ -17,7 +17,7 @@ namespace SampleData
 
         public IEnumerable<Order> CreateData(int count)
         {
-            var rand = new RandomDateTime(DateTime.Now.AddDays(-30), DateTime.Now.AddDays(30));
+            var rand = new RandomDate(DateTime.Now.AddDays(-30), DateTime.Now.AddDays(30));
             var people = _db.Users.ToArray();
             var statuses = _db.Statuses.ToArray();
 
