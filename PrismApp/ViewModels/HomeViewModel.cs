@@ -22,6 +22,33 @@ namespace PrismApp.ViewModels
         [Dependency]
         public IEventPublisher EventPublisher { get; set; }
 
+        private string GetGreeting(string? name)
+        {
+            var hour = DateTime.Now.Hour;
+
+            var greeting = hour < 12 ? "おはようございます"
+                           : hour < 18 ? "こんにちは"
+                           : "こんばんは";
+
+            if (name is null)
+            {
+                return greeting;
+            }
+            else
+            {
+                return $"{greeting}、{name} さん";
+            }
+        }
+
+        #region Greeting property
+        private string _greeting;
+        public string Greeting
+        {
+            get => _greeting = "ようこそ";
+            set => SetProperty(ref _greeting, value);
+        }
+        #endregion
+
         #region Description property
         private string? _description;
         public string? Description
@@ -55,7 +82,7 @@ namespace PrismApp.ViewModels
 
         private void LogIn()
         {
-            ContentRegionManager.GoToLogIn();
+            ContentRegionManager.Navigate("LogIn");
         }
 
         private bool CanLogIn()
@@ -70,7 +97,7 @@ namespace PrismApp.ViewModels
 
         private void LogOut()
         {
-            ContentRegionManager.GoToLogOut();
+            ContentRegionManager.Navigate("LogOut");
         }
 
         private bool CanLogOut()
@@ -99,8 +126,17 @@ namespace PrismApp.ViewModels
 
         public HomeViewModel(IEventAggregator ea)
         {
-            ea.GetEvent<LogInEvent>().Subscribe(_ => IsLoggedIn = true);
-            ea.GetEvent<LogOutEvent>().Subscribe(() => IsLoggedIn = false);
+            ea.GetEvent<LogInEvent>().Subscribe(user =>
+            {
+                IsLoggedIn = true;
+                Greeting = GetGreeting(user.Name);
+            });
+
+            ea.GetEvent<LogOutEvent>().Subscribe(() =>
+            {
+                IsLoggedIn = false;
+                Greeting = "ようこそ";
+            });
         }
 
         public async void Initialize()

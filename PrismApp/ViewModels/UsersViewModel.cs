@@ -17,7 +17,7 @@ namespace PrismApp.ViewModels
     public class UsersViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
-        public IRegionManager RegionManager { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
 
         [Dependency]
         public IEventPublisher EventPublisher { get; set; }
@@ -86,7 +86,7 @@ namespace PrismApp.ViewModels
         {
             if (CanAddNewItem)
             {
-                GoToUserEdit(null);
+                RegionManager.Navigate("UserEdit");
             }
         }
 
@@ -96,7 +96,7 @@ namespace PrismApp.ViewModels
             if (CanEditItem)
             {
                 Debug.Assert(User != null);
-                GoToUserEdit(User.Id);
+                RegionManager.Navigate("UserEdit", User.Id);
             }
         }
 
@@ -133,13 +133,6 @@ namespace PrismApp.ViewModels
         {
             var users = await UsersRepository.GetUsersAsync();
             Users = new ObservableCollection<User>(users);
-        }
-
-        private void GoToUserEdit(int? id)
-        {
-            var parameters = new NavigationParameters();
-            parameters.Add("id", id);
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "UserEdit", parameters);
         }
     }
 }

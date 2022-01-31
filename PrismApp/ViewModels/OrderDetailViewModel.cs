@@ -16,10 +16,10 @@ namespace PrismApp.ViewModels
     public class OrderDetailViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
-        public IRegionManager RegionManager { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
+        public IEventPublisher EventPublisher { get; set; }
 
         #region Order property
         private Order? order;
@@ -30,7 +30,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref order, value))
                 {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            RaiseSituationChanged();
+            EventPublisher.RaiseSituationChanged();
 
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
@@ -59,9 +59,8 @@ namespace PrismApp.ViewModels
         public bool CanRefresh => Order != null;
         public void Refresh()
         {
-            if (CanRefresh)
+            if (Order != null)
             {
-                Debug.Assert(Order != null);
                 Initialize(Order.Id);
             }
         }
@@ -75,30 +74,24 @@ namespace PrismApp.ViewModels
         public bool CanEditItem => Order != null && !Order.IsClosed;
         public void EditItem()
         {
-            if (CanEditItem)
+            if (Order != null)
             {
-                Debug.Assert(Order != null);
-                GoToOrderEdit(Order.Id);
+                RegionManager.Navigate("OrderEdit", Order.Id);
             }
         }
 
         public bool CanDeleteItem => Order != null && !Order.IsClosed;
         public async void DeleteItem()
         {
-            if (!CanDeleteItem)
+            if (Order != null)
             {
-                return;
-            }
+                if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    await OrdersRepository.DeleteOrderAsync(Order.Id);
 
-            if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) != MessageBoxResult.Yes)
-            {
-                return;
+                    RegionManager.GoBack();
+                }
             }
-            
-            Debug.Assert(Order != null);
-            await OrdersRepository.DeleteOrderAsync(Order.Id);
-
-            RaiseGoBack();
         }
         #endregion
 
@@ -110,28 +103,11 @@ namespace PrismApp.ViewModels
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                RaiseGoBack();
+                RegionManager.GoBack();
                 return;
             }
 
             Order = order;
-        }
-
-        private void RaiseGoBack()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
-        }
-
-        private void GoToOrderEdit(int? id)
-        {
-            var parameters = new NavigationParameters();
-            parameters.Add("id", id);
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "OrderEdit", parameters);
         }
     }
 }

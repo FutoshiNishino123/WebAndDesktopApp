@@ -20,10 +20,10 @@ namespace PrismApp.ViewModels
     public class OrdersViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
-        public IRegionManager RegionManager { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
+        public IEventPublisher EventPublisher { get; set; }
 
         #region Order property
         private Order? _order;
@@ -34,7 +34,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _order, value))
                 {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _orders, value))
                 {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -59,19 +59,20 @@ namespace PrismApp.ViewModels
 
         #region ShowDetailCommand property
         private DelegateCommand? _showDetailCommand;
-        public DelegateCommand ShowDetailCommand => _showDetailCommand ??= new DelegateCommand(ShowDetail, CanShowDetail);
+        public DelegateCommand ShowDetailCommand => _showDetailCommand ??= new DelegateCommand(ShowDetail, CanShowDetail)
+            .ObservesProperty(() => Orders);
 
         private void ShowDetail()
         {
             if (Order != null)
             {
-                GoToOrderDetail(Order.Id);
+                RegionManager.Navigate("OrderDetail", Order.Id);
             }
         }
 
         private bool CanShowDetail()
         {
-            return true;
+            return Orders != null;
         }
         #endregion
 
@@ -82,7 +83,7 @@ namespace PrismApp.ViewModels
         private async void Save(Order order)
         {
             await OrdersRepository.SaveOrderAsync(order);
-            RaiseSituationChanged();
+            EventPublisher.RaiseSituationChanged();
         }
 
         private bool CanSave(Order order)
@@ -94,9 +95,8 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            RaiseSituationChanged();
-
-            RaiseNavigatedToOrders();
+            EventPublisher.RaiseSituationChanged();
+            EventPublisher.RaiseOrdersActivated();
 
             Initialize();
         }
@@ -108,7 +108,7 @@ namespace PrismApp.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            RaiseNavigatedFromOrders();
+            EventPublisher.RaiseOrdersInactivated();
         }
         #endregion
 
@@ -127,7 +127,7 @@ namespace PrismApp.ViewModels
         {
             if (CanAddNewItem)
             {
-                GoToOrderEdit(null);
+                RegionManager.Navigate("OrderEdit");
             }
         }
 
@@ -137,7 +137,7 @@ namespace PrismApp.ViewModels
             if (CanEditItem)
             {
                 Debug.Assert(Order != null);
-                GoToOrderEdit(Order.Id);
+                RegionManager.Navigate("OrderEdit", Order.Id);
             }
         }
 
@@ -189,35 +189,6 @@ namespace PrismApp.ViewModels
             }
 
             Orders = new ObservableCollection<Order>(orders);
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
-        }
-
-        private void RaiseNavigatedToOrders()
-        {
-            EventAggregator.GetEvent<NavigatedToOrdersEvent>().Publish();
-        }
-
-        private void RaiseNavigatedFromOrders()
-        {
-            EventAggregator.GetEvent<NavigatedFromOrdersEvent>().Publish();
-        }
-
-        private void GoToOrderDetail(int? id)
-        {
-            var parameters = new NavigationParameters();
-            parameters.Add("id", id);
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "OrderDetail", parameters);
-        }
-
-        private void GoToOrderEdit(int? id)
-        {
-            var parameters = new NavigationParameters();
-            parameters.Add("id", id);
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "OrderEdit", parameters);
         }
     }
 }

@@ -18,7 +18,10 @@ namespace PrismApp.ViewModels
     public class UserEditViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
+
+        [Dependency]
+        public IEventPublisher EventPublisher { get; set; }
 
         #region User property
         private BindableUser? _user;
@@ -29,7 +32,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _user, value))
                 {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -44,22 +47,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _account, value))
                 {
-                    RaiseSituationChanged();
-                }
-            }
-        }
-        #endregion
-
-        #region SaveExecuted property
-        private bool _saveExecuted;
-        public bool SaveExecuted
-        {
-            get => _saveExecuted;
-            set
-            {
-                if (SetProperty(ref _saveExecuted, value))
-                {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -71,13 +59,23 @@ namespace PrismApp.ViewModels
             .ObservesProperty(() => User.FirstName)
             .ObservesProperty(() => User.FirstKana)
             .ObservesProperty(() => Account.Id)
-            .ObservesProperty(() => Account.RawPassword)
-            .ObservesProperty(() => SaveExecuted);
+            .ObservesProperty(() => Account.RawPassword);
 
-        private async void Save()
+        private bool _saving;
+
+        private void Save()
         {
-            SaveExecuted = true;
+            if (_saving) { return; }
 
+            _saving = true;
+
+            Save(true);
+
+            _saving = false;
+        }
+
+        private async void Save(bool _)
+        {
             Debug.Assert(User != null);
             var user = BindableUser.ToUser(User);
 
@@ -93,17 +91,15 @@ namespace PrismApp.ViewModels
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                SaveExecuted = false;
                 return;
             }
 
-            RaiseGoBack();
+            RegionManager.GoBack();
         }
 
         private bool CanSave()
         {
-            return !SaveExecuted
-                   && User != null
+            return User != null
                    && Account != null
                    && !string.IsNullOrEmpty(User.FirstName)
                    && !string.IsNullOrEmpty(User.FirstKana)
@@ -115,7 +111,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            RaiseSituationChanged();
+            EventPublisher.RaiseSituationChanged();
 
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
@@ -134,28 +130,18 @@ namespace PrismApp.ViewModels
         private async void Initialize(int? id)
         {
             User = null;
-            SaveExecuted = false;
+            Account = null;
 
             var user = id.HasValue ? await UsersRepository.FindUserAsync(id.Value) : new User();
             if (user is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                RaiseGoBack();
+                RegionManager.GoBack();
                 return;
             }
 
             User = BindableUser.FromUser(user);
             Account = BindableAccount.FromAccount(user.Account ?? new Account());
-        }
-
-        private void RaiseGoBack()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
     }
 }

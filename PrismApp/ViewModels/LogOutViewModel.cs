@@ -23,8 +23,8 @@ namespace PrismApp.ViewModels
         private void LogOut()
         {
             EventPublisher.RaiseLogOut();
-
-            RegionManager.GoToLogIn();
+            
+            RegionManager.Navigate("Home");
         }
 
         private bool CanLogOut()
@@ -39,12 +39,12 @@ namespace PrismApp.ViewModels
 
         private void GoBack()
         {
-            EventPublisher.RaiseGoBack();
+            RegionManager.GoBack();
         }
 
         private bool CanGoBack()
         {
-            return true;
+            return RegionManager.CanGoBack();
         }
         #endregion
 

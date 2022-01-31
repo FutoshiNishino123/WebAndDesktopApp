@@ -19,7 +19,10 @@ namespace PrismApp.ViewModels
     public class StatusEditViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
+
+        [Dependency]
+        public IEventPublisher EventPublisher { get; set; }
 
         #region Status property
         private BindableStatus? _status;
@@ -30,22 +33,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _status, value))
                 {
-                    RaiseSituationChanged();
-                }
-            }
-        }
-        #endregion
-
-        #region SaveExecuted property
-        private bool _saveExecuted;
-        public bool SaveExecuted
-        {
-            get => _saveExecuted;
-            set
-            {
-                if (SetProperty(ref _saveExecuted, value))
-                {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -55,14 +43,25 @@ namespace PrismApp.ViewModels
         private DelegateCommand? _saveCommand;
         public DelegateCommand SaveCommand => _saveCommand ??= new DelegateCommand(Save, CanSave)
             .ObservesProperty(() => Status)
-            .ObservesProperty(() => Status.Text)
-            .ObservesProperty(() => SaveExecuted);
+            .ObservesProperty(() => Status.Text);
 
-        private async void Save()
+        private bool _saving;
+
+        private void Save()
         {
-            SaveExecuted = true;
+            if (_saving) { return; }
 
-            Debug.Assert(Status != null);
+            _saving = true;
+
+            Save(true);
+
+            _saving = false;
+        }
+
+        private async void Save(bool _)
+        {
+            if (Status == null) { throw new InvalidOperationException(); }
+
             var status = BindableStatus.ToStatus(Status);
 
             try
@@ -72,25 +71,23 @@ namespace PrismApp.ViewModels
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                SaveExecuted = false;
                 return;
             }
 
-            RaiseGoBack();
+            RegionManager.GoBack();
         }
 
         private bool CanSave()
         {
             return Status != null
-                   && !string.IsNullOrEmpty(Status.Text)
-                   && !SaveExecuted;
+                   && !string.IsNullOrEmpty(Status.Text);
         }
         #endregion
 
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            RaiseSituationChanged();
+            EventPublisher.RaiseSituationChanged();
 
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
@@ -109,27 +106,16 @@ namespace PrismApp.ViewModels
         private async void Initialize(int? id)
         {
             Status = null;
-            SaveExecuted = false;
 
             var status = id.HasValue ? await StatusesRepository.FindStatusAsync(id.Value) : new Status();
             if (status is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                RaiseGoBack();
+                RegionManager.GoBack();
                 return;
             }
 
             Status = BindableStatus.FromStatus(status);
-        }
-
-        private void RaiseGoBack()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
     }
 }

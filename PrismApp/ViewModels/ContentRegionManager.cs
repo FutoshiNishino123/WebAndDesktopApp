@@ -12,6 +12,8 @@ namespace PrismApp.ViewModels
         [Dependency]
         public IRegionManager RegionManager { get; set; }
 
+        private IRegionNavigationJournal Journal => RegionManager.Regions[RegionName].NavigationService.Journal;
+
         public object? DataContext
         {
             get
@@ -23,32 +25,24 @@ namespace PrismApp.ViewModels
 
         public bool CanGoBack()
         {
-            return RegionManager.Regions[RegionName].NavigationService.Journal.CanGoBack;
+            return Journal.CanGoBack;
         }
 
         public void GoBack()
         {
-            RegionManager.Regions[RegionName].NavigationService.Journal.GoBack();
+            Journal.GoBack();
         }
 
-        public void GoTo(string path)
+        public void Navigate(string path)
         {
             RegionManager.RequestNavigate(RegionName, path);
         }
 
-        public void GoToHome()
+        public void Navigate(string path, int id)
         {
-            RegionManager.RequestNavigate(RegionName, "Home");
-        }
-
-        public void GoToLogIn()
-        {
-            RegionManager.RequestNavigate(RegionName, "LogIn");
-        }
-
-        public void GoToLogOut()
-        {
-            RegionManager.RequestNavigate(RegionName, "LogOut");
+            var parms = new NavigationParameters();
+            parms.Add("id", id);
+            RegionManager.RequestNavigate(RegionName, path, parms);
         }
     }
 }

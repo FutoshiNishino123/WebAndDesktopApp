@@ -19,7 +19,10 @@ namespace PrismApp.ViewModels
     public class OrderEditViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
+
+        [Dependency]
+        public IEventPublisher EventPublisher { get; set; }
 
         #region Order property
         private BindableOrder? _order;
@@ -30,7 +33,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _order, value))
                 {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -45,7 +48,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _users, value))
                 {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -60,22 +63,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _statuses, value))
                 {
-                    RaiseSituationChanged();
-                }
-            }
-        }
-        #endregion
-
-        #region SaveExecuted property
-        private bool _saveExecuted;
-        public bool SaveExecuted
-        {
-            get => _saveExecuted;
-            set
-            {
-                if (SetProperty(ref _saveExecuted, value))
-                {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -85,42 +73,52 @@ namespace PrismApp.ViewModels
         private DelegateCommand? _saveCommand;
         public DelegateCommand SaveCommand => _saveCommand ??= new DelegateCommand(Save, CanSave)
             .ObservesProperty(() => Order)
-            .ObservesProperty(() => Order.Number)
-            .ObservesProperty(() => SaveExecuted);
+            .ObservesProperty(() => Order.Number);
 
-        private async void Save()
+        private bool _saving;
+
+        private void Save()
         {
-            SaveExecuted = true;
+            if (_saving) { return; }
 
-            Debug.Assert(Order != null);
-            var order = BindableOrder.ToOrder(Order);
+            _saving = true;
 
-            try
+            Save(true);
+
+            _saving = false;
+        }
+
+        private async void Save(bool _)
+        {
+            if (Order != null)
             {
-                await OrdersRepository.SaveOrderAsync(order);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                SaveExecuted = false;
-                return;
-            }
+                var order = BindableOrder.ToOrder(Order);
 
-            RaiseGoBack();
+                try
+                {
+                    await OrdersRepository.SaveOrderAsync(order);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                RegionManager.GoBack();
+            }
         }
 
         private bool CanSave()
         {
             return Order != null
-                   && !string.IsNullOrEmpty(Order.Number)
-                   && !SaveExecuted;
+                   && !string.IsNullOrEmpty(Order.Number);
         }
         #endregion
 
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            RaiseSituationChanged();
+            EventPublisher.RaiseSituationChanged();
 
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
@@ -141,13 +139,12 @@ namespace PrismApp.ViewModels
             Order = null;
             Users = null;
             Statuses = null;
-            SaveExecuted = false;
 
             var order = id.HasValue ? await OrdersRepository.FindOrderAsync(id.Value) : new Order();
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                RaiseGoBack();
+                RegionManager.GoBack();
                 return;
             }
 
@@ -167,16 +164,6 @@ namespace PrismApp.ViewModels
             Order = BindableOrder.FromOrder(order);
             Users = new ObservableCollection<User>(users);
             Statuses = new ObservableCollection<Status>(statuses);
-        }
-
-        private void RaiseGoBack()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
     }
 }

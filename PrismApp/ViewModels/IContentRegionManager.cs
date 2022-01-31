@@ -3,14 +3,16 @@
     public interface IContentRegionManager
     {
         /// <summary>
-        /// Get the DataContext of the first view of ActiveViews.
+        /// Get the DataContext of the active view.
         /// </summary>
         object? DataContext { get; }
+
         bool CanGoBack();
+        
         void GoBack();
-        void GoTo(string path);
-        void GoToHome();
-        void GoToLogIn();
-        void GoToLogOut();
+        
+        void Navigate(string path);
+
+        void Navigate(string path, int id);
     }
 }

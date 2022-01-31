@@ -17,10 +17,10 @@ namespace PrismApp.ViewModels
     public class StatusesViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
-        public IRegionManager RegionManager { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
+        public IEventPublisher EventPublisher { get; set; }
 
         #region Status property
         private Status? _status;
@@ -31,7 +31,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _status, value))
                 {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -46,7 +46,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _statuses, value))
                 {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            RaiseSituationChanged();
+            EventPublisher.RaiseSituationChanged();
 
             Initialize();
         }
@@ -85,7 +85,7 @@ namespace PrismApp.ViewModels
         {
             if (CanAddNewItem)
             {
-                GoToStatusEdit(null);
+                RegionManager.Navigate("StatusEdit");
             }
         }
 
@@ -95,7 +95,7 @@ namespace PrismApp.ViewModels
             if (CanEditItem)
             {
                 Debug.Assert(Status != null);
-                GoToStatusEdit(Status.Id);
+                RegionManager.Navigate("StatusEdit", Status.Id);
             }
         }
 
@@ -132,18 +132,6 @@ namespace PrismApp.ViewModels
         {
             var statuses = await StatusesRepository.GetStatusesAsync();
             Statuses = new ObservableCollection<Status>(statuses);
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
-        }
-
-        private void GoToStatusEdit(int? id)
-        {
-            var parameters = new NavigationParameters();
-            parameters.Add("id", id);
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "StatusEdit", parameters);
         }
     }
 }

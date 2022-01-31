@@ -17,7 +17,7 @@ namespace PrismApp.ViewModels
     internal class MainWindowViewModel : BindableBase
     {
         [Dependency]
-        public IContentRegionManager ContentRegionManager { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
 
         [Dependency]
         public IEventPublisher EventPublisher { get; set; }
@@ -40,31 +40,37 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region UseOrdersFunction property
-        private bool _useOrdersFunction;
-        public bool UseOrdersFunction
+        #region OrdersEnabled property
+        private bool _ordersEnabled;
+        public bool OrdersEnabled
         {
-            get => _useOrdersFunction;
-            set => SetProperty(ref _useOrdersFunction, value);
+            get => _ordersEnabled;
+            set => SetProperty(ref _ordersEnabled, value);
         }
         #endregion
 
-        #region ShowClosed property
-        private bool _showClosed;
-        public bool ShowClosed
+        #region OrderFilter property
+        private OrderFilter _orderFilter = new OrderFilter();
+        public OrderFilter OrderFilter
         {
-            get => _showClosed;
-            set
-            {
-                if (SetProperty(ref _showClosed, value))
-                {
-                    var filter = new OrderFilter
-                    {
-                        ShowClosed = ShowClosed,
-                    };
-                    EventPublisher.RaiseOrderFilterChanged(filter);
-                }
-            }
+            get => _orderFilter;
+            set => SetProperty(ref _orderFilter, value);
+        }
+        #endregion
+
+        #region OrderFilterChangedCommand property
+        private DelegateCommand? _orderFilterChangedCommand;
+        public DelegateCommand OrderFilterChangedCommand => _orderFilterChangedCommand ??= new DelegateCommand(OrderFilterChanged, CanOrderFilterChanged)
+            .ObservesProperty(() => OrderFilter);
+
+        private void OrderFilterChanged()
+        {
+            EventPublisher.RaiseOrderFilterChanged(OrderFilter);
+        }
+
+        private bool CanOrderFilterChanged()
+        {
+            return OrderFilter != null;
         }
         #endregion
 
@@ -74,25 +80,10 @@ namespace PrismApp.ViewModels
 
         private void Navigate(string path)
         {
-            ContentRegionManager.GoTo(path);
+            RegionManager.Navigate(path);
         }
 
         private bool CanNavigate(string path)
-        {
-            return true;
-        }
-        #endregion
-
-        #region GoHomeCommand property
-        private DelegateCommand? _goHomeCommand;
-        public DelegateCommand GoHomeCommand => _goHomeCommand ??= new DelegateCommand(GoHome, CanGoHome);
-
-        private void GoHome()
-        {
-            ContentRegionManager.GoToHome();
-        }
-
-        private bool CanGoHome()
         {
             return true;
         }
@@ -104,12 +95,12 @@ namespace PrismApp.ViewModels
 
         private void GoBack()
         {
-            ContentRegionManager.GoBack();
+            RegionManager.GoBack();
         }
 
         private bool CanGoBack()
         {
-            return ContentRegionManager.CanGoBack();
+            return RegionManager.CanGoBack();
         }
         #endregion
 
@@ -119,12 +110,12 @@ namespace PrismApp.ViewModels
 
         private void Refresh()
         {
-            (ContentRegionManager.DataContext as IRibbon)?.Refresh();
+            (RegionManager.DataContext as IRibbon)?.Refresh();
         }
 
         private bool CanRefresh()
         {
-            return (ContentRegionManager.DataContext as IRibbon)?.CanRefresh ?? false;
+            return (RegionManager.DataContext as IRibbon)?.CanRefresh ?? false;
         }
         #endregion
 
@@ -134,12 +125,12 @@ namespace PrismApp.ViewModels
 
         private void AddNewItem()
         {
-            (ContentRegionManager.DataContext as IRibbon)?.AddNewItem();
+            (RegionManager.DataContext as IRibbon)?.AddNewItem();
         }
 
         private bool CanAddNewItem()
         {
-            return (ContentRegionManager.DataContext as IRibbon)?.CanAddNewItem ?? false;
+            return (RegionManager.DataContext as IRibbon)?.CanAddNewItem ?? false;
         }
         #endregion
 
@@ -149,12 +140,12 @@ namespace PrismApp.ViewModels
 
         private void EditItem()
         {
-            (ContentRegionManager.DataContext as IRibbon)?.EditItem();
+            (RegionManager.DataContext as IRibbon)?.EditItem();
         }
 
         private bool CanEditItem()
         {
-            return (ContentRegionManager.DataContext as IRibbon)?.CanEditItem ?? false;
+            return (RegionManager.DataContext as IRibbon)?.CanEditItem ?? false;
         }
         #endregion
 
@@ -164,21 +155,20 @@ namespace PrismApp.ViewModels
 
         private void DeleteItem()
         {
-            (ContentRegionManager.DataContext as IRibbon)?.DeleteItem();
+            (RegionManager.DataContext as IRibbon)?.DeleteItem();
         }
 
         private bool CanDeleteItem()
         {
-            return (ContentRegionManager.DataContext as IRibbon)?.CanDeleteItem ?? false;
+            return (RegionManager.DataContext as IRibbon)?.CanDeleteItem ?? false;
         }
         #endregion
 
         public MainWindowViewModel(IEventAggregator ea)
         {
-            ea.GetEvent<GoBackEvent>().Subscribe(GoBack);
             ea.GetEvent<SituationChangedEvent>().Subscribe(RefreshCommands);
-            ea.GetEvent<NavigatedToOrdersEvent>().Subscribe(() => UseOrdersFunction = true);
-            ea.GetEvent<NavigatedFromOrdersEvent>().Subscribe(() => UseOrdersFunction = false);
+            ea.GetEvent<OrdersActivatedEvent>().Subscribe(() => OrdersEnabled = true);
+            ea.GetEvent<OrdersInactivatedEvent>().Subscribe(() => OrdersEnabled = false);
             ea.GetEvent<LogInEvent>().Subscribe(user => LogInUser = user);
             ea.GetEvent<LogOutEvent>().Subscribe(() => LogInUser = null);
 

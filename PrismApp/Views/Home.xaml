@@ -10,8 +10,8 @@
     <DockPanel Margin="10">
         
         <StackPanel DockPanel.Dock="Top" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <TextBlock FontSize="30" Text="ホーム" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <TextBlock Text="{Binding Description}" MaxWidth="300" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding Greeting}" FontSize="30" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Description}" Margin="10" MaxWidth="300" TextWrapping="Wrap" HorizontalAlignment="Center"/>
         </StackPanel>
         
         <TextBlock DockPanel.Dock="Bottom" Text="{Binding Version}" Height="30" HorizontalAlignment="Center" />

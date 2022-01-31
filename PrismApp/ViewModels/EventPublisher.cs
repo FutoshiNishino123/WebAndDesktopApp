@@ -15,11 +15,6 @@ namespace PrismApp.ViewModels
             EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
-        public void RaiseGoBack()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
-        }
-
         public void RaiseLogIn(User user)
         {
             EventAggregator.GetEvent<LogInEvent>().Publish(user);
@@ -28,6 +23,16 @@ namespace PrismApp.ViewModels
         public void RaiseLogOut()
         {
             EventAggregator.GetEvent<LogOutEvent>().Publish();
+        }
+
+        public void RaiseOrdersActivated()
+        {
+            EventAggregator.GetEvent<OrdersActivatedEvent>().Publish();
+        }
+
+        public void RaiseOrdersInactivated()
+        {
+            EventAggregator.GetEvent<OrdersInactivatedEvent>().Publish();
         }
 
         public void RaiseOrderFilterChanged(OrderFilter filter)

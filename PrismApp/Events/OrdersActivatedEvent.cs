@@ -2,7 +2,7 @@
 
 namespace PrismApp.Events
 {
-    public class GoBackEvent : PubSubEvent
+    public class OrdersActivatedEvent : PubSubEvent
     {
     }
 }

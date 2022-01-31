@@ -47,7 +47,20 @@ namespace PrismApp.ViewModels
             .ObservesProperty(() => AccountId)
             .ObservesProperty(() => Password);
 
-        private async void LogIn()
+        private bool _loggingIn;
+
+        private void LogIn()
+        {
+            if (_loggingIn) { return; }
+
+            _loggingIn = true;
+
+            LogIn(true);
+
+            _loggingIn = false;
+        }
+
+        private async void LogIn(bool _)
         {
             User? user = null;
             try
@@ -66,11 +79,9 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            MessageBox.Show("ログインしました。", "情報", MessageBoxButton.OK, MessageBoxImage.Information);
-
             EventPublisher.RaiseLogIn(user);
 
-            RegionManager.GoToHome();
+            RegionManager.Navigate("Home");
         }
 
         private bool CanLogIn()
@@ -106,8 +117,11 @@ namespace PrismApp.ViewModels
 
         private async Task<User?> FindUserAsync()
         {
-            Debug.Assert(AccountId != null);
-            Debug.Assert(Password != null);
+            if (AccountId == null ||
+                Password == null)
+            {
+                throw new InvalidOperationException();
+            }
 
             var hash = PasswordUtils.GetHash(Password);
             var user = await UsersRepository.FindUserAsync(AccountId, hash);
