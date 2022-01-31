@@ -172,7 +172,7 @@ namespace PrismApp.ViewModels
             ea.GetEvent<LogInEvent>().Subscribe(user => LogInUser = user);
             ea.GetEvent<LogOutEvent>().Subscribe(() => LogInUser = null);
 
-            // TODO: 用が済んだら消す
+            // 管理者として起動
             //ea.GetEvent<LogInEvent>().Publish(new User { Account = new Account { IsAdmin = true } });   
         }
 

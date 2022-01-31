@@ -46,7 +46,6 @@ namespace Data.Models
         /// <summary>
         /// ステータス
         /// </summary>
-        [MaxLength(30)]
         [Display(Name = "ステータス")]
         public Status? Status { get; set; }
 

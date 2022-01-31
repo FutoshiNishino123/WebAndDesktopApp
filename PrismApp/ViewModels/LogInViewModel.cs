@@ -9,6 +9,7 @@ using PrismApp.Events;
 using PrismApp.Models;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using Unity;
 
@@ -22,12 +23,12 @@ namespace PrismApp.ViewModels
         [Dependency]
         public IEventAggregator EventAggregator { get; set; }
 
-        #region UserId property
-        private string? _userId;
-        public string? UserId
+        #region AccountId property
+        private string? _accountId;
+        public string? AccountId
         {
-            get => _userId;
-            set => SetProperty(ref _userId, value);
+            get => _accountId;
+            set => SetProperty(ref _accountId, value);
         }
         #endregion
 
@@ -40,55 +41,66 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region LoginCommand property
-        private DelegateCommand? _loginCommand;
-        public DelegateCommand LoginCommand => _loginCommand ??= new DelegateCommand(Login, CanLogin)
-            .ObservesProperty(() => UserId)
+        #region LogInCommand property
+        private DelegateCommand? _logInCommand;
+        public DelegateCommand LogInCommand => _logInCommand ??= new DelegateCommand(LogIn, CanLogIn)
+            .ObservesProperty(() => AccountId)
             .ObservesProperty(() => Password);
 
-        private async void Login()
+        private async void LogIn()
         {
-            Debug.Assert(UserId != null);
+            var user = await FindUserAsync();
+            if (user == null)
+            {
+                return;
+            }
+
+            RaiseLogIn(user);
+            MessageBox.Show("ログインしました。", "情報", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            RaiseGoBack();
+        }
+
+        private bool CanLogIn()
+        {
+            return !string.IsNullOrEmpty(AccountId)
+                   && !string.IsNullOrEmpty(Password);
+        }
+        #endregion
+
+        private async Task<User?> FindUserAsync()
+        {
+            Debug.Assert(AccountId != null);
             Debug.Assert(Password != null);
 
-            User? user;
+            var hash = PasswordUtils.GetHash(Password);
+
+            User? user = null;
             try
             {
-                var hash = PasswordUtils.GetHashValue(Password);
-                user = await UsersRepository.FindUserAsync(UserId, hash);
+                user = await UsersRepository.FindUserAsync(AccountId, hash);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return null;
             }
 
             if (user == null)
             {
                 MessageBox.Show("ユーザID または パスワード が正しくありません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return null;
             }
-            else
-            {
-                MessageBox.Show("ログインしました。", "情報", MessageBoxButton.OK, MessageBoxImage.Information);
-                RaiseLogInUser(user);
-                GoBack();
-            }
+
+            return user;
         }
 
-        private bool CanLogin()
-        {
-            return !string.IsNullOrEmpty(UserId)
-                   && !string.IsNullOrEmpty(Password);
-        }
-        #endregion
-
-        private void RaiseLogInUser(User user)
+        private void RaiseLogIn(User user)
         {
             EventAggregator.GetEvent<LogInEvent>().Publish(user);
         }
 
-        private void GoBack()
+        private void RaiseGoBack()
         {
             EventAggregator.GetEvent<GoBackEvent>().Publish();
         }

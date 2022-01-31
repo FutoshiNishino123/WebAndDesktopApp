@@ -10,7 +10,8 @@ namespace Common.Extensions
     {
         public static T ElementAtRandom<T>(this IEnumerable<T> collection)
         {
-            return collection.ElementAt(Random.Shared.Next(collection.Count()));
+            var index = Random.Shared.Next(collection.Count());
+            return collection.ElementAt(index);
         }
     }
 }

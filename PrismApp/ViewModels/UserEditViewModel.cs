@@ -97,7 +97,7 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            GoBack();
+            RaiseGoBack();
         }
 
         private bool CanSave()
@@ -140,7 +140,7 @@ namespace PrismApp.ViewModels
             if (user is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                GoBack();
+                RaiseGoBack();
                 return;
             }
 
@@ -148,7 +148,7 @@ namespace PrismApp.ViewModels
             Account = BindableAccount.FromAccount(user.Account ?? new Account());
         }
 
-        private void GoBack()
+        private void RaiseGoBack()
         {
             EventAggregator.GetEvent<GoBackEvent>().Publish();
         }

@@ -9,6 +9,7 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using Unity;
+using System.Threading.Tasks;
 
 namespace PrismApp.ViewModels
 {
@@ -34,38 +35,6 @@ namespace PrismApp.ViewModels
             }
         }
         #endregion
-
-        private async void Initialize(int? id)
-        {
-            Order = null;
-
-            var order = id.HasValue ? await OrdersRepository.FindOrderAsync(id.Value) : null;
-            if (order is null)
-            {
-                MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                GoBack();
-                return;
-            }
-
-            Order = order;
-        }
-
-        private void GoBack()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
-        }
-
-        private void NavigateToOrderEdit(int? id)
-        {
-            var parameters = new NavigationParameters();
-            parameters.Add("id", id);
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "OrderEdit", parameters);
-        }
 
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -109,23 +78,60 @@ namespace PrismApp.ViewModels
             if (CanEditItem)
             {
                 Debug.Assert(Order != null);
-                NavigateToOrderEdit(Order.Id);
+                GoToOrderEdit(Order.Id);
             }
         }
 
         public bool CanDeleteItem => Order != null && !Order.IsClosed;
         public async void DeleteItem()
         {
-            if (CanDeleteItem)
+            if (!CanDeleteItem)
             {
-                if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    Debug.Assert(Order != null);
-                    await OrdersRepository.DeleteOrderAsync(Order.Id);
-                    GoBack();
-                }
+                return;
             }
+
+            if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            
+            Debug.Assert(Order != null);
+            await OrdersRepository.DeleteOrderAsync(Order.Id);
+
+            RaiseGoBack();
         }
         #endregion
+
+        private async void Initialize(int? id)
+        {
+            Order = null;
+
+            var order = id.HasValue ? await OrdersRepository.FindOrderAsync(id.Value) : null;
+            if (order is null)
+            {
+                MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                RaiseGoBack();
+                return;
+            }
+
+            Order = order;
+        }
+
+        private void RaiseGoBack()
+        {
+            EventAggregator.GetEvent<GoBackEvent>().Publish();
+        }
+
+        private void RaiseSituationChanged()
+        {
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
+        }
+
+        private void GoToOrderEdit(int? id)
+        {
+            var parameters = new NavigationParameters();
+            parameters.Add("id", id);
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "OrderEdit", parameters);
+        }
     }
 }

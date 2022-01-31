@@ -48,11 +48,15 @@ namespace PrismApp.Models
             await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-                if (db.Orders.Any(o => o.Id != order.Id && o.Number == order.Number))
+
+                if (db.Orders.Any(o => o.Number == order.Number
+                                       && o.Id != order.Id))
                 {
                     throw new InvalidOperationException("同じ番号を複数登録することはできません。");
                 }
+
                 db.Update(order);
+
                 db.SaveChanges();
             });
         }
@@ -66,10 +70,11 @@ namespace PrismApp.Models
                 var order = db.Orders.FirstOrDefault(o => o.Id == id);
                 if (order is null)
                 {
-                    throw new InvalidOperationException("削除する対象が見つかりません。");
+                    throw new InvalidOperationException("指図が見つかりません。");
                 }
 
                 db.Remove(order);
+
                 db.SaveChanges();
             });
         }

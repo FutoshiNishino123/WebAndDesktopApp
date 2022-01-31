@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity;
 using Prism.Commands;
+using System.Windows;
 
 namespace PrismApp.ViewModels
 {
@@ -39,32 +40,44 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region NavigateCommand property
-        private DelegateCommand<string>? _navigateCommand;
-        public DelegateCommand<string> NavigateCommand => _navigateCommand ??= new DelegateCommand<string>(Navigate, CanNavigate);
-
-        private void Navigate(string path)
+        #region IsLoggedIn property
+        private bool _isLoggedIn;
+        public bool IsLoggedIn
         {
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, path);
+            get => _isLoggedIn;
+            set => SetProperty(ref _isLoggedIn, value);
+        }
+        #endregion
+
+        #region LogInCommand property
+        private DelegateCommand? _logInCommand;
+        public DelegateCommand LogInCommand => _logInCommand ??= new DelegateCommand(LogIn, CanLogIn);
+
+        private void LogIn()
+        {
+            GoToLogIn();
         }
 
-        private bool CanNavigate(string path)
+        private bool CanLogIn()
         {
             return true;
         }
         #endregion
 
-        public async void Initialize()
+        #region LogOutCommand property
+        private DelegateCommand? _logOutCommand;
+        public DelegateCommand LogOutCommand => _logOutCommand ??= new DelegateCommand(LogOut, CanLogOut);
+
+        private void LogOut()
         {
-            var about = await AboutRepository.GetAboutAsync();
-            Description = about.Description;
-            Version = about.Version;
+            GoToLogOut();
         }
 
-        private void RaiseSituationChanged()
+        private bool CanLogOut()
         {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
+            return true;
         }
+        #endregion
 
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -81,7 +94,35 @@ namespace PrismApp.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-        } 
+        }
         #endregion
+
+        public HomeViewModel(IEventAggregator ea)
+        {
+            ea.GetEvent<LogInEvent>().Subscribe(_ => IsLoggedIn = true);
+            ea.GetEvent<LogOutEvent>().Subscribe(() => IsLoggedIn = false);
+        }
+
+        public async void Initialize()
+        {
+            var about = await AboutRepository.GetAboutAsync();
+            Description = about.Description;
+            Version = about.Version;
+        }
+
+        private void GoToLogIn()
+        {
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "LogIn");
+        }
+
+        private void GoToLogOut()
+        {
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "LogOut");
+        }
+
+        private void RaiseSituationChanged()
+        {
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
+        }
     }
 }

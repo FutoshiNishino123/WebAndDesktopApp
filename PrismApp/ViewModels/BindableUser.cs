@@ -62,7 +62,8 @@ namespace PrismApp.ViewModels
             {
                 if (value is null)
                 {
-                    LastName = FirstName = null;
+                    LastName = null;
+                    FirstName = null;
                     return;
                 }
 

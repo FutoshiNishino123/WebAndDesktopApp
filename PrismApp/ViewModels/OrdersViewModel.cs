@@ -65,7 +65,7 @@ namespace PrismApp.ViewModels
         {
             if (Order != null)
             {
-                NavigateToOrderDetail(Order.Id);
+                GoToOrderDetail(Order.Id);
             }
         }
 
@@ -88,6 +88,85 @@ namespace PrismApp.ViewModels
         private bool CanSave(Order order)
         {
             return true;
+        }
+        #endregion
+
+        #region INavigationAware
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            RaiseSituationChanged();
+
+            RaiseNavigatedToOrders();
+
+            Initialize();
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            RaiseNavigatedFromOrders();
+        }
+        #endregion
+
+        #region IRibbon
+        public bool CanRefresh => Orders != null;
+        public void Refresh()
+        {
+            if (CanRefresh)
+            {
+                Initialize();
+            }
+        }
+
+        public bool CanAddNewItem => true;
+        public void AddNewItem()
+        {
+            if (CanAddNewItem)
+            {
+                GoToOrderEdit(null);
+            }
+        }
+
+        public bool CanEditItem => Order != null && !Order.IsClosed;
+        public void EditItem()
+        {
+            if (CanEditItem)
+            {
+                Debug.Assert(Order != null);
+                GoToOrderEdit(Order.Id);
+            }
+        }
+
+        public bool CanDeleteItem => Order != null && !Order.IsClosed;
+        public async void DeleteItem()
+        {
+            if (!CanDeleteItem)
+            {
+                return;
+            }
+
+            if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            Debug.Assert(Order != null);
+
+            try
+            {
+                await OrdersRepository.DeleteOrderAsync(Order.Id);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Orders?.Remove(Order);
         }
         #endregion
 
@@ -117,106 +196,28 @@ namespace PrismApp.ViewModels
             EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
-        private void PublishNavigatedToOrdersEvent()
+        private void RaiseNavigatedToOrders()
         {
             EventAggregator.GetEvent<NavigatedToOrdersEvent>().Publish();
         }
 
-        private void PublishNavigatedFromOrdersEvent()
+        private void RaiseNavigatedFromOrders()
         {
             EventAggregator.GetEvent<NavigatedFromOrdersEvent>().Publish();
         }
 
-        private void NavigateToOrderDetail(int? id)
+        private void GoToOrderDetail(int? id)
         {
             var parameters = new NavigationParameters();
             parameters.Add("id", id);
             RegionManager.RequestNavigate(RegionNames.ContentRegion, "OrderDetail", parameters);
         }
 
-        private void NavigateToOrderEdit(int? id)
+        private void GoToOrderEdit(int? id)
         {
             var parameters = new NavigationParameters();
             parameters.Add("id", id);
             RegionManager.RequestNavigate(RegionNames.ContentRegion, "OrderEdit", parameters);
         }
-
-        #region INavigationAware
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            RaiseSituationChanged();
-            PublishNavigatedToOrdersEvent();
-
-            Initialize();
-        }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return true;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            PublishNavigatedFromOrdersEvent();
-        }
-        #endregion
-
-        #region IRibbon
-        public bool CanRefresh => Orders != null;
-        public void Refresh()
-        {
-            if (CanRefresh)
-            {
-                Initialize();
-            }
-        }
-
-        public bool CanAddNewItem => true;
-        public void AddNewItem()
-        {
-            if (CanAddNewItem)
-            {
-                NavigateToOrderEdit(null);
-            }
-        }
-
-        public bool CanEditItem => Order != null && !Order.IsClosed;
-        public void EditItem()
-        {
-            if (CanEditItem)
-            {
-                Debug.Assert(Order != null);
-                NavigateToOrderEdit(Order.Id);
-            }
-        }
-
-        public bool CanDeleteItem => Order != null && !Order.IsClosed;
-        public async void DeleteItem()
-        {
-            if (!CanDeleteItem)
-            {
-                return;
-            }
-
-            if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) != MessageBoxResult.Yes)
-            {
-                return;
-            }
-            
-            Debug.Assert(Order != null);
-
-            try
-            {
-                await OrdersRepository.DeleteOrderAsync(Order.Id);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            Orders?.Remove(Order);
-        }
-        #endregion
     }
 }

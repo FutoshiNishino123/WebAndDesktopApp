@@ -52,24 +52,6 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        private async void Initialize()
-        {
-            var statuses = await StatusesRepository.GetStatusesAsync();
-            Statuses = new ObservableCollection<Status>(statuses);
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
-        }
-
-        private void NavigateToStatusEdit(int? id)
-        {
-            var parameters = new NavigationParameters();
-            parameters.Add("id", id);
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "StatusEdit", parameters);
-        }
-
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
@@ -103,7 +85,7 @@ namespace PrismApp.ViewModels
         {
             if (CanAddNewItem)
             {
-                NavigateToStatusEdit(null);
+                GoToStatusEdit(null);
             }
         }
 
@@ -113,7 +95,7 @@ namespace PrismApp.ViewModels
             if (CanEditItem)
             {
                 Debug.Assert(Status != null);
-                NavigateToStatusEdit(Status.Id);
+                GoToStatusEdit(Status.Id);
             }
         }
 
@@ -145,5 +127,23 @@ namespace PrismApp.ViewModels
             Statuses?.Remove(Status);
         }
         #endregion
+
+        private async void Initialize()
+        {
+            var statuses = await StatusesRepository.GetStatusesAsync();
+            Statuses = new ObservableCollection<Status>(statuses);
+        }
+
+        private void RaiseSituationChanged()
+        {
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
+        }
+
+        private void GoToStatusEdit(int? id)
+        {
+            var parameters = new NavigationParameters();
+            parameters.Add("id", id);
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, "StatusEdit", parameters);
+        }
     }
 }

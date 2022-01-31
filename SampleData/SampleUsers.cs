@@ -51,7 +51,7 @@ namespace SampleData
                 var account = new Account
                 {
                     Id = "sample" + i,
-                    Password = PasswordUtils.GetHashValue("sample" + i),
+                    Password = PasswordUtils.GetHash("sample" + i),
                 };
 
                 var user = new User
@@ -70,7 +70,7 @@ namespace SampleData
             var adminAccount = new Account
             {
                 Id = "admin",
-                Password = PasswordUtils.GetHashValue("admin"),
+                Password = PasswordUtils.GetHash("admin"),
                 IsAdmin = true,
             };
             var adminUser = new User

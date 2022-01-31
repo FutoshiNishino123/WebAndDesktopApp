@@ -71,7 +71,13 @@ namespace PrismApp.ViewModels
         public bool SaveExecuted
         {
             get => _saveExecuted;
-            set => SetProperty(ref _saveExecuted, value);
+            set
+            {
+                if (SetProperty(ref _saveExecuted, value))
+                {
+                    RaiseSituationChanged();
+                }
+            }
         }
         #endregion
 
@@ -100,7 +106,7 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            GoBack();
+            RaiseGoBack();
         }
 
         private bool CanSave()
@@ -110,48 +116,6 @@ namespace PrismApp.ViewModels
                    && !SaveExecuted;
         }
         #endregion
-
-        private async void Initialize(int? id)
-        {
-            Order = null;
-            Users = null;
-            Statuses = null;
-            SaveExecuted = false;
-
-            var order = id.HasValue ? await OrdersRepository.FindOrderAsync(id.Value) : new Order();
-            if (order is null)
-            {
-                MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                GoBack();
-                return;
-            }
-            var users = await UsersRepository.GetUsersAsync();
-            var statuses = await StatusesRepository.GetStatusesAsync();
-
-            if (order.User != null)
-            {
-                order.User = users.FirstOrDefault(p => p.Id == order.User.Id);
-            }
-
-            if (order.Status != null)
-            {
-                order.Status = statuses.FirstOrDefault(s => s.Id == order.Status.Id);
-            }
-
-            Order = BindableOrder.FromOrder(order);
-            Users = new ObservableCollection<User>(users);
-            Statuses = new ObservableCollection<Status>(statuses);
-        }
-
-        private void GoBack()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
-        }
 
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -171,5 +135,48 @@ namespace PrismApp.ViewModels
         {
         }
         #endregion
+
+        private async void Initialize(int? id)
+        {
+            Order = null;
+            Users = null;
+            Statuses = null;
+            SaveExecuted = false;
+
+            var order = id.HasValue ? await OrdersRepository.FindOrderAsync(id.Value) : new Order();
+            if (order is null)
+            {
+                MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                RaiseGoBack();
+                return;
+            }
+
+            var users = await UsersRepository.GetUsersAsync();
+            var statuses = await StatusesRepository.GetStatusesAsync();
+
+            if (order.User != null)
+            {
+                order.User = users.FirstOrDefault(p => p.Id == order.User.Id);
+            }
+
+            if (order.Status != null)
+            {
+                order.Status = statuses.FirstOrDefault(s => s.Id == order.Status.Id);
+            }
+
+            Order = BindableOrder.FromOrder(order);
+            Users = new ObservableCollection<User>(users);
+            Statuses = new ObservableCollection<Status>(statuses);
+        }
+
+        private void RaiseGoBack()
+        {
+            EventAggregator.GetEvent<GoBackEvent>().Publish();
+        }
+
+        private void RaiseSituationChanged()
+        {
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
+        }
     }
 }

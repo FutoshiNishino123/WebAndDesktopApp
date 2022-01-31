@@ -86,7 +86,7 @@ namespace PrismApp.ViewModels
         {
             if (CanAddNewItem)
             {
-                NavigateToUserEdit(null);
+                GoToUserEdit(null);
             }
         }
 
@@ -96,7 +96,7 @@ namespace PrismApp.ViewModels
             if (CanEditItem)
             {
                 Debug.Assert(User != null);
-                NavigateToUserEdit(User.Id);
+                GoToUserEdit(User.Id);
             }
         }
 
@@ -140,7 +140,7 @@ namespace PrismApp.ViewModels
             EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
-        private void NavigateToUserEdit(int? id)
+        private void GoToUserEdit(int? id)
         {
             var parameters = new NavigationParameters();
             parameters.Add("id", id);

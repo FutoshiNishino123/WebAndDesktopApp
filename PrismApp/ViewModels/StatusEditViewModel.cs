@@ -41,7 +41,13 @@ namespace PrismApp.ViewModels
         public bool SaveExecuted
         {
             get => _saveExecuted;
-            set => SetProperty(ref _saveExecuted, value);
+            set
+            {
+                if (SetProperty(ref _saveExecuted, value))
+                {
+                    RaiseSituationChanged();
+                }
+            }
         }
         #endregion
 
@@ -70,7 +76,7 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            GoBack();
+            RaiseGoBack();
         }
 
         private bool CanSave()
@@ -80,32 +86,6 @@ namespace PrismApp.ViewModels
                    && !SaveExecuted;
         }
         #endregion
-
-        private async void Initialize(int? id)
-        {
-            Status = null;
-            SaveExecuted = false;
-
-            var status = id.HasValue ? await StatusesRepository.FindStatusAsync(id.Value) : new Status();
-            if (status is null)
-            {
-                MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                GoBack();
-                return;
-            }
-
-            Status = BindableStatus.FromStatus(status);
-        }
-
-        private void GoBack()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
-        }
 
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -125,5 +105,31 @@ namespace PrismApp.ViewModels
         {
         }
         #endregion
+
+        private async void Initialize(int? id)
+        {
+            Status = null;
+            SaveExecuted = false;
+
+            var status = id.HasValue ? await StatusesRepository.FindStatusAsync(id.Value) : new Status();
+            if (status is null)
+            {
+                MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                RaiseGoBack();
+                return;
+            }
+
+            Status = BindableStatus.FromStatus(status);
+        }
+
+        private void RaiseGoBack()
+        {
+            EventAggregator.GetEvent<GoBackEvent>().Publish();
+        }
+
+        private void RaiseSituationChanged()
+        {
+            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
+        }
     }
 }

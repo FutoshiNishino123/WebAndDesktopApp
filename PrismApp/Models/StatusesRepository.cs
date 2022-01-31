@@ -16,7 +16,9 @@ namespace PrismApp.Models
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
+
                 var statuses = db.Statuses.OrderBy(s => s.Id).ToList();
+
                 return statuses;
             });
         }
@@ -26,7 +28,9 @@ namespace PrismApp.Models
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
+
                 var status = db.Statuses.FirstOrDefault(s => s.Id == id);
+
                 return status;
             });
         }
@@ -36,11 +40,15 @@ namespace PrismApp.Models
             await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-                if (db.Statuses.Any(s => s.Id != status.Id && s.Text == status.Text))
+
+                if (db.Statuses.Any(s => s.Text == status.Text
+                                         && s.Id != status.Id))
                 {
                     throw new InvalidOperationException("同じステータス名を複数登録することはできません。");
                 }
+
                 db.Update(status);
+
                 db.SaveChanges();
             });
         }
@@ -54,13 +62,13 @@ namespace PrismApp.Models
                 var status = db.Statuses.FirstOrDefault(s => s.Id == id);
                 if (status == null)
                 {
-                    throw new InvalidOperationException("削除する対象が見つかりません。");
+                    throw new InvalidOperationException("ステータスが見つかりません。");
                 }
 
-                db.Remove(status);
-                
-                // 参照を解除
+                // 外部キーを削除
                 db.Orders.Where(o => o.Status.Id == id).ForEachAsync(o => o.Status = null).Wait();
+
+                db.Remove(status);
 
                 db.SaveChanges();
             });

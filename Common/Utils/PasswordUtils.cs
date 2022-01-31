@@ -11,7 +11,7 @@ namespace Common.Utils
 	{
 		private const string SALT = "{E0FC4B06-A85A-4AA9-B392-CBFE6D5E008F}";
 
-		public static string GetHashValue(string input)
+		public static string GetHash(string input)
 		{
 			byte[] data = Encoding.UTF8.GetBytes(input + SALT);
 			byte[] hash = SHA256.Create().ComputeHash(data);

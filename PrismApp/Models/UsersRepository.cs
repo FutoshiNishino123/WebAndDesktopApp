@@ -17,9 +17,11 @@ namespace PrismApp.Models
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
+
                 var users = db.Users.Include(u => u.Account)
                                     .OrderBy(u => u.Id)
                                     .ToList();
+
                 return users;
             });
         }
@@ -29,8 +31,10 @@ namespace PrismApp.Models
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
+
                 var user = db.Users.Include(u => u.Account)
                                    .FirstOrDefault(u => u.Id == id);
+
                 return user;
             });
         }
@@ -40,9 +44,11 @@ namespace PrismApp.Models
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
+
                 var user = db.Users.Include(u => u.Account)
                                    .FirstOrDefault(u => u.Account.Id == accountId
                                                         && u.Account.Password == password);
+
                 return user;
             });
         }
@@ -53,14 +59,16 @@ namespace PrismApp.Models
             {
                 using var db = new AppDbContext();
 
-                if (db.Users.Any(u => u.Id == user.Id))
-                {
-                    db.Users.Update(user);
-                }
-                else
-                {
-                    db.Users.Add(user);
-                }
+                //if (db.Users.Any(u => u.Id == user.Id))
+                //{
+                //    db.Update(user);
+                //}
+                //else
+                //{
+                //    db.Add(user);
+                //}
+
+                db.Update(user);
 
                 db.SaveChanges();
             });
@@ -75,18 +83,19 @@ namespace PrismApp.Models
                 var user = db.Users.Include(u => u.Account).FirstOrDefault(u => u.Id == id);
                 if (user is null)
                 {
-                    throw new InvalidOperationException("削除する対象が見つかりません。");
+                    throw new InvalidOperationException("ユーザが見つかりません。");
                 }
 
-                if (user.Account is not null)
+                if (user.Account is null)
                 {
-                    db.Remove(user.Account);
+                    throw new InvalidOperationException("ユーザアカウントが見つかりません。");
                 }
+
+                // 外部キーを削除
+                db.Orders.Where(o => o.User.Id == id).ForEachAsync(o => o.User = null).Wait();
 
                 db.Remove(user);
-
-                // 参照を解除
-                db.Orders.Where(o => o.User.Id == id).ForEachAsync(o => o.User = null).Wait();
+                db.Remove(user.Account);
 
                 db.SaveChanges();
             });

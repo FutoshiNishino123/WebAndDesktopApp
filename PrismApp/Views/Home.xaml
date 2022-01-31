@@ -8,11 +8,17 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel Margin="10">
+        
         <StackPanel DockPanel.Dock="Top" VerticalAlignment="Top" HorizontalAlignment="Center">
             <TextBlock FontSize="30" Text="ホーム" VerticalAlignment="Top" HorizontalAlignment="Center"/>
             <TextBlock Text="{Binding Description}" MaxWidth="300" TextWrapping="Wrap"/>
         </StackPanel>
+        
         <TextBlock DockPanel.Dock="Bottom" Text="{Binding Version}" Height="30" HorizontalAlignment="Center" />
-        <Button Content="ログイン" Width="50" Height="20" Command="{Binding NavigateCommand}" CommandParameter="LogIn"/>
+        
+        <Grid>
+            <Button Content="ログイン" Width="70" Height="30" Command="{Binding LogInCommand}" Visibility="{Binding IsLoggedIn, Converter={StaticResource TrueToVisible}}"/>
+            <Button Content="ログアウト" Width="70" Height="30" Command="{Binding LogOutCommand}" Visibility="{Binding IsLoggedIn, Converter={StaticResource FalseToVisible}}"/>
+        </Grid>
     </DockPanel>
 </UserControl>

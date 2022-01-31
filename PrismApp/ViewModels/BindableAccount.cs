@@ -34,7 +34,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _rawPassword, value))
                 {
-                    Password = value is null ? null : PasswordUtils.GetHashValue(value);
+                    Password = value is null ? null : PasswordUtils.GetHash(value);
                 }
             }
         }
