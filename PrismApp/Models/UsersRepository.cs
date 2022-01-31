@@ -59,16 +59,14 @@ namespace PrismApp.Models
             {
                 using var db = new AppDbContext();
 
-                //if (db.Users.Any(u => u.Id == user.Id))
-                //{
-                //    db.Update(user);
-                //}
-                //else
-                //{
-                //    db.Add(user);
-                //}
-
-                db.Update(user);
+                if (db.Users.Contains(user))
+                {
+                    db.Update(user);
+                }
+                else
+                {
+                    db.Add(user);
+                }
 
                 db.SaveChanges();
             });

@@ -24,14 +24,8 @@
             <!--ステータス-->
             <TextBlock FontSize="16" Text="{Binding Order.Status.Text}" Margin="5" />
 
-            <!--期限-->
-            <TextBlock FontSize="16" Text="{Binding Order.Expiration, StringFormat=yyyy/MM/dd 〆}" Foreground="Red" Margin="5" />
-
             <!--ユーザ名-->
-            <TextBlock FontSize="16" Text="{Binding Order.User.Name}" Margin="5" />
-
-            <!--ユーザ名-->
-            <TextBlock FontSize="16" Text="{Binding Order.User.Kana}" Margin="5" />
+            <TextBlock FontSize="16" Margin="5"><Run Text="{Binding Order.User.Name}"/> (<Run Text="{Binding Order.User.Kana}" />)</TextBlock>
 
             <!--ユーザ画像 (クソ重い）-->
             <!--<Image Source="{Binding Order.User.Image, FallbackValue={StaticResource DefaultImage}, TargetNullValue={StaticResource DefaultImage}}"
@@ -39,6 +33,9 @@
 
             <!--備考-->
             <TextBlock Text="{Binding Order.Remarks}" Margin="5"  TextWrapping="Wrap"/>
+
+            <!--期限-->
+            <TextBlock FontSize="16" Text="{Binding Order.Expiration, StringFormat=yyyy/MM/dd 〆}" Foreground="Red" Margin="5" />
 
             <!--作成-->
             <TextBlock Text="{Binding Order.Created, StringFormat=yyyy/MM/dd HH:mm:ss 作成}" Margin="5" />

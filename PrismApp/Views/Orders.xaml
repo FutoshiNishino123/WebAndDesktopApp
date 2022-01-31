@@ -12,13 +12,11 @@
              Name="ControlRoot">
     <Grid>
         <ListView Name="MainList" ItemsSource="{Binding Orders, Mode=OneWay}" SelectedItem="{Binding Order}" GridViewColumnHeader.Click="MainList_Click">
-            
-            <!--ダブルクリックイベント-->
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <prism:InvokeCommandAction Command="{Binding ShowDetailCommand}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+            <ListView.Resources>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <EventSetter Event="MouseDoubleClick" Handler="MainList_MouseDoubleClick"/>
+                </Style>
+            </ListView.Resources>
             
             <ListView.View>
                 <GridView>

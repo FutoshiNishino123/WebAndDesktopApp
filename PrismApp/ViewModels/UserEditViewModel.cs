@@ -56,8 +56,8 @@ namespace PrismApp.ViewModels
         #region SaveCommand property
         private DelegateCommand? _saveCommand;
         public DelegateCommand SaveCommand => _saveCommand ??= new DelegateCommand(Save, CanSave)
-            .ObservesProperty(() => User.FirstName)
-            .ObservesProperty(() => User.FirstKana)
+            .ObservesProperty(() => User.LastName)
+            .ObservesProperty(() => User.LastKana)
             .ObservesProperty(() => Account.Id)
             .ObservesProperty(() => Account.RawPassword);
 
@@ -101,8 +101,8 @@ namespace PrismApp.ViewModels
         {
             return User != null
                    && Account != null
-                   && !string.IsNullOrEmpty(User.FirstName)
-                   && !string.IsNullOrEmpty(User.FirstKana)
+                   && !string.IsNullOrEmpty(User.LastName)
+                   && !string.IsNullOrEmpty(User.LastKana)
                    && !string.IsNullOrEmpty(Account.Id)
                    && !string.IsNullOrEmpty(Account.RawPassword);
         }

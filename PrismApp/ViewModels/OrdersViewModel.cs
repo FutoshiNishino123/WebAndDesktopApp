@@ -55,24 +55,31 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        public OrderFilter? Filter { get; set; }
+        #region OrderFilter property
+        private OrderFilter? _orderFilter = new OrderFilter();
+        public OrderFilter? OrderFilter
+        {
+            get => _orderFilter;
+            set => SetProperty(ref _orderFilter, value);
+        }
+        #endregion
 
         #region ShowDetailCommand property
-        private DelegateCommand? _showDetailCommand;
-        public DelegateCommand ShowDetailCommand => _showDetailCommand ??= new DelegateCommand(ShowDetail, CanShowDetail)
+        private DelegateCommand<int?>? _showDetailCommand;
+        public DelegateCommand<int?> ShowDetailCommand => _showDetailCommand ??= new DelegateCommand<int?>(ShowDetail, CanShowDetail)
             .ObservesProperty(() => Orders);
 
-        private void ShowDetail()
+        private void ShowDetail(int? id)
         {
-            if (Order != null)
+            if (id.HasValue)
             {
-                RegionManager.Navigate("OrderDetail", Order.Id);
+                RegionManager.Navigate("OrderDetail", id.Value);
             }
         }
 
-        private bool CanShowDetail()
+        private bool CanShowDetail(int? id)
         {
-            return Orders != null;
+            return id.HasValue;
         }
         #endregion
 
@@ -83,6 +90,7 @@ namespace PrismApp.ViewModels
         private async void Save(Order order)
         {
             await OrdersRepository.SaveOrderAsync(order);
+
             EventPublisher.RaiseSituationChanged();
         }
 
@@ -144,29 +152,24 @@ namespace PrismApp.ViewModels
         public bool CanDeleteItem => Order != null && !Order.IsClosed;
         public async void DeleteItem()
         {
-            if (!CanDeleteItem)
+            if (CanDeleteItem)
             {
-                return;
-            }
+                if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        Debug.Assert(Order != null);
+                        await OrdersRepository.DeleteOrderAsync(Order.Id);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
 
-            if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) != MessageBoxResult.Yes)
-            {
-                return;
+                    Orders?.Remove(Order);
+                }
             }
-
-            Debug.Assert(Order != null);
-
-            try
-            {
-                await OrdersRepository.DeleteOrderAsync(Order.Id);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            Orders?.Remove(Order);
         }
         #endregion
 
@@ -174,7 +177,7 @@ namespace PrismApp.ViewModels
         {
             ea.GetEvent<OrderFilterChangedEvent>().Subscribe(filter =>
             {
-                Filter = filter;
+                OrderFilter = filter;
                 Initialize();
             });
         }
@@ -183,9 +186,9 @@ namespace PrismApp.ViewModels
         {
             var orders = await OrdersRepository.GetOrdersAsync();
 
-            if (Filter != null)
+            if (OrderFilter != null)
             {
-                orders = orders.Where(Filter.Filter);
+                orders = orders.Where(OrderFilter.Filter);
             }
 
             Orders = new ObservableCollection<Order>(orders);

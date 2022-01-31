@@ -102,29 +102,24 @@ namespace PrismApp.ViewModels
         public bool CanDeleteItem => Status != null;
         public async void DeleteItem()
         {
-            if (!CanDeleteItem)
+            if (CanDeleteItem)
             {
-                return;
-            }
+                if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        Debug.Assert(Status != null);
+                        await StatusesRepository.DeleteStatusAsync(Status.Id);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
 
-            if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) != MessageBoxResult.Yes)
-            {
-                return;
+                    Statuses?.Remove(Status);
+                }
             }
-
-            Debug.Assert(Status != null);
-
-            try
-            {
-                await StatusesRepository.DeleteStatusAsync(Status.Id);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            Statuses?.Remove(Status);
         }
         #endregion
 

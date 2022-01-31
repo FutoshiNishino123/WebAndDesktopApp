@@ -36,11 +36,11 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="10">
-                    <TextBlock Text="姓:"/>
+                    <TextBlock><Run Text="姓:"/><Run Text="*" Foreground="Red"/></TextBlock>
                     <TextBox Text="{Binding User.LastName, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
                 <StackPanel Grid.Column="1"  Margin="10">
-                    <TextBlock><Run Text="名:"/><Run Text="*" Foreground="Red"/></TextBlock>
+                    <TextBlock><Run Text="名:"/><!--<Run Text="*" Foreground="Red"/>--></TextBlock>
                     <TextBox Text="{Binding User.FirstName, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </Grid>
@@ -52,11 +52,11 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="10">
-                    <TextBlock Text="セイ:"/>
+                    <TextBlock><Run Text="セイ:"/><Run Text="*" Foreground="Red"/></TextBlock>
                     <TextBox Text="{Binding User.LastKana, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="10">
-                    <TextBlock><Run Text="メイ:"/><Run Text="*" Foreground="Red"/></TextBlock>
+                    <TextBlock><Run Text="メイ:"/><!--<Run Text="*" Foreground="Red"/>--></TextBlock>
                     <TextBox Text="{Binding User.FirstKana, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </Grid>

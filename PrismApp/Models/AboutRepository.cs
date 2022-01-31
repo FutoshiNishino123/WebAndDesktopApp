@@ -12,7 +12,7 @@ namespace PrismApp.Models
             {
                 return new About
                 {
-                    Description = "サンプルです。",
+                    Description = "このアプリは 指図伝票 管理アプリ（デモ版）です。",
                     Version = "Ver." + Assembly.GetExecutingAssembly().GetName().Version?.ToString(),
                 };
             });

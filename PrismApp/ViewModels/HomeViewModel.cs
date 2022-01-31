@@ -41,10 +41,10 @@ namespace PrismApp.ViewModels
         }
 
         #region Greeting property
-        private string _greeting;
+        private string _greeting = "ようこそ";
         public string Greeting
         {
-            get => _greeting = "ようこそ";
+            get => _greeting;
             set => SetProperty(ref _greeting, value);
         }
         #endregion

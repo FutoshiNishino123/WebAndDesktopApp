@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Data.Models;
+using PrismApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +27,7 @@ namespace PrismApp.Views
         }
 
         /// <summary>
-        /// リストビューのヘッダーをクリックしてデータをソートします。
+        /// リストビューのヘッダがクリックされたときにデータをソートします。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -36,6 +38,18 @@ namespace PrismApp.Views
                 ListViewUtils.SortByProperty(MainList, header);
                 MainList.UnselectAll();
             }
+        }
+
+        /// <summary>
+        /// リストビューの項目がダブルクリックされたときに詳細を表示します。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = (ListViewItem)sender;
+            var order = (Order)item.DataContext;
+            (DataContext as OrdersViewModel)?.ShowDetailCommand.Execute(order.Id);
         }
     }
 }

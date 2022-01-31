@@ -75,7 +75,7 @@ namespace PrismApp.ViewModels
                 }
                 else
                 {
-                    FirstName = value;
+                    LastName = value;
                 }
             }
         }
@@ -115,7 +115,8 @@ namespace PrismApp.ViewModels
             {
                 if (value is null)
                 {
-                    LastKana = FirstKana = null;
+                    LastKana = null;
+                    FirstKana = null;
                     return;
                 }
 
@@ -127,7 +128,7 @@ namespace PrismApp.ViewModels
                 }
                 else
                 {
-                    FirstKana = value;
+                    LastKana = value;
                 }
             }
         }
