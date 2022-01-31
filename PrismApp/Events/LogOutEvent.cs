@@ -2,7 +2,7 @@
 
 namespace PrismApp.Events
 {
-    internal class LogOutEvent : PubSubEvent
+    public class LogOutEvent : PubSubEvent
     {
     }
 }

@@ -17,10 +17,10 @@ namespace PrismApp.ViewModels
     internal class HomeViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IRegionManager RegionManager { get; set; }
+        public IContentRegionManager ContentRegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
+        public IEventPublisher EventPublisher { get; set; }
 
         #region Description property
         private string? _description;
@@ -55,7 +55,7 @@ namespace PrismApp.ViewModels
 
         private void LogIn()
         {
-            GoToLogIn();
+            ContentRegionManager.GoToLogIn();
         }
 
         private bool CanLogIn()
@@ -70,7 +70,7 @@ namespace PrismApp.ViewModels
 
         private void LogOut()
         {
-            GoToLogOut();
+            ContentRegionManager.GoToLogOut();
         }
 
         private bool CanLogOut()
@@ -82,7 +82,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            RaiseSituationChanged();
+            EventPublisher.RaiseSituationChanged();
 
             Initialize();
         }
@@ -108,21 +108,6 @@ namespace PrismApp.ViewModels
             var about = await AboutRepository.GetAboutAsync();
             Description = about.Description;
             Version = about.Version;
-        }
-
-        private void GoToLogIn()
-        {
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "LogIn");
-        }
-
-        private void GoToLogOut()
-        {
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "LogOut");
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
     }
 }

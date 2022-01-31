@@ -17,19 +17,10 @@ namespace PrismApp.ViewModels
     internal class MainWindowViewModel : BindableBase
     {
         [Dependency]
-        public IRegionManager RegionManager { get; set; }
+        public IContentRegionManager ContentRegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
-
-        private object? ContentRegionDataContext
-        {
-            get
-            {
-                var view = RegionManager.Regions[RegionNames.ContentRegion].ActiveViews.FirstOrDefault();
-                return (view as FrameworkElement)?.DataContext;
-            }
-        }
+        public IEventPublisher EventPublisher { get; set; }
 
         #region Title property
         private string _title = "Demo";
@@ -67,7 +58,11 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _showClosed, value))
                 {
-                    PublishOrderFilterChangedEvent();
+                    var filter = new OrderFilter
+                    {
+                        ShowClosed = ShowClosed,
+                    };
+                    EventPublisher.RaiseOrderFilterChanged(filter);
                 }
             }
         }
@@ -79,10 +74,25 @@ namespace PrismApp.ViewModels
 
         private void Navigate(string path)
         {
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, path);
+            ContentRegionManager.GoTo(path);
         }
 
         private bool CanNavigate(string path)
+        {
+            return true;
+        }
+        #endregion
+
+        #region GoHomeCommand property
+        private DelegateCommand? _goHomeCommand;
+        public DelegateCommand GoHomeCommand => _goHomeCommand ??= new DelegateCommand(GoHome, CanGoHome);
+
+        private void GoHome()
+        {
+            ContentRegionManager.GoToHome();
+        }
+
+        private bool CanGoHome()
         {
             return true;
         }
@@ -94,12 +104,12 @@ namespace PrismApp.ViewModels
 
         private void GoBack()
         {
-            RegionManager.Regions[RegionNames.ContentRegion].NavigationService.Journal.GoBack();
+            ContentRegionManager.GoBack();
         }
 
         private bool CanGoBack()
         {
-            return RegionManager.Regions[RegionNames.ContentRegion].NavigationService.Journal.CanGoBack;
+            return ContentRegionManager.CanGoBack();
         }
         #endregion
 
@@ -109,12 +119,12 @@ namespace PrismApp.ViewModels
 
         private void Refresh()
         {
-            (ContentRegionDataContext as IRibbon)?.Refresh();
+            (ContentRegionManager.DataContext as IRibbon)?.Refresh();
         }
 
         private bool CanRefresh()
         {
-            return (ContentRegionDataContext as IRibbon)?.CanRefresh ?? false;
+            return (ContentRegionManager.DataContext as IRibbon)?.CanRefresh ?? false;
         }
         #endregion
 
@@ -124,12 +134,12 @@ namespace PrismApp.ViewModels
 
         private void AddNewItem()
         {
-            (ContentRegionDataContext as IRibbon)?.AddNewItem();
+            (ContentRegionManager.DataContext as IRibbon)?.AddNewItem();
         }
 
         private bool CanAddNewItem()
         {
-            return (ContentRegionDataContext as IRibbon)?.CanAddNewItem ?? false;
+            return (ContentRegionManager.DataContext as IRibbon)?.CanAddNewItem ?? false;
         }
         #endregion
 
@@ -139,12 +149,12 @@ namespace PrismApp.ViewModels
 
         private void EditItem()
         {
-            (ContentRegionDataContext as IRibbon)?.EditItem();
+            (ContentRegionManager.DataContext as IRibbon)?.EditItem();
         }
 
         private bool CanEditItem()
         {
-            return (ContentRegionDataContext as IRibbon)?.CanEditItem ?? false;
+            return (ContentRegionManager.DataContext as IRibbon)?.CanEditItem ?? false;
         }
         #endregion
 
@@ -154,12 +164,12 @@ namespace PrismApp.ViewModels
 
         private void DeleteItem()
         {
-            (ContentRegionDataContext as IRibbon)?.DeleteItem();
+            (ContentRegionManager.DataContext as IRibbon)?.DeleteItem();
         }
 
         private bool CanDeleteItem()
         {
-            return (ContentRegionDataContext as IRibbon)?.CanDeleteItem ?? false;
+            return (ContentRegionManager.DataContext as IRibbon)?.CanDeleteItem ?? false;
         }
         #endregion
 
@@ -173,15 +183,7 @@ namespace PrismApp.ViewModels
             ea.GetEvent<LogOutEvent>().Subscribe(() => LogInUser = null);
 
             // 管理者として起動
-            //ea.GetEvent<LogInEvent>().Publish(new User { Account = new Account { IsAdmin = true } });   
-        }
-
-        private void PublishOrderFilterChangedEvent()
-        {
-            EventAggregator.GetEvent<OrderFilterChangedEvent>().Publish(new OrderFilter
-            {
-                ShowClosed = ShowClosed,
-            });
+            ea.GetEvent<LogInEvent>().Publish(new User { Account = new Account { IsAdmin = true } });
         }
 
         private void RefreshCommands()

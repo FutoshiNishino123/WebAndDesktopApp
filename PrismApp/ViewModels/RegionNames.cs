@@ -8,6 +8,6 @@ namespace PrismApp.ViewModels
 {
     internal static class RegionNames
     {
-        public static string ContentRegion { get; private set; } = "ContentRegion";
+        public static readonly string ContentRegion = "ContentRegion";
     }
 }

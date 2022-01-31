@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PrismApp.Events
 {
-    internal class SituationChangedEvent : PubSubEvent
+    public class SituationChangedEvent : PubSubEvent
     {
     }
 }

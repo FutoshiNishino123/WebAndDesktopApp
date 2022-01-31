@@ -17,8 +17,8 @@
         <TextBlock DockPanel.Dock="Bottom" Text="{Binding Version}" Height="30" HorizontalAlignment="Center" />
         
         <Grid>
-            <Button Content="ログイン" Width="70" Height="30" Command="{Binding LogInCommand}" Visibility="{Binding IsLoggedIn, Converter={StaticResource TrueToVisible}}"/>
-            <Button Content="ログアウト" Width="70" Height="30" Command="{Binding LogOutCommand}" Visibility="{Binding IsLoggedIn, Converter={StaticResource FalseToVisible}}"/>
+            <Button Content="ログイン" Width="70" Height="30" Command="{Binding LogInCommand}" Visibility="{Binding IsLoggedIn, Converter={StaticResource FalseToVisible}}"/>
+            <Button Content="ログアウト" Width="70" Height="30" Command="{Binding LogOutCommand}" Visibility="{Binding IsLoggedIn, Converter={StaticResource TrueToVisible}}"/>
         </Grid>
     </DockPanel>
 </UserControl>

@@ -15,13 +15,13 @@ using Unity;
 
 namespace PrismApp.ViewModels
 {
-    public class LogInViewModel : BindableBase
+    public class LogInViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IRegionManager RegionManager { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
+        public IEventPublisher EventPublisher { get; set; }
 
         #region AccountId property
         private string? _accountId;
@@ -49,16 +49,28 @@ namespace PrismApp.ViewModels
 
         private async void LogIn()
         {
-            var user = await FindUserAsync();
-            if (user == null)
+            User? user = null;
+            try
             {
+                user = await FindUserAsync();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            RaiseLogIn(user);
+            if (user is null)
+            {
+                MessageBox.Show("ユーザID または パスワード が正しくありません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             MessageBox.Show("ログインしました。", "情報", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            RaiseGoBack();
+            EventPublisher.RaiseLogIn(user);
+
+            RegionManager.GoToHome();
         }
 
         private bool CanLogIn()
@@ -68,41 +80,39 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
+        #region INavigationAware
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            EventPublisher.RaiseSituationChanged();
+
+            Initialize();
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+        }
+        #endregion
+
+        private void Initialize()
+        {
+            AccountId = null;
+            Password = null;
+        }
+
         private async Task<User?> FindUserAsync()
         {
             Debug.Assert(AccountId != null);
             Debug.Assert(Password != null);
 
             var hash = PasswordUtils.GetHash(Password);
-
-            User? user = null;
-            try
-            {
-                user = await UsersRepository.FindUserAsync(AccountId, hash);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-
-            if (user == null)
-            {
-                MessageBox.Show("ユーザID または パスワード が正しくありません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
+            var user = await UsersRepository.FindUserAsync(AccountId, hash);
 
             return user;
-        }
-
-        private void RaiseLogIn(User user)
-        {
-            EventAggregator.GetEvent<LogInEvent>().Publish(user);
-        }
-
-        private void RaiseGoBack()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
         }
     }
 }

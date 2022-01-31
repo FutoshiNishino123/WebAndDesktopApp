@@ -20,7 +20,7 @@ namespace PrismApp.ViewModels
         public IRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
+        public IEventPublisher EventPublisher { get; set; }
 
         #region User property
         private User? _user;
@@ -31,7 +31,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _user, value))
                 {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -47,7 +47,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _users, value))
                 {
-                    RaiseSituationChanged();
+                    EventPublisher.RaiseSituationChanged();
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            RaiseSituationChanged();
+            EventPublisher.RaiseSituationChanged();
 
             Initialize();
         }
@@ -133,11 +133,6 @@ namespace PrismApp.ViewModels
         {
             var users = await UsersRepository.GetUsersAsync();
             Users = new ObservableCollection<User>(users);
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
         }
 
         private void GoToUserEdit(int? id)

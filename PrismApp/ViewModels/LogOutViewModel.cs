@@ -11,10 +11,10 @@ namespace PrismApp.ViewModels
     public class LogOutViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IRegionManager RegionManager { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
 
         [Dependency]
-        public IEventAggregator EventAggregator { get; set; }
+        public IEventPublisher EventPublisher { get; set; }
 
         #region LogOutCommand property
         private DelegateCommand? _logOutCommand;
@@ -22,9 +22,9 @@ namespace PrismApp.ViewModels
 
         private void LogOut()
         {
-            RaiseLogOut();
+            EventPublisher.RaiseLogOut();
 
-            GoToLogIn();
+            RegionManager.GoToLogIn();
         }
 
         private bool CanLogOut()
@@ -39,7 +39,7 @@ namespace PrismApp.ViewModels
 
         private void GoBack()
         {
-            RaiseGoBack();
+            EventPublisher.RaiseGoBack();
         }
 
         private bool CanGoBack()
@@ -51,7 +51,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            RaiseSituationChanged();
+            EventPublisher.RaiseSituationChanged();
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -63,25 +63,5 @@ namespace PrismApp.ViewModels
         {
         }
         #endregion
-
-        private void GoToLogIn()
-        {
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, "LogIn");
-        }
-
-        private void RaiseLogOut()
-        {
-            EventAggregator.GetEvent<LogOutEvent>().Publish();
-        }
-
-        private void RaiseGoBack()
-        {
-            EventAggregator.GetEvent<GoBackEvent>().Publish();
-        }
-
-        private void RaiseSituationChanged()
-        {
-            EventAggregator.GetEvent<SituationChangedEvent>().Publish();
-        }
     }
 }

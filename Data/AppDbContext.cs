@@ -28,9 +28,12 @@ namespace Data
             var serverVersion = new MariaDbServerVersion(ServerVersion.AutoDetect(connectionString));
 
             options.UseMySql(connectionString, serverVersion)
-                   .LogTo(s => Debug.WriteLine(s), Microsoft.Extensions.Logging.LogLevel.Information)
-                   .EnableSensitiveDataLogging()
                    .EnableDetailedErrors();
+
+#if DEBUG
+            options.LogTo(s => Debug.WriteLine(s), Microsoft.Extensions.Logging.LogLevel.Information)
+                   .EnableSensitiveDataLogging();
+#endif
         }
 
         protected override void OnModelCreating(ModelBuilder model)

@@ -22,7 +22,7 @@
         </StackPanel>
 
         <!--ログイン-->
-        <Button Content="ログイン" Width="100" Margin="10" Command="{Binding LoginCommand}"/>
+        <Button Content="ログイン" Width="100" Margin="10" Command="{Binding LogInCommand}"/>
 
     </StackPanel>
 </UserControl>

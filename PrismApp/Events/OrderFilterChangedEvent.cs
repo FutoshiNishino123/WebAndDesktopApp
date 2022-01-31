@@ -5,7 +5,7 @@ using System;
 
 namespace PrismApp.Events
 {
-    internal class OrderFilterChangedEvent : PubSubEvent<OrderFilter>
+    public class OrderFilterChangedEvent : PubSubEvent<OrderFilter>
     {
     }
 }

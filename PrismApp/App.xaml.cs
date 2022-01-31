@@ -2,6 +2,8 @@
 using Prism.Ioc;
 using Prism.Regions;
 using Prism.Unity;
+using PrismApp.Events;
+using PrismApp.ViewModels;
 using PrismApp.Views;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,7 @@ namespace PrismApp
         {
             containerRegistry.RegisterForNavigation<Home>();
             containerRegistry.RegisterForNavigation<LogIn>();
+            containerRegistry.RegisterForNavigation<LogOut>();
             containerRegistry.RegisterForNavigation<Orders>();
             containerRegistry.RegisterForNavigation<OrderEdit>();
             containerRegistry.RegisterForNavigation<OrderDetail>();
@@ -39,6 +42,8 @@ namespace PrismApp
             containerRegistry.RegisterForNavigation<StatusEdit>();
             containerRegistry.RegisterForNavigation<Users>();
             containerRegistry.RegisterForNavigation<UserEdit>();
+            containerRegistry.RegisterSingleton<IEventPublisher, EventPublisher>();
+            containerRegistry.RegisterSingleton<IContentRegionManager, ContentRegionManager>();
         }
     }
 }

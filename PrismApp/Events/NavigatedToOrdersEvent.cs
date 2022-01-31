@@ -2,7 +2,7 @@
 
 namespace PrismApp.Events
 {
-    internal class NavigatedToOrdersEvent : PubSubEvent
+    public class NavigatedToOrdersEvent : PubSubEvent
     {
     }
 }

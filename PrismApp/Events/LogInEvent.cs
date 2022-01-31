@@ -3,7 +3,7 @@ using Prism.Events;
 
 namespace PrismApp.Events
 {
-    internal class LogInEvent : PubSubEvent<User>
+    public class LogInEvent : PubSubEvent<User>
     {
     }
 }
