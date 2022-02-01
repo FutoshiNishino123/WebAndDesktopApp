@@ -41,6 +41,12 @@ namespace PrismApp.Models
             {
                 using var db = new AppDbContext();
 
+                if (db.Statuses.Any(s => s.Text == status.Text
+                                         && s.Id != status.Id))
+                {
+                    throw new InvalidOperationException("ステータス名が重複しています。");
+                }
+
                 db.Update(status);
 
                 db.SaveChanges();
@@ -56,35 +62,15 @@ namespace PrismApp.Models
                 var status = db.Statuses.FirstOrDefault(s => s.Id == id);
                 if (status == null)
                 {
-                    throw new InvalidOperationException($"Status (id:{id}) was not found.");
+                    throw new InvalidOperationException("Status was not found.");
                 }
 
-                // 外部キーを削除
+                // カスケード削除
                 db.Orders.Where(o => o.Status.Id == id).ForEachAsync(o => o.Status = null).Wait();
 
                 db.Remove(status);
 
                 db.SaveChanges();
-            });
-        }
-
-        public static async Task<bool> Contains(int id)
-        {
-            return await Task.Run(() =>
-            {
-                using var db = new AppDbContext();
-
-                return db.Statuses.Any(s => s.Id == id);
-            });
-        }
-
-        public static async Task<bool> Contains(string text)
-        {
-            return await Task.Run(() =>
-            {
-                using var db = new AppDbContext();
-
-                return db.Statuses.Any(s => s.Text == text);
             });
         }
     }

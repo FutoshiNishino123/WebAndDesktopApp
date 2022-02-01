@@ -67,26 +67,33 @@ namespace SampleData
                 return user;
             });
 
-            var adminAccount = new Account
-            {
-                Id = "admin",
-                Password = PasswordUtils.GetHash("admin"),
-                IsAdmin = true,
-            };
-            var adminUser = new User
-            {
-                Account = adminAccount,
-                Name = "admin",
-                Kana = "admin",
-            };
-
-            return users.Prepend(adminUser);
+            return users;
         }
 
         public void AddData(int count)
         {
             var data = CreateData(count);
             _db.AddRange(data);
+            _db.SaveChanges();
+        }
+
+        public void AddAdmin()
+        {
+            var account = new Account
+            {
+                Id = "admin",
+                Password = PasswordUtils.GetHash("admin"),
+                IsAdmin = true,
+            };
+            
+            var user = new User
+            {
+                Account = account,
+                Name = "admin",
+                Kana = "admin",
+            };
+
+            _db.Add(user);
             _db.SaveChanges();
         }
 

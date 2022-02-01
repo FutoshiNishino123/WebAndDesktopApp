@@ -35,6 +35,7 @@ void InitializeDb()
     users.AddData(5);
     statuses.AddData();
     orders.AddData(100);
+    users.AddAdmin();
     Console.WriteLine("Done.");
 
     users.PrintData();

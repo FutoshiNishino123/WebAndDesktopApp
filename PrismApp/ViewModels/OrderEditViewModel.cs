@@ -24,6 +24,8 @@ namespace PrismApp.ViewModels
         [Dependency]
         public IEventPublisher EventPublisher { get; set; }
 
+        public User? LogInUser { get; set; }
+
         #region Order property
         private BindableOrder? _order;
         public BindableOrder? Order
@@ -134,6 +136,12 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
+        public OrderEditViewModel(IEventAggregator ea)
+        {
+            ea.GetEvent<LogInEvent>().Subscribe(user => LogInUser = user);
+            ea.GetEvent<LogOutEvent>().Subscribe(() => LogInUser = null);
+        }
+
         private async void Initialize(int? id)
         {
             Order = null;
@@ -153,12 +161,20 @@ namespace PrismApp.ViewModels
 
             if (order.User != null)
             {
-                order.User = users.FirstOrDefault(p => p.Id == order.User.Id);
+                order.User = users.FirstOrDefault(u => u.Id == order.User.Id);
+            }
+            else if (LogInUser != null)
+            {
+                order.User = users.FirstOrDefault(u => u.Id == LogInUser.Id);
             }
 
             if (order.Status != null)
             {
                 order.Status = statuses.FirstOrDefault(s => s.Id == order.Status.Id);
+            }
+            else
+            {
+                order.Status = statuses.FirstOrDefault();
             }
 
             Order = BindableOrder.FromOrder(order);

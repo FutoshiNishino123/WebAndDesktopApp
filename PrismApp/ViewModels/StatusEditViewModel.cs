@@ -70,6 +70,7 @@ namespace PrismApp.ViewModels
             }
             catch (Exception e)
             {
+                while (e.InnerException != null) { e = e.InnerException; }
                 MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }

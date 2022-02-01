@@ -55,10 +55,22 @@ namespace PrismApp.Models
 
         public static async Task SaveUserAsync(User user)
         {
+            if (user.Account is null)
+            {
+                throw new ArgumentException("アカウントが設定されていません。");
+            }
+
             await Task.Run(() =>
             {
                 using var db = new AppDbContext();
 
+                if (db.Users.Any(u => u.Account.Id == user.Account.Id
+                                      && u.Id != user.Id))
+                {
+                    throw new InvalidOperationException("ユーザ アカウントIDが重複しています。");
+                }
+
+                // Update だけだとエラーになるので、条件によってAddと使い分ける
                 if (db.Users.Contains(user))
                 {
                     db.Update(user);
@@ -81,15 +93,15 @@ namespace PrismApp.Models
                 var user = db.Users.Include(u => u.Account).FirstOrDefault(u => u.Id == id);
                 if (user is null)
                 {
-                    throw new InvalidOperationException($"User (id:{id}) was not found.");
+                    throw new InvalidOperationException("User was not found.");
                 }
 
                 if (user.Account is null)
                 {
-                    throw new InvalidOperationException($"Account (user id:{id}) was not found.");
+                    throw new InvalidOperationException("Account was not found.");
                 }
 
-                // 外部キーを削除
+                // カスケード削除
                 db.Orders.Where(o => o.User.Id == id).ForEachAsync(o => o.User = null).Wait();
 
                 db.Remove(user);
