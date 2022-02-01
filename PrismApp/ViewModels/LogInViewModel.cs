@@ -5,7 +5,7 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Events;
+using PrismApp.ViewModels.Events;
 using PrismApp.Models;
 using PrismApp.Regions;
 using System;

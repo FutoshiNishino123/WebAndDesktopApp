@@ -3,7 +3,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Events;
+using PrismApp.ViewModels.Events;
 using PrismApp.Regions;
 using System;
 using System.Collections.Generic;

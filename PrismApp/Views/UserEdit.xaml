@@ -1,12 +1,13 @@
-﻿<UserControl x:Class="PrismApp.Views.PrismApp.Views.Helpers.UserEdit"
+﻿<UserControl x:Class="PrismApp.Views.UserEdit"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PrismApp.Views"
+             xmlns:helpers="clr-namespace:PrismApp.Views.Helpers"
              xmlns:viewmodels="clr-namespace:PrismApp.ViewModels"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=viewmodels:PrismApp.Models.UserEditViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewmodels:UserEditViewModel}"
              d:DesignHeight="550" d:DesignWidth="600">
     <ScrollViewer VerticalScrollBarVisibility="Auto" Width="400" HorizontalAlignment="Left">
         <StackPanel Margin="10">
@@ -26,7 +27,7 @@
             <!--パスワード-->
             <StackPanel Margin="10">
                 <TextBlock><Run Text="パスワード:"/><Run Text="*" Foreground="Red"/></TextBlock>
-                <PasswordBox PasswordChar="*" local:PasswordBoxHelper.Password="{Binding Account.RawPassword, UpdateSourceTrigger=PropertyChanged}" />
+                <PasswordBox PasswordChar="*" helpers:PasswordBoxHelper.Password="{Binding Account.RawPassword, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
             <!--姓・名-->

@@ -5,7 +5,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Models;
-using PrismApp.Events;
+using PrismApp.ViewModels.Events;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;

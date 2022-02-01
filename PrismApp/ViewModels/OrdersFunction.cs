@@ -1,7 +1,7 @@
 ﻿using Data.Models;
 using Prism.Commands;
 using Prism.Mvvm;
-using PrismApp.Events;
+using PrismApp.ViewModels.Events;
 using PrismApp.Models;
 using Unity;
 
