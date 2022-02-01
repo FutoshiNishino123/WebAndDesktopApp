@@ -23,23 +23,8 @@ namespace PrismApp.ViewModels
         [Dependency]
         public IEventPublisher Event { get; set; }
 
-        private string GetGreeting(string? name)
-        {
-            var hour = DateTime.Now.Hour;
-
-            var greeting = hour < 12 ? "おはようございます"
-                           : hour < 18 ? "こんにちは"
-                           : "こんばんは";
-
-            if (name is null)
-            {
-                return greeting;
-            }
-            else
-            {
-                return $"{greeting}、{name} さん";
-            }
-        }
+        [Dependency]
+        public AppData Data { get; set; }
 
         #region Greeting property
         private static readonly string DefaultGreeting = "ようこそ";
@@ -66,15 +51,6 @@ namespace PrismApp.ViewModels
         {
             get => _version;
             set => SetProperty(ref _version, value);
-        }
-        #endregion
-
-        #region IsLoggedIn property
-        private bool _isLoggedIn;
-        public bool IsLoggedIn
-        {
-            get => _isLoggedIn;
-            set => SetProperty(ref _isLoggedIn, value);
         }
         #endregion
 
@@ -126,26 +102,30 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        public HomeViewModel(IEventAggregator ea)
-        {
-            ea.GetEvent<LogInEvent>().Subscribe(user =>
-            {
-                IsLoggedIn = true;
-                Greeting = GetGreeting(user.Name);
-            });
-
-            ea.GetEvent<LogOutEvent>().Subscribe(() =>
-            {
-                IsLoggedIn = false;
-                Greeting = DefaultGreeting;
-            });
-        }
-
         public async void Initialize()
         {
             var about = await AboutRepository.GetAboutAsync();
             Description = about.Description;
             Version = about.Version;
+            Greeting = GetGreeting();
+        }
+
+        private string GetGreeting()
+        {
+            var user = Data.LogInUser;
+            if (user is null)
+            {
+                return "ようこそ";
+            }
+            else
+            {
+                var hour = DateTime.Now.Hour;
+                var greeting = hour < 12 ? "おはようございます"
+                               : hour < 18 ? "こんにちは"
+                               : "こんばんは";
+
+                return $"{greeting}、{user.Name} さん";
+            }
         }
     }
 }

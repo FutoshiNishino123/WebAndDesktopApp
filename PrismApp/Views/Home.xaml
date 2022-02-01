@@ -14,11 +14,16 @@
             <TextBlock Text="{Binding Description}" Margin="10" MaxWidth="300" TextWrapping="Wrap" HorizontalAlignment="Center"/>
         </StackPanel>
         
-        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Version}" Height="30" HorizontalAlignment="Center" />
+        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Version}" Margin="10" Height="30" HorizontalAlignment="Center" />
         
         <Grid>
-            <Button Content="ログイン" Width="70" Height="30" Command="{Binding LogInCommand}" Visibility="{Binding IsLoggedIn, Converter={StaticResource FalseToVisible}}"/>
-            <Button Content="ログアウト" Width="70" Height="30" Command="{Binding LogOutCommand}" Visibility="{Binding IsLoggedIn, Converter={StaticResource TrueToVisible}}"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Button Content="ログイン" Margin="10" Width="70" Height="30" Command="{Binding LogInCommand}" Visibility="{Binding Data.LogInUser, Converter={StaticResource NullToVisible}}"/>
+            <Button Content="ログアウト" Margin="10" Width="70" Height="30" Command="{Binding LogOutCommand}" Visibility="{Binding Data.LogInUser, Converter={StaticResource NotNullToVisible}}"/>
         </Grid>
     </DockPanel>
 </UserControl>

@@ -48,7 +48,7 @@
                 </Border>
 
                 <!--備考-->
-                <TextBlock Text="{Binding Order.Remarks}" Margin="5"  TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding Order.Remarks}" Margin="5" Background="Linen" TextWrapping="Wrap"/>
 
                 <!--期限-->
                 <TextBlock Text="{Binding Order.Expiration, StringFormat=yyyy/MM/dd 期限}" Foreground="Red" Margin="5"
