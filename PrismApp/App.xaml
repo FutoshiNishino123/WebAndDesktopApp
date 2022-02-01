@@ -11,5 +11,6 @@
         <converter:BooleanInversionConverter x:Key="BoolInv"/>
         <converter:EnumToBooleanConverter x:Key="EnumToBool"/>
         <converter:GenderToTextConverter x:Key="GenderToText"/>
+        <converter:NotNullToVisibleConverter x:Key="NotNullToVisible"/>
     </Application.Resources>
 </prism:PrismApplication>

@@ -12,37 +12,50 @@
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-            <!--CLOSED-->
-            <TextBlock FontSize="16" Text="CLOSED" Foreground="Red" Margin="5"  
-                       Visibility="{Binding Order.IsClosed, Converter={StaticResource TrueToVisible}, Mode=OneWay, FallbackValue=Collapsed}"/>
+            <StackPanel>
 
-            <!--番号-->
-            <TextBlock FontSize="30" Text="{Binding Order.Number}" Margin="5" />
+                <!--CLOSED-->
+                <TextBlock FontSize="16" Text="CLOSED" Foreground="Red" Margin="5"  
+                           Visibility="{Binding Order.IsClosed, Converter={StaticResource TrueToVisible}, Mode=OneWay, FallbackValue=Collapsed}"/>
 
-            <!--ステータス-->
-            <TextBlock FontSize="16" Text="{Binding Order.Status.Text}" Margin="5" />
+                <!--番号-->
+                <TextBlock FontSize="30" Text="{Binding Order.Number}" Margin="5" />
 
-            <!--ユーザ名-->
-            <TextBlock FontSize="16" Margin="5"><Run Text="{Binding Order.User.Name}"/> (<Run Text="{Binding Order.User.Kana}" />)</TextBlock>
+                <!--ステータス-->
+                <TextBlock FontSize="16" Text="{Binding Order.Status.Text}" Margin="5" />
 
-            <!--ユーザ画像 (クソ重い）-->
-            <!--<Image Source="{Binding Order.User.Image, FallbackValue={StaticResource DefaultImage}, TargetNullValue={StaticResource DefaultImage}}"
-                       Width="100" Height="100" Stretch="Uniform" Margin="5" />-->
+                <!--備考-->
+                <TextBlock Text="{Binding Order.Remarks}" Margin="5"  TextWrapping="Wrap"/>
 
-            <!--備考-->
-            <TextBlock Text="{Binding Order.Remarks}" Margin="5"  TextWrapping="Wrap"/>
+                <!--期限-->
+                <TextBlock FontSize="16" Text="{Binding Order.Expiration, StringFormat=yyyy/MM/dd 〆}" Foreground="Red" Margin="5"
+                           Visibility="{Binding Order.Expiration, Converter={StaticResource NotNullToVisible}}"/>
 
-            <!--期限-->
-            <TextBlock FontSize="16" Text="{Binding Order.Expiration, StringFormat=yyyy/MM/dd 〆}" Foreground="Red" Margin="5" />
+                <!--作成-->
+                <TextBlock Text="{Binding Order.Created, StringFormat=yyyy/MM/dd HH:mm:ss 作成}" Margin="5" />
 
-            <!--作成-->
-            <TextBlock Text="{Binding Order.Created, StringFormat=yyyy/MM/dd HH:mm:ss 作成}" Margin="5" />
+                <!--更新-->
+                <TextBlock Text="{Binding Order.Updated, StringFormat=yyyy/MM/dd HH:mm:ss 更新}" Margin="5" />
 
-            <!--更新-->
-            <TextBlock Text="{Binding Order.Updated, StringFormat=yyyy/MM/dd HH:mm:ss 更新}" Margin="5" />
+            </StackPanel>
 
-        </StackPanel>
+            <StackPanel Grid.Column="1">
+
+                <!--ユーザ画像 (クソ重い）-->
+                <!--<Image Source="{Binding Order.User.Image, FallbackValue={StaticResource DefaultImage}, TargetNullValue={StaticResource DefaultImage}}"
+                   Width="100" Height="100" Stretch="Uniform" Margin="5" />-->
+
+                <!--ユーザ名-->
+                <TextBlock Text="{Binding Order.User.Kana}" HorizontalAlignment="Center" FontSize="8"/>
+                <TextBlock Text="{Binding Order.User.Name}" HorizontalAlignment="Center"/>
+                
+            </StackPanel>
+        </Grid>
     </ScrollViewer>
 </UserControl>

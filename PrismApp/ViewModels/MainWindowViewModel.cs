@@ -22,6 +22,9 @@ namespace PrismApp.ViewModels
         [Dependency]
         public IEventPublisher EventPublisher { get; set; }
 
+        [Dependency]
+        public OrdersFunction OrdersFunction { get; set; }
+
         #region Title property
         private string _title = "Demo";
         public string Title
@@ -37,40 +40,6 @@ namespace PrismApp.ViewModels
         {
             get => _logInUser;
             set => SetProperty(ref _logInUser, value);
-        }
-        #endregion
-
-        #region OrdersEnabled property
-        private bool _ordersEnabled;
-        public bool OrdersEnabled
-        {
-            get => _ordersEnabled;
-            set => SetProperty(ref _ordersEnabled, value);
-        }
-        #endregion
-
-        #region OrderFilter property
-        private OrderFilter _orderFilter = new OrderFilter();
-        public OrderFilter OrderFilter
-        {
-            get => _orderFilter;
-            set => SetProperty(ref _orderFilter, value);
-        }
-        #endregion
-
-        #region OrderFilterChangedCommand property
-        private DelegateCommand? _orderFilterChangedCommand;
-        public DelegateCommand OrderFilterChangedCommand => _orderFilterChangedCommand ??= new DelegateCommand(OrderFilterChanged, CanOrderFilterChanged)
-            .ObservesProperty(() => OrderFilter);
-
-        private void OrderFilterChanged()
-        {
-            EventPublisher.RaiseOrderFilterChanged(OrderFilter);
-        }
-
-        private bool CanOrderFilterChanged()
-        {
-            return OrderFilter != null;
         }
         #endregion
 
@@ -167,17 +136,18 @@ namespace PrismApp.ViewModels
         public MainWindowViewModel(IEventAggregator ea)
         {
             ea.GetEvent<SituationChangedEvent>().Subscribe(RefreshCommands);
-            ea.GetEvent<OrdersActivatedEvent>().Subscribe(() => OrdersEnabled = true);
-            ea.GetEvent<OrdersInactivatedEvent>().Subscribe(() => OrdersEnabled = false);
+            ea.GetEvent<OrdersActivatedEvent>().Subscribe(() => OrdersFunction.IsEnabled = true);
+            ea.GetEvent<OrdersInactivatedEvent>().Subscribe(() => OrdersFunction.IsEnabled = false);
             ea.GetEvent<LogInEvent>().Subscribe(user => LogInUser = user);
             ea.GetEvent<LogOutEvent>().Subscribe(() => LogInUser = null);
 
             // 管理者として起動
-            ea.GetEvent<LogInEvent>().Publish(new User { Account = new Account { IsAdmin = true } });
+            //ea.GetEvent<LogInEvent>().Publish(new User { Account = new Account { IsAdmin = true } });
         }
 
         private void RefreshCommands()
         {
+            NavigateCommand.RaiseCanExecuteChanged();
             GoBackCommand.RaiseCanExecuteChanged();
             RefreshCommand.RaiseCanExecuteChanged();
             AddNewItemCommand.RaiseCanExecuteChanged();

@@ -44,6 +44,7 @@ namespace PrismApp
             containerRegistry.RegisterForNavigation<UserEdit>();
             containerRegistry.RegisterSingleton<IEventPublisher, EventPublisher>();
             containerRegistry.RegisterSingleton<IContentRegionManager, ContentRegionManager>();
+            containerRegistry.RegisterSingleton<OrdersFunction>();
         }
     }
 }

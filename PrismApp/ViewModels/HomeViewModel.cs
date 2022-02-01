@@ -17,7 +17,7 @@ namespace PrismApp.ViewModels
     internal class HomeViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IContentRegionManager ContentRegionManager { get; set; }
+        public IContentRegionManager RegionManager { get; set; }
 
         [Dependency]
         public IEventPublisher EventPublisher { get; set; }
@@ -41,7 +41,8 @@ namespace PrismApp.ViewModels
         }
 
         #region Greeting property
-        private string _greeting = "ようこそ";
+        private static readonly string DefaultGreeting = "ようこそ";
+        private string _greeting = DefaultGreeting;
         public string Greeting
         {
             get => _greeting;
@@ -82,7 +83,7 @@ namespace PrismApp.ViewModels
 
         private void LogIn()
         {
-            ContentRegionManager.Navigate("LogIn");
+            RegionManager.Navigate("LogIn");
         }
 
         private bool CanLogIn()
@@ -97,7 +98,7 @@ namespace PrismApp.ViewModels
 
         private void LogOut()
         {
-            ContentRegionManager.Navigate("LogOut");
+            RegionManager.Navigate("LogOut");
         }
 
         private bool CanLogOut()
@@ -135,7 +136,7 @@ namespace PrismApp.ViewModels
             ea.GetEvent<LogOutEvent>().Subscribe(() =>
             {
                 IsLoggedIn = false;
-                Greeting = "ようこそ";
+                Greeting = DefaultGreeting;
             });
         }
 

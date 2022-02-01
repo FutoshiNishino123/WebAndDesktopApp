@@ -55,12 +55,12 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region OrderFilter property
-        private OrderFilter? _orderFilter = new OrderFilter();
-        public OrderFilter? OrderFilter
+        #region Filter property
+        private OrderFilter _filter = new OrderFilter();
+        public OrderFilter Filter
         {
-            get => _orderFilter;
-            set => SetProperty(ref _orderFilter, value);
+            get => _filter;
+            set => SetProperty(ref _filter, value);
         }
         #endregion
 
@@ -177,7 +177,7 @@ namespace PrismApp.ViewModels
         {
             ea.GetEvent<OrderFilterChangedEvent>().Subscribe(filter =>
             {
-                OrderFilter = filter;
+                Filter = filter;
                 Initialize();
             });
         }
@@ -186,9 +186,9 @@ namespace PrismApp.ViewModels
         {
             var orders = await OrdersRepository.GetOrdersAsync();
 
-            if (OrderFilter != null)
+            if (Filter != null)
             {
-                orders = orders.Where(OrderFilter.Filter);
+                orders = orders.Where(Filter.Filter);
             }
 
             Orders = new ObservableCollection<Order>(orders);

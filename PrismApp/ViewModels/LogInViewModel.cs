@@ -75,7 +75,7 @@ namespace PrismApp.ViewModels
 
             if (user is null)
             {
-                MessageBox.Show("ユーザID または パスワード が正しくありません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("ID または パスワード が正しくありません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
