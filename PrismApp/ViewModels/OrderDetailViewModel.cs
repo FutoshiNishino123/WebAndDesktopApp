@@ -4,7 +4,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Models;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -14,13 +14,13 @@ using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {
-    public class OrderDetailViewModel : BindableBase, INavigationAware, IRibbon
+    public class OrderDetailViewModel : BindableBase, INavigationAware, IDataController
     {
         [Dependency]
-        public IContentRegionManager RegionManager { get; set; }
+        public IContentRegionManager Region { get; set; }
 
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
 
         #region Order property
         private Order? order;
@@ -31,7 +31,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref order, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -40,7 +40,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            EventPublisher.RaiseSituationChanged();
+            Event.RaiseSituationChanged();
 
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
@@ -77,7 +77,7 @@ namespace PrismApp.ViewModels
         {
             if (Order != null)
             {
-                RegionManager.Navigate("OrderEdit", Order.Id);
+                Region.Navigate("OrderEdit", Order.Id);
             }
         }
 
@@ -90,7 +90,7 @@ namespace PrismApp.ViewModels
                 {
                     await OrdersRepository.DeleteOrderAsync(Order.Id);
 
-                    RegionManager.GoBack();
+                    Region.GoBack();
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace PrismApp.ViewModels
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                RegionManager.GoBack();
+                Region.GoBack();
                 return;
             }
 

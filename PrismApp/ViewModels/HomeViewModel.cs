@@ -2,7 +2,7 @@
 using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Models;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +18,10 @@ namespace PrismApp.ViewModels
     internal class HomeViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IContentRegionManager RegionManager { get; set; }
+        public IContentRegionManager Region { get; set; }
 
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
 
         private string GetGreeting(string? name)
         {
@@ -84,7 +84,7 @@ namespace PrismApp.ViewModels
 
         private void LogIn()
         {
-            RegionManager.Navigate("LogIn");
+            Region.Navigate("LogIn");
         }
 
         private bool CanLogIn()
@@ -99,7 +99,7 @@ namespace PrismApp.ViewModels
 
         private void LogOut()
         {
-            RegionManager.Navigate("LogOut");
+            Region.Navigate("LogOut");
         }
 
         private bool CanLogOut()
@@ -111,7 +111,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            EventPublisher.RaiseSituationChanged();
+            Event.RaiseSituationChanged();
 
             Initialize();
         }

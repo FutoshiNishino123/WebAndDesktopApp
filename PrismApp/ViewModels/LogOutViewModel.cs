@@ -2,7 +2,7 @@
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using PrismApp.Regions;
 using System;
 using Unity;
@@ -12,10 +12,10 @@ namespace PrismApp.ViewModels
     public class LogOutViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IContentRegionManager RegionManager { get; set; }
+        public IContentRegionManager Region { get; set; }
 
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
 
         #region LogOutCommand property
         private DelegateCommand? _logOutCommand;
@@ -23,9 +23,9 @@ namespace PrismApp.ViewModels
 
         private void LogOut()
         {
-            EventPublisher.RaiseLogOut();
+            Event.RaiseLogOut();
             
-            RegionManager.Navigate("Home");
+            Region.Navigate("Home");
         }
 
         private bool CanLogOut()
@@ -40,19 +40,19 @@ namespace PrismApp.ViewModels
 
         private void GoBack()
         {
-            RegionManager.GoBack();
+            Region.GoBack();
         }
 
         private bool CanGoBack()
         {
-            return RegionManager.CanGoBack();
+            return Region.CanGoBack();
         }
         #endregion
 
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            EventPublisher.RaiseSituationChanged();
+            Event.RaiseSituationChanged();
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

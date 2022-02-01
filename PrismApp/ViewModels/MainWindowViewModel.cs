@@ -3,7 +3,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using PrismApp.Regions;
 using System;
 using System.Collections.Generic;
@@ -12,19 +12,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Unity;
+using PrismApp.Models;
 
 namespace PrismApp.ViewModels
 {
     internal class MainWindowViewModel : BindableBase
     {
         [Dependency]
-        public IContentRegionManager RegionManager { get; set; }
+        public IContentRegionManager Region { get; set; }
 
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
 
         [Dependency]
-        public OrdersFunction OrdersFunction { get; set; }
+        public OrdersFunction Orders { get; set; }
+
+        [Dependency]
+        public AppData Data { get; set; }
 
         #region Title property
         private string _title = "Demo";
@@ -35,22 +39,13 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region LogInUser property
-        private User? _logInUser;
-        public User? LogInUser
-        {
-            get => _logInUser;
-            set => SetProperty(ref _logInUser, value);
-        }
-        #endregion
-
         #region NavigateCommand property
         private DelegateCommand<string>? _navigateCommand;
         public DelegateCommand<string> NavigateCommand => _navigateCommand ??= new DelegateCommand<string>(Navigate, CanNavigate);
 
         private void Navigate(string path)
         {
-            RegionManager.Navigate(path);
+            Region.Navigate(path);
         }
 
         private bool CanNavigate(string path)
@@ -65,12 +60,12 @@ namespace PrismApp.ViewModels
 
         private void GoBack()
         {
-            RegionManager.GoBack();
+            Region.GoBack();
         }
 
         private bool CanGoBack()
         {
-            return RegionManager.CanGoBack();
+            return Region.CanGoBack();
         }
         #endregion
 
@@ -80,12 +75,12 @@ namespace PrismApp.ViewModels
 
         private void Refresh()
         {
-            (RegionManager.DataContext as IRibbon)?.Refresh();
+            (Region.DataContext as IDataController)?.Refresh();
         }
 
         private bool CanRefresh()
         {
-            return (RegionManager.DataContext as IRibbon)?.CanRefresh ?? false;
+            return (Region.DataContext as IDataController)?.CanRefresh ?? false;
         }
         #endregion
 
@@ -95,12 +90,12 @@ namespace PrismApp.ViewModels
 
         private void AddNewItem()
         {
-            (RegionManager.DataContext as IRibbon)?.AddNewItem();
+            (Region.DataContext as IDataController)?.AddNewItem();
         }
 
         private bool CanAddNewItem()
         {
-            return (RegionManager.DataContext as IRibbon)?.CanAddNewItem ?? false;
+            return (Region.DataContext as IDataController)?.CanAddNewItem ?? false;
         }
         #endregion
 
@@ -110,12 +105,12 @@ namespace PrismApp.ViewModels
 
         private void EditItem()
         {
-            (RegionManager.DataContext as IRibbon)?.EditItem();
+            (Region.DataContext as IDataController)?.EditItem();
         }
 
         private bool CanEditItem()
         {
-            return (RegionManager.DataContext as IRibbon)?.CanEditItem ?? false;
+            return (Region.DataContext as IDataController)?.CanEditItem ?? false;
         }
         #endregion
 
@@ -125,25 +120,18 @@ namespace PrismApp.ViewModels
 
         private void DeleteItem()
         {
-            (RegionManager.DataContext as IRibbon)?.DeleteItem();
+            (Region.DataContext as IDataController)?.DeleteItem();
         }
 
         private bool CanDeleteItem()
         {
-            return (RegionManager.DataContext as IRibbon)?.CanDeleteItem ?? false;
+            return (Region.DataContext as IDataController)?.CanDeleteItem ?? false;
         }
         #endregion
 
         public MainWindowViewModel(IEventAggregator ea)
         {
             ea.GetEvent<SituationChangedEvent>().Subscribe(RefreshCommands);
-            ea.GetEvent<OrdersActivatedEvent>().Subscribe(() => OrdersFunction.IsEnabled = true);
-            ea.GetEvent<OrdersInactivatedEvent>().Subscribe(() => OrdersFunction.IsEnabled = false);
-            ea.GetEvent<LogInEvent>().Subscribe(user => LogInUser = user);
-            ea.GetEvent<LogOutEvent>().Subscribe(() => LogInUser = null);
-
-            // 管理者として起動
-            ea.GetEvent<LogInEvent>().Publish(new User { Account = new Account { IsAdmin = true } });
         }
 
         private void RefreshCommands()

@@ -5,7 +5,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Models;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
@@ -15,13 +15,13 @@ using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {
-    public class StatusesViewModel : BindableBase, INavigationAware, IRibbon
+    public class StatusesViewModel : BindableBase, INavigationAware, IDataController
     {
         [Dependency]
-        public IContentRegionManager RegionManager { get; set; }
+        public IContentRegionManager Region { get; set; }
 
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
 
         #region Status property
         private Status? _status;
@@ -32,7 +32,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _status, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -47,7 +47,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _statuses, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            EventPublisher.RaiseSituationChanged();
+            Event.RaiseSituationChanged();
 
             Initialize();
         }
@@ -86,7 +86,7 @@ namespace PrismApp.ViewModels
         {
             if (CanAddNewItem)
             {
-                RegionManager.Navigate("StatusEdit");
+                Region.Navigate("StatusEdit");
             }
         }
 
@@ -96,7 +96,7 @@ namespace PrismApp.ViewModels
             if (CanEditItem)
             {
                 Debug.Assert(Status != null);
-                RegionManager.Navigate("StatusEdit", Status.Id);
+                Region.Navigate("StatusEdit", Status.Id);
             }
         }
 

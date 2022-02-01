@@ -1,11 +1,11 @@
 ﻿using Data.Models;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
-using PrismApp.ViewModels.Events;
-using PrismApp.Models;
+using PrismApp.Events;
 using Unity;
 
-namespace PrismApp.ViewModels
+namespace PrismApp.Models
 {
     public class OrdersFunction : BindableBase
     {
@@ -17,7 +17,7 @@ namespace PrismApp.ViewModels
         public bool IsEnabled
         {
             get => _isEnabled;
-            set => SetProperty(ref _isEnabled, value);
+            private set => SetProperty(ref _isEnabled, value);
         }
         #endregion
 
@@ -26,7 +26,7 @@ namespace PrismApp.ViewModels
         public OrderFilter Filter
         {
             get => _filter;
-            set => SetProperty(ref _filter, value);
+            private set => SetProperty(ref _filter, value);
         }
         #endregion
 
@@ -44,5 +44,11 @@ namespace PrismApp.ViewModels
             return true;
         }
         #endregion
+
+        public OrdersFunction(IEventAggregator ea)
+        {
+            ea.GetEvent<OrdersActivatedEvent>().Subscribe(() => IsEnabled = true);
+            ea.GetEvent<OrdersInactivatedEvent>().Subscribe(() => IsEnabled = false);
+        }
     }
 }

@@ -5,7 +5,7 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using PrismApp.Models;
 using PrismApp.Regions;
 using System;
@@ -19,10 +19,10 @@ namespace PrismApp.ViewModels
     public class LogInViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IContentRegionManager RegionManager { get; set; }
+        public IContentRegionManager Region { get; set; }
 
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
 
         #region AccountId property
         private string? _accountId;
@@ -80,9 +80,9 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            EventPublisher.RaiseLogIn(user);
+            Event.RaiseLogIn(user);
 
-            RegionManager.Navigate("Home");
+            Region.Navigate("Home");
         }
 
         private bool CanLogIn()
@@ -95,7 +95,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            EventPublisher.RaiseSituationChanged();
+            Event.RaiseSituationChanged();
 
             Initialize();
         }

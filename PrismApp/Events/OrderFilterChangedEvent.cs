@@ -3,7 +3,7 @@ using Prism.Events;
 using PrismApp.Models;
 using System;
 
-namespace PrismApp.ViewModels.Events
+namespace PrismApp.Events
 {
     public class OrderFilterChangedEvent : PubSubEvent<OrderFilter>
     {

@@ -4,7 +4,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Models;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
@@ -15,13 +15,13 @@ using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {
-    public class UsersViewModel : BindableBase, INavigationAware, IRibbon
+    public class UsersViewModel : BindableBase, INavigationAware, IDataController
     {
         [Dependency]
-        public IContentRegionManager RegionManager { get; set; }
+        public IContentRegionManager Region { get; set; }
 
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
 
         #region User property
         private User? _user;
@@ -32,7 +32,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _user, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _users, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace PrismApp.ViewModels
         {
             await UsersRepository.SaveUserAsync(user);
 
-            EventPublisher.RaiseSituationChanged();
+            Event.RaiseSituationChanged();
         }
 
         private bool CanSave(User user)
@@ -74,7 +74,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            EventPublisher.RaiseSituationChanged();
+            Event.RaiseSituationChanged();
 
             Initialize();
         }
@@ -104,7 +104,7 @@ namespace PrismApp.ViewModels
         {
             if (CanAddNewItem)
             {
-                RegionManager.Navigate("UserEdit");
+                Region.Navigate("UserEdit");
             }
         }
 
@@ -114,7 +114,7 @@ namespace PrismApp.ViewModels
             if (CanEditItem)
             {
                 Debug.Assert(User != null);
-                RegionManager.Navigate("UserEdit", User.Id);
+                Region.Navigate("UserEdit", User.Id);
             }
         }
 

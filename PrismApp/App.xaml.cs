@@ -2,7 +2,7 @@
 using Prism.Ioc;
 using Prism.Regions;
 using Prism.Unity;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using PrismApp.Regions;
 using PrismApp.ViewModels;
 using PrismApp.Views;
@@ -13,6 +13,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using PrismApp.Models;
 
 namespace PrismApp
 {
@@ -46,6 +47,7 @@ namespace PrismApp
             containerRegistry.RegisterSingleton<IEventPublisher, EventPublisher>();
             containerRegistry.RegisterSingleton<IContentRegionManager, ContentRegionManager>();
             containerRegistry.RegisterSingleton<OrdersFunction>();
+            containerRegistry.RegisterSingleton<AppData>();
         }
     }
 }

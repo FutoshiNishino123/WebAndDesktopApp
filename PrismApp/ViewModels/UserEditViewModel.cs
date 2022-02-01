@@ -5,7 +5,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Models;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using System.Diagnostics;
 using System.Windows;
 using Unity;
@@ -19,10 +19,10 @@ namespace PrismApp.ViewModels
     public class UserEditViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IContentRegionManager RegionManager { get; set; }
+        public IContentRegionManager Region { get; set; }
 
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
 
         #region User property
         private BindableUser? _user;
@@ -33,7 +33,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _user, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _account, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            RegionManager.GoBack();
+            Region.GoBack();
         }
 
         private bool CanSave()
@@ -112,7 +112,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            EventPublisher.RaiseSituationChanged();
+            Event.RaiseSituationChanged();
 
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
@@ -137,7 +137,7 @@ namespace PrismApp.ViewModels
             if (user is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                RegionManager.GoBack();
+                Region.GoBack();
                 return;
             }
 

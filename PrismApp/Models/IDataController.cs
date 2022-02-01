@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrismApp.ViewModels
+namespace PrismApp.Models
 {
-    internal interface IRibbon
+    internal interface IDataController
     {
         bool CanRefresh { get; }
         void Refresh();

@@ -4,6 +4,7 @@
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:prism="http://prismlibrary.com/" 
+              xmlns:models="clr-namespace:PrismApp.Models"
               xmlns:viewmodels="clr-namespace:PrismApp.ViewModels"
               xmlns:regions="clr-namespace:PrismApp.Regions"
               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -41,12 +42,12 @@
                     <RibbonButton Label="編集" SmallImageSource="../Resources/ribbon-edit.png" Command="{Binding EditItemCommand}"/>
                     <RibbonButton Label="削除" SmallImageSource="../Resources/ribbon-delete.png" Command="{Binding DeleteItemCommand}"/>
                 </RibbonGroup>
-                <RibbonGroup Header="管理者" Visibility="{Binding LogInUser.Account.IsAdmin, Converter={StaticResource TrueToVisible}, FallbackValue=Collapsed}">
+                <RibbonGroup Header="管理者" Visibility="{Binding Data.LogInUser.Account.IsAdmin, Converter={StaticResource TrueToVisible}, FallbackValue=Collapsed}">
                     <RibbonButton Label="ユーザ" SmallImageSource="../Resources/ribbon-users.png" Command="{Binding NavigateCommand}" CommandParameter="Users"/>
                     <RibbonButton Label="ステータス" SmallImageSource="../Resources/ribbon-upload.png" Command="{Binding NavigateCommand}" CommandParameter="Statuses"/>
                 </RibbonGroup>
-                <RibbonGroup Header="指図" Visibility="{Binding OrdersFunction.IsEnabled, Converter={StaticResource TrueToVisible}, FallbackValue=Collapsed}">
-                    <RibbonCheckBox Label="クローズ表示" IsChecked="{Binding OrdersFunction.Filter.ShowClosed}" Command="{Binding OrdersFunction.FilterChangedCommand}"/>
+                <RibbonGroup Header="指図" Visibility="{Binding Orders.IsEnabled, Converter={StaticResource TrueToVisible}, FallbackValue=Collapsed}">
+                    <RibbonCheckBox Label="クローズ表示" IsChecked="{Binding Orders.Filter.ShowClosed}" Command="{Binding Orders.FilterChangedCommand}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>

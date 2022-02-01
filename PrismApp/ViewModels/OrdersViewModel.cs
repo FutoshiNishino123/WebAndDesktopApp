@@ -5,7 +5,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Models;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,13 +18,13 @@ using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {
-    public class OrdersViewModel : BindableBase, INavigationAware, IRibbon
+    public class OrdersViewModel : BindableBase, INavigationAware, IDataController
     {
         [Dependency]
-        public IContentRegionManager RegionManager { get; set; }
+        public IContentRegionManager Region { get; set; }
 
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
 
         #region Order property
         private Order? _order;
@@ -35,7 +35,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _order, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _orders, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace PrismApp.ViewModels
         {
             if (id.HasValue)
             {
-                RegionManager.Navigate("OrderDetail", id.Value);
+                Region.Navigate("OrderDetail", id.Value);
             }
         }
 
@@ -92,7 +92,7 @@ namespace PrismApp.ViewModels
         {
             await OrdersRepository.SaveOrderAsync(order);
 
-            EventPublisher.RaiseSituationChanged();
+            Event.RaiseSituationChanged();
         }
 
         private bool CanSave(Order order)
@@ -104,8 +104,8 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            EventPublisher.RaiseSituationChanged();
-            EventPublisher.RaiseOrdersActivated();
+            Event.RaiseSituationChanged();
+            Event.RaiseOrdersActivated();
 
             Initialize();
         }
@@ -117,7 +117,7 @@ namespace PrismApp.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            EventPublisher.RaiseOrdersInactivated();
+            Event.RaiseOrdersInactivated();
         }
         #endregion
 
@@ -136,7 +136,7 @@ namespace PrismApp.ViewModels
         {
             if (CanAddNewItem)
             {
-                RegionManager.Navigate("OrderEdit");
+                Region.Navigate("OrderEdit");
             }
         }
 
@@ -146,7 +146,7 @@ namespace PrismApp.ViewModels
             if (CanEditItem)
             {
                 Debug.Assert(Order != null);
-                RegionManager.Navigate("OrderEdit", Order.Id);
+                Region.Navigate("OrderEdit", Order.Id);
             }
         }
 

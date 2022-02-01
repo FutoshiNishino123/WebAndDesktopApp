@@ -3,7 +3,7 @@ using Prism.Events;
 using PrismApp.Models;
 using Unity;
 
-namespace PrismApp.ViewModels.Events
+namespace PrismApp.Events
 {
     public interface IEventPublisher
     {

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrismApp.ViewModels.Events
+namespace PrismApp.Events
 {
     public class SituationChangedEvent : PubSubEvent
     {

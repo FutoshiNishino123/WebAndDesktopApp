@@ -5,7 +5,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Models;
-using PrismApp.ViewModels.Events;
+using PrismApp.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,10 +20,13 @@ namespace PrismApp.ViewModels
     public class OrderEditViewModel : BindableBase, INavigationAware
     {
         [Dependency]
-        public IContentRegionManager RegionManager { get; set; }
+        public IContentRegionManager Region { get; set; }
 
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
+
+        [Dependency]
+        public AppData Data { get; set; }
 
         #region Order property
         private BindableOrder? _order;
@@ -34,7 +37,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _order, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -49,7 +52,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _users, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -64,7 +67,7 @@ namespace PrismApp.ViewModels
             {
                 if (SetProperty(ref _statuses, value))
                 {
-                    EventPublisher.RaiseSituationChanged();
+                    Event.RaiseSituationChanged();
                 }
             }
         }
@@ -105,7 +108,7 @@ namespace PrismApp.ViewModels
                     return;
                 }
 
-                RegionManager.GoBack();
+                Region.GoBack();
             }
         }
 
@@ -119,7 +122,7 @@ namespace PrismApp.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            EventPublisher.RaiseSituationChanged();
+            Event.RaiseSituationChanged();
 
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
@@ -145,7 +148,7 @@ namespace PrismApp.ViewModels
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                RegionManager.GoBack();
+                Region.GoBack();
                 return;
             }
 
@@ -156,12 +159,10 @@ namespace PrismApp.ViewModels
             {
                 order.User = users.FirstOrDefault(u => u.Id == order.User.Id);
             }
-
-            // 何らかの方法でログインユーザを取得したい（ログインイベントはインスタンス化の遅延のため不可。シングルトン？）
-            //else if (user != null)
-            //{
-            //    order.User = users.FirstOrDefault(u => u.Id == user.Id);
-            //}
+            else if (Data.LogInUser != null)
+            {
+                order.User = users.FirstOrDefault(u => u.Id == Data.LogInUser.Id);
+            }
 
             if (order.Status != null)
             {
