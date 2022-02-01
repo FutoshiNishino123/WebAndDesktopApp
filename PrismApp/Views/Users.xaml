@@ -13,7 +13,14 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" />
-                    <GridViewColumn Header="管理者" DisplayMemberBinding="{Binding Account.IsAdmin}" />
+                    <GridViewColumn>
+                        <GridViewColumnHeader Content="管理者"/>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Account.IsAdmin}" Command="{Binding DataContext.SaveCommand, ElementName=ControlRoot}" CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="アカウント" DisplayMemberBinding="{Binding Account.Id}" />
                     <GridViewColumn Header="名前" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="カナ" DisplayMemberBinding="{Binding Kana}" />

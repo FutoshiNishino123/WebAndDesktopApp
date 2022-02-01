@@ -142,7 +142,7 @@ namespace PrismApp.ViewModels
             ea.GetEvent<LogOutEvent>().Subscribe(() => LogInUser = null);
 
             // 管理者として起動
-            //ea.GetEvent<LogInEvent>().Publish(new User { Account = new Account { IsAdmin = true } });
+            ea.GetEvent<LogInEvent>().Publish(new User { Account = new Account { IsAdmin = true } });
         }
 
         private void RefreshCommands()

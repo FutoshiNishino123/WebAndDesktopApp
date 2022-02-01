@@ -12,10 +12,10 @@
         <StackPanel Margin="10">
             
             <!--管理者-->
-            <StackPanel Margin="10" Orientation="Horizontal">
+            <!--<StackPanel Margin="10" Orientation="Horizontal">
                 <TextBlock Text="管理者:"/>
                 <CheckBox Margin="10,2,0,0" IsChecked="{Binding Account.IsAdmin, UpdateSourceTrigger=PropertyChanged}" />
-            </StackPanel>
+            </StackPanel>-->
 
             <!--ユーザID-->
             <StackPanel Margin="10">

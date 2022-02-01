@@ -81,12 +81,12 @@ namespace PrismApp.Models
                 var user = db.Users.Include(u => u.Account).FirstOrDefault(u => u.Id == id);
                 if (user is null)
                 {
-                    throw new InvalidOperationException("ユーザが見つかりません。");
+                    throw new InvalidOperationException($"User (id:{id}) was not found.");
                 }
 
                 if (user.Account is null)
                 {
-                    throw new InvalidOperationException("ユーザアカウントが見つかりません。");
+                    throw new InvalidOperationException($"Account (user id:{id}) was not found.");
                 }
 
                 // 外部キーを削除

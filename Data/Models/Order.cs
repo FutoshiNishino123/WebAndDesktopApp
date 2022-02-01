@@ -6,7 +6,7 @@ namespace Data.Models
     /// <summary>
     /// 指図伝票
     /// </summary>
-    public class Order
+    public class Order : ITimeStamp
     {
         /// <summary>
         /// ID
@@ -14,20 +14,6 @@ namespace Data.Models
         [Key]
         [Display(Name = "ID")]
         public int Id { get; set; }
-
-        /// <summary>
-        /// 作成日時
-        /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Display(Name = "作成")]
-        public DateTime Created { get; set; }
-
-        /// <summary>
-        /// 更新日時
-        /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [Display(Name = "更新")]
-        public DateTime Updated { get; set; }
 
         /// <summary>
         /// 番号
@@ -67,5 +53,11 @@ namespace Data.Models
         /// </summary>
         [Display(Name = "クローズ")]
         public bool IsClosed { get; set; }
+
+        #region ITimeStamp
+        public DateTime Created { get; set; }
+
+        public DateTime Updated { get; set; }
+        #endregion
     }
 }

@@ -53,6 +53,23 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
+        #region SaveCommand property
+        private DelegateCommand<User>? _saveCommand;
+        public DelegateCommand<User> SaveCommand => _saveCommand ??= new DelegateCommand<User>(Save, CanSave);
+
+        private async void Save(User user)
+        {
+            await UsersRepository.SaveUserAsync(user);
+
+            EventPublisher.RaiseSituationChanged();
+        }
+
+        private bool CanSave(User user)
+        {
+            return true;
+        }
+        #endregion
+
         #region INavigationAware
         public void OnNavigatedTo(NavigationContext navigationContext)
         {

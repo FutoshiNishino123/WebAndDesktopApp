@@ -16,6 +16,7 @@ namespace Data.Models
         /// ID
         /// </summary>
         [Key]
+        [MaxLength(100)]
         [Display(Name = "ID")]
         public string? Id { get; set; }
 
