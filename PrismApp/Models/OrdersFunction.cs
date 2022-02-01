@@ -41,7 +41,7 @@ namespace PrismApp.Models
 
         private bool CanFilterChanged()
         {
-            return true;
+            return IsEnabled;
         }
         #endregion
 

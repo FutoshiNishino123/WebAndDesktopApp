@@ -189,7 +189,7 @@ namespace PrismApp.ViewModels
 
             if (Filter != null)
             {
-                orders = orders.Where(Filter.Filter);
+                orders = orders.Where(Filter.Apply);
             }
 
             Orders = new ObservableCollection<Order>(orders);
