@@ -3,7 +3,7 @@ using Common.Extensions;
 using Data.Models;
 using Prism.Mvvm;
 
-namespace PrismApp.ViewModels
+namespace PrismApp.Models
 {
     public class BindableStatus : BindableBase
     {

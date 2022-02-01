@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrismApp.Views.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace PrismApp.Views
         {
             if (e.OriginalSource is GridViewColumnHeader header)
             {
-                ListViewUtils.SortByProperty(MainList, header);
+                ListViewHelper.SortByProperty(MainList, header);
                 MainList.UnselectAll();
             }
         }

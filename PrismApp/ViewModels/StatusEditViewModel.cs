@@ -13,6 +13,7 @@ using System.Linq;
 using System.Windows;
 using Unity;
 using System;
+using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {

@@ -1,6 +1,6 @@
 ﻿using Data.Models;
 using Prism.Events;
-using PrismApp.ViewModels;
+using PrismApp.Models;
 using System;
 
 namespace PrismApp.Events

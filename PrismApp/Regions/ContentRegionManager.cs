@@ -1,16 +1,35 @@
 ﻿using Prism.Regions;
+using PrismApp.ViewModels;
 using System.Linq;
 using System.Windows;
 using Unity;
 
-namespace PrismApp.ViewModels
+namespace PrismApp.Regions
 {
+    public interface IContentRegionManager
+    {
+        string RegionName { get; }
+
+        /// <summary>
+        /// Get the DataContext of the active view.
+        /// </summary>
+        object? DataContext { get; }
+
+        bool CanGoBack();
+
+        void GoBack();
+
+        void Navigate(string path);
+
+        void Navigate(string path, int id);
+    }
+
     public class ContentRegionManager : IContentRegionManager
     {
-        private static readonly string RegionName = RegionNames.ContentRegion;
-
         [Dependency]
         public IRegionManager RegionManager { get; set; }
+
+        public string RegionName => RegionNames.ContentRegion;
 
         private IRegionNavigationJournal Journal => RegionManager.Regions[RegionName].NavigationService.Journal;
 

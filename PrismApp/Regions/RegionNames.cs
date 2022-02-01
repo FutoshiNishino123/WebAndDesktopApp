@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrismApp.ViewModels
+namespace PrismApp.Regions
 {
     internal static class RegionNames
     {

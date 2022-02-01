@@ -3,9 +3,9 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace PrismApp.Views
+namespace PrismApp.Views.Helpers
 {
-    public static class ListViewUtils
+    public static class ListViewHelper
     {
         /// <summary>
         /// 表示メンバにバインドされたプロパティを基準に ItemsControl をソートします。

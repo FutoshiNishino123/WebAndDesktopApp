@@ -1,10 +1,25 @@
 ﻿using Data.Models;
 using Prism.Events;
-using PrismApp.Events;
+using PrismApp.Models;
 using Unity;
 
-namespace PrismApp.ViewModels
+namespace PrismApp.Events
 {
+    public interface IEventPublisher
+    {
+        void RaiseSituationChanged();
+
+        void RaiseLogIn(User user);
+
+        void RaiseLogOut();
+
+        void RaiseOrdersInactivated();
+
+        void RaiseOrdersActivated();
+
+        void RaiseOrderFilterChanged(OrderFilter filter);
+    }
+
     public class EventPublisher : IEventPublisher
     {
         [Dependency]

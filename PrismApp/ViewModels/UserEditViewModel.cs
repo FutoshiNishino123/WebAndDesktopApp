@@ -12,6 +12,7 @@ using Unity;
 using Common.Utils;
 using System;
 using System.Threading.Tasks;
+using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {

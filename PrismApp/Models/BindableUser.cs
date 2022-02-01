@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System;
 
-namespace PrismApp.ViewModels
+namespace PrismApp.Models
 {
     public class BindableUser : BindableBase
     {

@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Windows;
 using Unity;
 using System.Threading.Tasks;
+using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {

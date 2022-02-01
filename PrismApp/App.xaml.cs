@@ -3,6 +3,7 @@ using Prism.Ioc;
 using Prism.Regions;
 using Prism.Unity;
 using PrismApp.Events;
+using PrismApp.Regions;
 using PrismApp.ViewModels;
 using PrismApp.Views;
 using System;

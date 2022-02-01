@@ -3,7 +3,7 @@ using Data.Models;
 using Prism.Mvvm;
 using Common.Utils;
 
-namespace PrismApp.ViewModels
+namespace PrismApp.Models
 {
     public class BindableAccount : BindableBase
     {

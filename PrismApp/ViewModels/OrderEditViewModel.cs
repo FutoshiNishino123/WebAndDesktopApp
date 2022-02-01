@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Unity;
+using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {
@@ -23,8 +24,6 @@ namespace PrismApp.ViewModels
 
         [Dependency]
         public IEventPublisher EventPublisher { get; set; }
-
-        public User? LogInUser { get; set; }
 
         #region Order property
         private BindableOrder? _order;
@@ -136,12 +135,6 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        public OrderEditViewModel(IEventAggregator ea)
-        {
-            ea.GetEvent<LogInEvent>().Subscribe(user => LogInUser = user);
-            ea.GetEvent<LogOutEvent>().Subscribe(() => LogInUser = null);
-        }
-
         private async void Initialize(int? id)
         {
             Order = null;
@@ -163,10 +156,12 @@ namespace PrismApp.ViewModels
             {
                 order.User = users.FirstOrDefault(u => u.Id == order.User.Id);
             }
-            else if (LogInUser != null)
-            {
-                order.User = users.FirstOrDefault(u => u.Id == LogInUser.Id);
-            }
+
+            // 何らかの方法でログインユーザを取得したい（ログインイベントはインスタンス化の遅延のため不可。シングルトン？）
+            //else if (user != null)
+            //{
+            //    order.User = users.FirstOrDefault(u => u.Id == user.Id);
+            //}
 
             if (order.Status != null)
             {

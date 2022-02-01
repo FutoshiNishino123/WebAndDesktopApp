@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
-namespace PrismApp.Views
+namespace PrismApp.Views.Helpers
 {
-    using System.Windows;
-    using System.Windows.Controls;
-
     internal class PasswordBoxHelper : DependencyObject
     {
         public static readonly DependencyProperty IsAttachedProperty
@@ -64,7 +63,7 @@ namespace PrismApp.Views
             {
                 SetIsAttached(passwordBox, true);
             }
-            if ((string.IsNullOrEmpty(passwordBox.Password) && string.IsNullOrEmpty(newPassword)) ||
+            if (string.IsNullOrEmpty(passwordBox.Password) && string.IsNullOrEmpty(newPassword) ||
                 passwordBox.Password == newPassword)
             {
                 return;

@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Unity;
+using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {

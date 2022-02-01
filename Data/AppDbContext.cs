@@ -1,7 +1,6 @@
-﻿using Data.Models;
+﻿using Data.Generators;
+using Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 
@@ -58,38 +57,5 @@ namespace Data
                  .HasIndex(s => s.Text)
                  .IsUnique();
         }
-
-        //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        //{
-        //    // 作成・更新日を設定する
-
-        //    var entries = ChangeTracker.Entries()
-        //                               .Where(e => e.Entity is ITimeStamp
-        //                                           && (e.State == EntityState.Added
-        //                                           || e.State == EntityState.Modified));
-
-        //    foreach (var entityEntry in entries)
-        //    {
-        //        var entity = (ITimeStamp)entityEntry.Entity;
-
-        //        if (entityEntry.State == EntityState.Added)
-        //        {
-        //            entity.Created = DateTime.Now;
-        //        }
-
-        //        entity.Updated = DateTime.Now;
-        //    }
-
-        //    return base.SaveChangesAsync(cancellationToken);
-        //}
-    }
-
-    public class CurrentTimeGenerator : ValueGenerator<DateTime>
-    {
-        public override bool GeneratesTemporaryValues => false;
-
-        public override DateTime Next(EntityEntry entry) => DateTime.Now;
-
-        protected override object NextValue(EntityEntry entry) => DateTime.Now;
     }
 }
