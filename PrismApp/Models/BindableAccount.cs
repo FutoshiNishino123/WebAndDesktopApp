@@ -34,7 +34,7 @@ namespace PrismApp.Models
             {
                 if (SetProperty(ref _rawPassword, value))
                 {
-                    Password = value is null ? null : PasswordUtils.GetHash(value);
+                    Password = string.IsNullOrEmpty(value) ? null : PasswordUtils.GetHash(value);
                 }
             }
         }

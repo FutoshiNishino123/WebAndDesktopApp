@@ -18,7 +18,7 @@ using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {
-    public class OrdersViewModel : BindableBase, INavigationAware, IAppAction
+    public class OrdersViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
         public IContentRegionManager Region { get; set; }

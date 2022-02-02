@@ -8,13 +8,11 @@ namespace Data.Models
         /// <summary>
         /// 作成日時
         /// </summary>
-        [Display(Name = "作成")]
         public DateTime Created { get; set; }
 
         /// <summary>
         /// 更新日時
         /// </summary>
-        [Display(Name = "更新")]
         public DateTime Updated { get; set; }
     }
 }

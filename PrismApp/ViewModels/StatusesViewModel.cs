@@ -15,7 +15,7 @@ using PrismApp.Regions;
 
 namespace PrismApp.ViewModels
 {
-    public class StatusesViewModel : BindableBase, INavigationAware, IAppAction
+    public class StatusesViewModel : BindableBase, INavigationAware, IRibbon
     {
         [Dependency]
         public IContentRegionManager Region { get; set; }

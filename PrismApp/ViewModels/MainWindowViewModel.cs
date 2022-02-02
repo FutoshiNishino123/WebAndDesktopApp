@@ -75,12 +75,12 @@ namespace PrismApp.ViewModels
 
         private void Refresh()
         {
-            (Region.DataContext as IAppAction)?.Refresh();
+            (Region.DataContext as IRibbon)?.Refresh();
         }
 
         private bool CanRefresh()
         {
-            return (Region.DataContext as IAppAction)?.CanRefresh ?? false;
+            return (Region.DataContext as IRibbon)?.CanRefresh ?? false;
         }
         #endregion
 
@@ -90,12 +90,12 @@ namespace PrismApp.ViewModels
 
         private void AddNewItem()
         {
-            (Region.DataContext as IAppAction)?.AddNewItem();
+            (Region.DataContext as IRibbon)?.AddNewItem();
         }
 
         private bool CanAddNewItem()
         {
-            return (Region.DataContext as IAppAction)?.CanAddNewItem ?? false;
+            return (Region.DataContext as IRibbon)?.CanAddNewItem ?? false;
         }
         #endregion
 
@@ -105,12 +105,12 @@ namespace PrismApp.ViewModels
 
         private void EditItem()
         {
-            (Region.DataContext as IAppAction)?.EditItem();
+            (Region.DataContext as IRibbon)?.EditItem();
         }
 
         private bool CanEditItem()
         {
-            return (Region.DataContext as IAppAction)?.CanEditItem ?? false;
+            return (Region.DataContext as IRibbon)?.CanEditItem ?? false;
         }
         #endregion
 
@@ -120,12 +120,12 @@ namespace PrismApp.ViewModels
 
         private void DeleteItem()
         {
-            (Region.DataContext as IAppAction)?.DeleteItem();
+            (Region.DataContext as IRibbon)?.DeleteItem();
         }
 
         private bool CanDeleteItem()
         {
-            return (Region.DataContext as IAppAction)?.CanDeleteItem ?? false;
+            return (Region.DataContext as IRibbon)?.CanDeleteItem ?? false;
         }
         #endregion
 

@@ -5,13 +5,14 @@
                         xmlns:converter="clr-namespace:PrismApp.Converters"
                         xmlns:prism="http://prismlibrary.com/">
     <Application.Resources>
-        <converter:ExpirationToTextConverter x:Key="ExpirationToText"/>
         <converter:BooleanToAnyVisibilityConverter x:Key="TrueToVisible" TrueTo="Visible" FalseTo="Collapsed"/>
         <converter:BooleanToAnyVisibilityConverter x:Key="FalseToVisible" TrueTo="Collapsed" FalseTo="Visible"/>
         <converter:BooleanInversionConverter x:Key="BoolInv"/>
         <converter:EnumToBooleanConverter x:Key="EnumToBool"/>
-        <converter:GenderToTextConverter x:Key="GenderToText"/>
         <converter:NotNullToVisibleConverter x:Key="NotNullToVisible"/>
         <converter:NullToVisibleConverter x:Key="NullToVisible"/>
+        <converter:ExpirationToTextConverter x:Key="ExpirationToText"/>
+        <converter:BirthDateToAgeConverter x:Key="BirthDateToAge"/>
+        <converter:GenderToTextConverter x:Key="GenderToText"/>
     </Application.Resources>
 </prism:PrismApplication>

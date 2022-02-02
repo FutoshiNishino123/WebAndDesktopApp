@@ -55,8 +55,10 @@ namespace Data.Models
         public bool IsClosed { get; set; }
 
         #region ITimeStamp
+        [Display(Name = "作成")]
         public DateTime Created { get; set; }
 
+        [Display(Name = "更新")]
         public DateTime Updated { get; set; }
         #endregion
     }

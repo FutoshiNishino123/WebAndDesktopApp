@@ -60,7 +60,7 @@ namespace PrismApp.ViewModels
             .ObservesProperty(() => User.LastName)
             .ObservesProperty(() => User.LastKana)
             .ObservesProperty(() => Account.Id)
-            .ObservesProperty(() => Account.RawPassword);
+            .ObservesProperty(() => Account.Password);
 
         private bool _saving;
 
@@ -105,7 +105,7 @@ namespace PrismApp.ViewModels
                    && !string.IsNullOrEmpty(User.LastName)
                    && !string.IsNullOrEmpty(User.LastKana)
                    && !string.IsNullOrEmpty(Account.Id)
-                   && !string.IsNullOrEmpty(Account.RawPassword);
+                   && !string.IsNullOrEmpty(Account.Password);
         }
         #endregion
 

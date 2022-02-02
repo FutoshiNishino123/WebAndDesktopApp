@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PrismApp.Models
 {
-    internal interface IAppAction
+    internal interface IRibbon
     {
         bool CanRefresh { get; }
         void Refresh();

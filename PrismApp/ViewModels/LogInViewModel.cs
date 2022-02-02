@@ -63,7 +63,7 @@ namespace PrismApp.ViewModels
 
         private async void LogIn(bool _)
         {
-            User? user = null;
+            User? user;
             try
             {
                 user = await FindUserAsync();
