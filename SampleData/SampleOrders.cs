@@ -26,7 +26,7 @@ namespace SampleData
                 var order = new Order
                 {
                     Expiration = i % 3 == 0 ? expiration.Next() : null,
-                    Number = "SN" + i.ToString("D4"),
+                    Number = "SN" + i.ToString("D8"),
                     User = people?.ElementAtRandom(),
                     Status = statuses?.ElementAtRandom(),
                     Remarks = "テスト案件",
@@ -39,7 +39,7 @@ namespace SampleData
             return orders;
         }
 
-        public void AddData(int count)
+        public void AddData(int count = 100)
         {
             var data = CreateData(count);
             var hash = 1000;
@@ -69,6 +69,7 @@ namespace SampleData
 
                 Console.SetCursorPosition(0, Console.CursorTop);
             }
+            Console.WriteLine();
         }
 
         public void PrintData(int count = 10)

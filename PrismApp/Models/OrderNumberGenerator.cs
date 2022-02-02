@@ -16,7 +16,7 @@ namespace PrismApp.Models
         {
             using var db = new AppDbContext();
 
-            // TODO: FIX
+            // NOTE: 文字列順なので数字は0埋め必須
             var max = db.Orders.Max(o => o.Number);
             if (max is null)
             {
@@ -34,7 +34,8 @@ namespace PrismApp.Models
                 return null;
             }
 
-            return "SN" + (value + 1).ToString("D4");
+            var next = value + 1;
+            return "SN" + next.ToString("D8");
         }
 
         public static async Task<string?> NextAsync()

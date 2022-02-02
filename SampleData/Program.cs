@@ -32,7 +32,7 @@ void InitializeDb()
     var orders = new SampleOrders(db);
 
     Console.WriteLine("Adding Users...");
-    users.AddData(50);
+    users.AddData();
     Console.WriteLine("Done.");
 
     Console.WriteLine("Adding Statuses...");
@@ -40,7 +40,7 @@ void InitializeDb()
     Console.WriteLine("Done.");
 
     Console.WriteLine("Adding Orders...");
-    orders.AddData(100000);
+    orders.AddData();
     Console.WriteLine("Done.");
 
     Console.WriteLine("Adding Admin User...");

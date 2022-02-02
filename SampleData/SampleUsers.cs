@@ -70,7 +70,7 @@ namespace SampleData
             return users;
         }
 
-        public void AddData(int count)
+        public void AddData(int count = 5)
         {
             var data = CreateData(count);
             _db.AddRange(data);
