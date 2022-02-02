@@ -43,10 +43,16 @@
                         @Html.ActionLink(order.Number, "Details", new { id = order.Id })
                     </td>
                     <td>
-                        @Html.DisplayFor(model => order.User.Name)
+                        @if (order.User != null)
+                        {
+                            @Html.DisplayFor(model => order.User.Name)
+                        }
                     </td>
                     <td>
-                        @Html.DisplayFor(model => order.Status.Text)
+                        @if (order.Status != null)
+                        {
+                            @Html.DisplayFor(model => order.Status.Text)
+                        }
                     </td>
                 </tr>
             }

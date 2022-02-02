@@ -1,8 +1,8 @@
-﻿@model OrdersSearchConditionModel
+﻿@model SearchCondition
 
 <form asp-controller="Orders" asp-action="Index">
-    <p>番号:
-        @Html.TextBoxFor(model => model.Number)
+    <p>
+        <input asp-for=SearchString />
         <input type="submit" value="検索" />
     </p>
 </form>

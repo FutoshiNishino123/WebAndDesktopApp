@@ -3,7 +3,7 @@
 @if (Model != null)
 {
     <p>
-        <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(Model.PrevPage) asp-route-number=@(Model.Condition?.Number)>前ページ</a>
-        <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(Model.NextPage) asp-route-number=@(Model.Condition?.Number)>次ページ</a>
+        <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(Model.PrevPage) asp-route-search=@(Model.Result?.Condition?.SearchString)>前ページ</a>
+        <a asp-area="" asp-controller="Orders" asp-action="Index" asp-route-page=@(Model.NextPage) asp-route-search=@(Model.Result?.Condition?.SearchString)>次ページ</a>
     </p>
 }

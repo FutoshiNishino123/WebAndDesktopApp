@@ -1,11 +1,6 @@
-﻿using Data.Models;
-using WebApp.Models;
-
-namespace WebApp.Services
+﻿namespace WebApp.Services
 {
-    public interface IOrdersService
+    public interface IOrdersService : IOrdersSearch
     {
-        Task<OrdersViewModel> SearchAsync(OrdersSearchConditionModel condition);
-        Task<Order?> FindOrderAsync(int id);
     }
 }

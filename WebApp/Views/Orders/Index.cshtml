@@ -8,10 +8,10 @@
 
 @if (Model != null)
 {
-    <p>@Model.Total 件中 @Model.FirstIndex - @Model.LastIndex</p>
+    <p>@Model.Pages ページ中 @Model.Page ページ目 (@Model.Total 件中 @Model.Start - @Model.End)</p>
 
     <partial name="Partial/PrevNext" model=Model />
-    <partial name="Partial/Search" model=Model.Condition />
-    <partial name="Partial/Table" model=Model.Data />
+    <partial name="Partial/Search" model=Model.Result?.Condition />
+    <partial name="Partial/Table" model=Model.Result?.Data />
     <partial name="Partial/PrevNext" model=Model />
 }

@@ -1,20 +1,20 @@
 ﻿namespace WebApp.Models
 {
-    public class OrdersSearchConditionModel
+    public class SearchCondition
     {
         /// <summary>
-        /// 表示件数
+        /// 件数
         /// </summary>
         public int Count { get; set; }
 
         /// <summary>
-        /// ページ数
+        /// ページ
         /// </summary>
         public int Page { get; set; }
 
         /// <summary>
-        /// 検索番号
+        /// 検索文字列
         /// </summary>
-        public string? Number { get; set; }
+        public string? SearchString { get; set; }
     }
 }

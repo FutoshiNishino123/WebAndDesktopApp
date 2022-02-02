@@ -1,8 +1,4 @@
-﻿using Data;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Reflection;
-using System.Text.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Services;
 
@@ -18,22 +14,29 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? page, string? number)
+        public async Task<IActionResult> Index(int? page, string? search)
         {
-            var condition = new OrdersSearchConditionModel
+            var condition = new SearchCondition
             {
                 Page = page ?? 1,
                 Count = 100,
-                Number = number,
+                SearchString = search,
             };
-            var model = await _service.SearchAsync(condition);
+
+            var result = await _service.SearchAsync(condition);
+
+            var model = new OrdersViewModel
+            {
+                Result = result,
+            };
+
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Index(string? number)
+        public IActionResult Index([Bind("SearchString")] SearchCondition condition)
         {
-            return RedirectToAction(nameof(Index), new { number = number });
+            return RedirectToAction(nameof(Index), new { search = condition.SearchString });
         }
 
         [HttpGet]
@@ -44,7 +47,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var order = await _service.FindOrderAsync(id.Value);
+            var order = await _service.FindAsync(id.Value);
             if (order is null)
             {
                 return NotFound();
