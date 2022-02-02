@@ -12,7 +12,7 @@ namespace PrismApp.Models
 {
     public static class OrdersRepository
     {
-        public static async Task<IEnumerable<Order>> GetOrdersAsync()
+        public static async Task<IEnumerable<Order>> GetAllAsync()
         {
             return await Task.Run(() =>
             {
@@ -28,7 +28,7 @@ namespace PrismApp.Models
             });
         }
 
-        public static async Task<Order?> FindOrderAsync(int id)
+        public static async Task<Order?> FindAsync(int id)
         {
             return await Task.Run(() =>
             {
@@ -43,7 +43,7 @@ namespace PrismApp.Models
             });
         }
 
-        public static async Task SaveOrderAsync(Order order)
+        public static async Task SaveAsync(Order order)
         {
             await Task.Run(() =>
             {
@@ -62,7 +62,7 @@ namespace PrismApp.Models
             });
         }
 
-        public static async Task DeleteOrderAsync(int id)
+        public static async Task DeleteAsync(int id)
         {
             await Task.Run(() =>
             {

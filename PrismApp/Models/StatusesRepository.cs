@@ -11,7 +11,7 @@ namespace PrismApp.Models
 {
     public static class StatusesRepository
     {
-        public static async Task<IEnumerable<Status>> GetStatusesAsync()
+        public static async Task<IEnumerable<Status>> GetAllAsync()
         {
             return await Task.Run(() =>
             {
@@ -23,7 +23,7 @@ namespace PrismApp.Models
             });
         }
 
-        public static async Task<Status?> FindStatusAsync(int id)
+        public static async Task<Status?> FindAsync(int id)
         {
             return await Task.Run(() =>
             {
@@ -35,7 +35,7 @@ namespace PrismApp.Models
             });
         }
 
-        public static async Task SaveStatusAsync(Status status)
+        public static async Task SaveAsync(Status status)
         {
             await Task.Run(() =>
             {
@@ -53,7 +53,7 @@ namespace PrismApp.Models
             });
         }
 
-        public static async Task DeleteStatusAsync(int id)
+        public static async Task DeleteAsync(int id)
         {
             await Task.Run(() =>
             {

@@ -100,7 +100,7 @@ namespace PrismApp.ViewModels
 
                 try
                 {
-                    await OrdersRepository.SaveOrderAsync(order);
+                    await OrdersRepository.SaveAsync(order);
                 }
                 catch (Exception e)
                 {
@@ -144,7 +144,7 @@ namespace PrismApp.ViewModels
             Users = null;
             Statuses = null;
 
-            var order = id.HasValue ? await OrdersRepository.FindOrderAsync(id.Value) : new Order();
+            var order = id.HasValue ? await OrdersRepository.FindAsync(id.Value) : new Order();
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -158,8 +158,8 @@ namespace PrismApp.ViewModels
                 order.Number = number;
             }
 
-            var users = await UsersRepository.GetUsersAsync();
-            var statuses = await StatusesRepository.GetStatusesAsync();
+            var users = await UsersRepository.GetAllAsync();
+            var statuses = await StatusesRepository.GetAllAsync();
 
             if (order.User != null)
             {

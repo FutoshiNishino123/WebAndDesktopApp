@@ -12,7 +12,7 @@ namespace PrismApp.Models
 {
     public static class UsersRepository
     {
-        public static async Task<IEnumerable<User>> GetUsersAsync()
+        public static async Task<IEnumerable<User>> GetAllAsync()
         {
             return await Task.Run(() =>
             {
@@ -26,7 +26,7 @@ namespace PrismApp.Models
             });
         }
 
-        public static async Task<User?> FindUserAsync(int id)
+        public static async Task<User?> FindAsync(int id)
         {
             return await Task.Run(() =>
             {
@@ -39,7 +39,7 @@ namespace PrismApp.Models
             });
         }
 
-        public static async Task<User?> FindUserAsync(string accountId, string password)
+        public static async Task<User?> FindAsync(string accountId, string password)
         {
             return await Task.Run(() =>
             {
@@ -53,7 +53,7 @@ namespace PrismApp.Models
             });
         }
 
-        public static async Task SaveUserAsync(User user)
+        public static async Task SaveAsync(User user)
         {
             if (user.Account is null)
             {
@@ -84,7 +84,7 @@ namespace PrismApp.Models
             });
         }
 
-        public static async Task DeleteUserAsync(int id)
+        public static async Task DeleteAsync(int id)
         {
             await Task.Run(() =>
             {

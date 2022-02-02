@@ -60,7 +60,7 @@ namespace PrismApp.ViewModels
 
         private async void Save(User user)
         {
-            await UsersRepository.SaveUserAsync(user);
+            await UsersRepository.SaveAsync(user);
 
             Event.RaiseSituationChanged();
         }
@@ -128,7 +128,7 @@ namespace PrismApp.ViewModels
                     try
                     {
                         Debug.Assert(User != null);
-                        await UsersRepository.DeleteUserAsync(User.Id);
+                        await UsersRepository.DeleteAsync(User.Id);
                     }
                     catch (Exception e)
                     {
@@ -144,7 +144,7 @@ namespace PrismApp.ViewModels
 
         private async void Initialize()
         {
-            var users = await UsersRepository.GetUsersAsync();
+            var users = await UsersRepository.GetAllAsync();
             Users = new ObservableCollection<User>(users);
         }
     }

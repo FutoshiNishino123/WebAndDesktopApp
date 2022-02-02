@@ -90,7 +90,7 @@ namespace PrismApp.ViewModels
 
         private async void Save(Order order)
         {
-            await OrdersRepository.SaveOrderAsync(order);
+            await OrdersRepository.SaveAsync(order);
 
             Event.RaiseSituationChanged();
         }
@@ -160,7 +160,7 @@ namespace PrismApp.ViewModels
                     try
                     {
                         Debug.Assert(Order != null);
-                        await OrdersRepository.DeleteOrderAsync(Order.Id);
+                        await OrdersRepository.DeleteAsync(Order.Id);
                     }
                     catch (Exception e)
                     {
@@ -185,7 +185,7 @@ namespace PrismApp.ViewModels
 
         public async void Initialize()
         {
-            var orders = await OrdersRepository.GetOrdersAsync();
+            var orders = await OrdersRepository.GetAllAsync();
 
             if (Filter != null)
             {

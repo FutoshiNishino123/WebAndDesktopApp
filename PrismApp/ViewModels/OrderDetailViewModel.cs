@@ -88,7 +88,7 @@ namespace PrismApp.ViewModels
             {
                 if (MessageBox.Show("削除しますか？", "確認", MessageBoxButton.YesNoCancel, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    await OrdersRepository.DeleteOrderAsync(Order.Id);
+                    await OrdersRepository.DeleteAsync(Order.Id);
 
                     Region.GoBack();
                 }
@@ -100,7 +100,7 @@ namespace PrismApp.ViewModels
         {
             Order = null;
 
-            var order = id.HasValue ? await OrdersRepository.FindOrderAsync(id.Value) : null;
+            var order = id.HasValue ? await OrdersRepository.FindAsync(id.Value) : null;
             if (order is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);
