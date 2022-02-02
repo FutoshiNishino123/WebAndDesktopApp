@@ -5,7 +5,7 @@ namespace WebApp.Services
 {
     public interface IOrdersSearch
     {
-        Task<OrdersSearchResult> SearchAsync(SearchCondition condition);
+        Task<OrdersSearchResult> SearchAsync(OrdersSearchCondition condition);
         Task<Order?> FindAsync(int id);
     }
 }

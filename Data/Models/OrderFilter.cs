@@ -2,7 +2,7 @@
 {
     public class OrderFilter
     {
-        public string? KeyWord { get; set; }
+        public string? Number { get; set; }
 
         public bool ShowClosed { get; set; }
 
@@ -13,8 +13,8 @@
                 return false;
             }
 
-            if (!string.IsNullOrEmpty(KeyWord)
-                && (!string.IsNullOrEmpty(order.Number) && !order.Number.Contains(KeyWord)))
+            if (!string.IsNullOrEmpty(Number)
+                && (!string.IsNullOrEmpty(order.Number) && !order.Number.Contains(Number)))
             {
                 return false;
             }

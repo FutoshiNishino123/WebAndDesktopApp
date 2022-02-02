@@ -49,7 +49,6 @@ namespace PrismApp.Models
             {
                 using var db = new AppDbContext();
 
-
                 if (db.Orders.Any(o => o.Number == order.Number
                                        && o.Id != order.Id))
                 {

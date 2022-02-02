@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Data.Models;
+using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Services;
 
@@ -16,11 +17,21 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int? page, string? search)
         {
-            var condition = new SearchCondition
+            if (page <= 0)
+            {
+                return NotFound();
+            }
+
+            var condition = new OrdersSearchCondition
             {
                 Page = page ?? 1,
                 Count = 100,
                 SearchString = search,
+                Filter = new OrderFilter
+                {
+                    Number = search,
+                    ShowClosed = false,
+                }
             };
 
             var result = await _service.SearchAsync(condition);

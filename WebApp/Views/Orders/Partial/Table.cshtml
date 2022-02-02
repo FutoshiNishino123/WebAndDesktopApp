@@ -4,13 +4,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsClosed)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Number)
@@ -31,13 +25,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(model => order.Id)
-                    </td>
-                    <td>
                         @Html.DisplayFor(model => order.Updated)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => order.IsClosed)
                     </td>
                     <td>
                         @Html.ActionLink(order.Number, "Details", new { id = order.Id })

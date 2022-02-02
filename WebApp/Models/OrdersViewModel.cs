@@ -16,7 +16,7 @@
             {
                 if (Result is null)
                 {
-                    return "0";
+                    return "1";
                 }
                 return Result.Pages.ToString();
             }
@@ -32,7 +32,7 @@
                 if (Result is null
                     || Result.Condition is null)
                 {
-                    return "0";
+                    return "1";
                 }
                 return Result.Condition.Page.ToString();
             }

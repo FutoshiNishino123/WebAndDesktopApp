@@ -14,33 +14,37 @@ namespace WebApp.Services
             _context = context;
         }
 
-        public async Task<OrdersSearchResult> SearchAsync(SearchCondition condition)
+        public async Task<OrdersSearchResult> SearchAsync(OrdersSearchCondition condition)
         {
             if (condition.Page <= 0 || condition.Count <= 0)
             {
                 throw new ArgumentException("検索条件が不正です。");
             }
 
-            var query = from o in _context.Orders
-                        select o;
+            var query = from order in _context.Orders
+                        select order;
 
-            // TODO: より複雑な検索に対応できるようにする
-            if (!string.IsNullOrEmpty(condition.SearchString))
+            if (!string.IsNullOrEmpty(condition.Filter?.Number))
             {
-                query = query.Where(o => o.Number.Contains(condition.SearchString));
+                query = query.Where(o => o.Number.Contains(condition.Filter.Number));
+            }
+
+            if (condition.Filter?.ShowClosed == false)
+            {
+                query = query.Where(o => o.IsClosed == false);
             }
 
             var total = await query.CountAsync();
 
             var index = (condition.Page - 1) * condition.Count;
 
-            query = query.Include(o => o.User)
-                         .Include(o => o.Status)
-                         .OrderByDescending(o => o.Id)
-                         .Skip(index)
-                         .Take(condition.Count);
-
-            var data = await query.ToListAsync();
+            var data = await query
+                .Include(o => o.User)
+                .Include(o => o.Status)
+                .OrderByDescending(o => o.Id)
+                .Skip(index)
+                .Take(condition.Count)
+                .ToListAsync();
 
             var pages = (int)Math.Ceiling(total / (double)condition.Count);
 

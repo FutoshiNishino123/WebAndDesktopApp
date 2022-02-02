@@ -13,7 +13,7 @@ namespace WebApp.Services
             _search = search;
         }
 
-        public async Task<OrdersSearchResult> SearchAsync(SearchCondition condition)
+        public async Task<OrdersSearchResult> SearchAsync(OrdersSearchCondition condition)
         {
             return await _search.SearchAsync(condition);
         }

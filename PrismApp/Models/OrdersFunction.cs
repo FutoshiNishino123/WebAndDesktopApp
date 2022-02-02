@@ -32,7 +32,8 @@ namespace PrismApp.Models
 
         #region FilterChangedCommand property
         private DelegateCommand? _filterChangedCommand;
-        public DelegateCommand FilterChangedCommand => _filterChangedCommand ??= new DelegateCommand(FilterChanged, CanFilterChanged);
+        public DelegateCommand FilterChangedCommand => _filterChangedCommand ??= new DelegateCommand(FilterChanged, CanFilterChanged)
+            .ObservesProperty(() => IsEnabled);
 
         private void FilterChanged()
         {

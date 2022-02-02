@@ -13,11 +13,11 @@ namespace Data.Models
     public class Account
     {
         /// <summary>
-        /// ID
+        /// アカウントID
         /// </summary>
         [Key]
         [MaxLength(100)]
-        [Display(Name = "ID")]
+        [Display(Name = "アカウントID")]
         public string? Id { get; set; }
 
         /// <summary>
