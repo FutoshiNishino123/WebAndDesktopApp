@@ -7,7 +7,7 @@
     <Application.Resources>
         <converter:BooleanToAnyVisibilityConverter x:Key="TrueToVisible" TrueTo="Visible" FalseTo="Collapsed"/>
         <converter:BooleanToAnyVisibilityConverter x:Key="FalseToVisible" TrueTo="Collapsed" FalseTo="Visible"/>
-        <converter:BooleanInversionConverter x:Key="BoolInv"/>
+        <converter:BooleanInversionConverter x:Key="Not"/>
         <converter:EnumToBooleanConverter x:Key="EnumToBool"/>
         <converter:NotNullToVisibleConverter x:Key="NotNullToVisible"/>
         <converter:NullToVisibleConverter x:Key="NullToVisible"/>
