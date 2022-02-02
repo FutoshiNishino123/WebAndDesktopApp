@@ -185,13 +185,7 @@ namespace PrismApp.ViewModels
 
         public async void Initialize()
         {
-            var orders = await OrdersRepository.GetAllAsync();
-
-            if (Filter != null)
-            {
-                orders = orders.Where(Filter.Apply);
-            }
-
+            var orders = await OrdersRepository.GetAllAsync(Filter);
             Orders = new ObservableCollection<Order>(orders);
         }
     }

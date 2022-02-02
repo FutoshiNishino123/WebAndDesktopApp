@@ -24,14 +24,9 @@ namespace WebApp.Services
             var query = from order in _context.Orders
                         select order;
 
-            if (!string.IsNullOrEmpty(condition.Filter?.Number))
+            if (condition?.Filter is not null)
             {
-                query = query.Where(o => o.Number.Contains(condition.Filter.Number));
-            }
-
-            if (condition.Filter?.ShowClosed == false)
-            {
-                query = query.Where(o => o.IsClosed == false);
+                query = condition.Filter.Apply(query);
             }
 
             var total = await query.CountAsync();

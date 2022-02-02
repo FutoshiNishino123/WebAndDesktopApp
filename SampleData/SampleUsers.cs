@@ -35,8 +35,8 @@ namespace SampleData
 
                 var image = first.gender switch
                 {
-                    "M" => obj.image.items.Where(s => s.Contains("male")).Skip(male++).FirstOrDefault(),
-                    "F" => obj.image.items.Where(s => s.Contains("female")).Skip(female++).FirstOrDefault(),
+                    "M" => obj.image.items.Where(s => s.Contains("/male/")).Skip(male++).FirstOrDefault(),
+                    "F" => obj.image.items.Where(s => s.Contains("/female/")).Skip(female++).FirstOrDefault(),
                     _ => ""
                 };
 
@@ -97,9 +97,9 @@ namespace SampleData
             _db.SaveChanges();
         }
 
-        public void PrintData()
+        public void PrintData(int count = 10)
         {
-            var users = _db.Users.Include(u => u.Account).ToList();
+            var users = _db.Users.Include(u => u.Account).Take(count).ToList();
 
             Console.WriteLine("--- Users ---");
             foreach (var u in users)

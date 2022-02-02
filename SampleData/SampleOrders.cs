@@ -42,15 +42,41 @@ namespace SampleData
         public void AddData(int count)
         {
             var data = CreateData(count);
-            _db.AddRange(data);
-            _db.SaveChanges();
+            var hash = 1000;
+            var done = 0;
+            var i = 0;
+            var start = DateTime.Now;
+            while (true)
+            {
+                var index = hash * i++;
+                var tmp = data.Skip(index).Take(hash);
+                if (!tmp.Any())
+                {
+                    break;
+                }
+
+                _db.AddRange(tmp);
+                _db.SaveChanges();
+
+                done += tmp.Count();
+                var remain = count - done;
+                var ratio = (double)done / count * 100;
+                var span = DateTime.Now - start;
+                var estimate = span * remain / done;
+                Console.Write($"{span.Minutes:#,0} 分 {span.Seconds:#,00} 秒 経過: " +
+                              $"{done:#,0} / {count:#,0} 件完了 ({ratio:0.0} %), " +
+                              $"あと {estimate.Minutes:#,0} 分 {estimate.Seconds:#,00} 秒");
+
+                Console.SetCursorPosition(0, Console.CursorTop);
+            }
         }
 
-        public void PrintData()
+        public void PrintData(int count = 10)
         {
             var orders = _db.Orders
                 .Include(o => o.User)
                 .Include(o => o.Status)
+                .Take(count)
                 .ToList();
 
             Console.WriteLine("--- Orders ---");

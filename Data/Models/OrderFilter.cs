@@ -6,20 +6,19 @@
 
         public bool ShowClosed { get; set; }
 
-        public bool Apply(Order order)
+        public IQueryable<Order> Apply(IQueryable<Order> query)
         {
-            if (!ShowClosed && order.IsClosed)
+            if (!string.IsNullOrWhiteSpace(Number))
             {
-                return false;
+                query = query.Where(o => o.Number.Contains(Number));
             }
 
-            if (!string.IsNullOrEmpty(Number)
-                && (!string.IsNullOrEmpty(order.Number) && !order.Number.Contains(Number)))
+            if (!ShowClosed)
             {
-                return false;
+                query = query.Where(o => o.IsClosed == false);
             }
 
-            return true;
+            return query;
         }
     }
 }

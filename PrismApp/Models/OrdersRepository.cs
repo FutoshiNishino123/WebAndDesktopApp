@@ -12,13 +12,21 @@ namespace PrismApp.Models
 {
     public static class OrdersRepository
     {
-        public static async Task<IEnumerable<Order>> GetAllAsync()
+        public static async Task<IEnumerable<Order>> GetAllAsync(OrderFilter? filter = null)
         {
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
 
-                var orders = db.Orders
+                var query = from order in db.Orders
+                            select order;
+
+                if (filter is not null)
+                {
+                    query = filter.Apply(query);
+                }
+
+                var orders = query
                     .Include(o => o.User)
                     .Include(o => o.Status)
                     .OrderByDescending(o => o.Id)

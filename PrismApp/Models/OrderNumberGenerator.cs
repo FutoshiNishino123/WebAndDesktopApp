@@ -16,6 +16,7 @@ namespace PrismApp.Models
         {
             using var db = new AppDbContext();
 
+            // TODO: FIX
             var max = db.Orders.Max(o => o.Number);
             if (max is null)
             {

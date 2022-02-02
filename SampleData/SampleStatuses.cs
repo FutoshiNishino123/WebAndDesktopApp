@@ -35,9 +35,9 @@ namespace SampleData
             _db.SaveChanges();
         }
 
-        public void PrintData()
+        public void PrintData(int count = 10)
         {
-            var statuses = _db.Statuses.ToList();
+            var statuses = _db.Statuses.Take(count).ToList();
             
             Console.WriteLine("--- Statuses ---");
             foreach (var s in statuses)

@@ -22,7 +22,7 @@ void InitializeDb()
         return;
     }
 
-    Console.WriteLine("Deleting Data...");
+    Console.WriteLine("Deleting All Data...");
     DeleteAllData();
     Console.WriteLine("Done.");
 
@@ -31,10 +31,19 @@ void InitializeDb()
     var statuses = new SampleStatuses(db);
     var orders = new SampleOrders(db);
 
-    Console.WriteLine("Adding Data...");
+    Console.WriteLine("Adding Users...");
     users.AddData(50);
+    Console.WriteLine("Done.");
+
+    Console.WriteLine("Adding Statuses...");
     statuses.AddData();
+    Console.WriteLine("Done.");
+
+    Console.WriteLine("Adding Orders...");
     orders.AddData(100000);
+    Console.WriteLine("Done.");
+
+    Console.WriteLine("Adding Admin User...");
     users.AddAdmin();
     Console.WriteLine("Done.");
 

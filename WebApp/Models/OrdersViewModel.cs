@@ -14,7 +14,8 @@
         {
             get
             {
-                if (Result is null)
+                if (Result is null
+                    || Result.Pages == 0)
                 {
                     return "1";
                 }
