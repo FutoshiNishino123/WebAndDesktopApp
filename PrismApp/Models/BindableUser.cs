@@ -46,12 +46,8 @@ namespace PrismApp.Models
         }
         #endregion
 
-        #region NameRegex property
-        private static Regex? _nameRegex;
-        public static Regex NameRegex => _nameRegex ??= new Regex(@"^(?<last_name>\w+)\s+(?<first_name>\w+)$");
-        #endregion
-
         #region Name property
+        private readonly static Regex NameRegex = new Regex(@"^(?<last_name>\w+)\s+(?<first_name>\w+)$");
         public string? Name
         {
             get
@@ -99,12 +95,8 @@ namespace PrismApp.Models
         }
         #endregion
 
-        #region KanaRegex property
-        private static Regex? _kanaRegex;
-        public static Regex KanaRegex => _kanaRegex ??= new Regex(@"^(?<last_kana>\w+)\s+(?<first_kana>\w+)$");
-        #endregion
-
         #region Kana property
+        private readonly static Regex KanaRegex = new Regex(@"^(?<last_kana>\w+)\s+(?<first_kana>\w+)$");
         public string? Kana
         {
             get

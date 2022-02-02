@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PrismApp.Models
 {
-    internal interface IDataController
+    internal interface IAppAction
     {
         bool CanRefresh { get; }
         void Refresh();

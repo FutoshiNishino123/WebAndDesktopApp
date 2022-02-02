@@ -26,7 +26,7 @@ namespace SampleData
                 var order = new Order
                 {
                     Expiration = i % 3 == 0 ? expiration.Next() : null,
-                    Number = "SM" + i.ToString("D4"),
+                    Number = "SN" + i.ToString("D4"),
                     User = people?.ElementAtRandom(),
                     Status = statuses?.ElementAtRandom(),
                     Remarks = "テスト案件",

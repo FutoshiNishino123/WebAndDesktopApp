@@ -70,7 +70,7 @@ namespace PrismApp.Models
                     throw new InvalidOperationException("ユーザ アカウントIDが重複しています。");
                 }
 
-                // Update だけだとエラーになるので、条件によってAddと使い分ける
+                // Update だけだと競合が発生するので、条件によってAddと使い分ける
                 if (db.Users.Contains(user))
                 {
                     db.Update(user);

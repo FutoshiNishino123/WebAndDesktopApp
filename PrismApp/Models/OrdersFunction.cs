@@ -10,7 +10,7 @@ namespace PrismApp.Models
     public class OrdersFunction : BindableBase
     {
         [Dependency]
-        public IEventPublisher EventPublisher { get; set; }
+        public IEventPublisher Event { get; set; }
 
         #region IsEnabled property
         private bool _isEnabled;
@@ -36,7 +36,7 @@ namespace PrismApp.Models
 
         private void FilterChanged()
         {
-            EventPublisher.RaiseOrderFilterChanged(Filter);
+            Event.RaiseOrderFilterChanged(Filter);
         }
 
         private bool CanFilterChanged()

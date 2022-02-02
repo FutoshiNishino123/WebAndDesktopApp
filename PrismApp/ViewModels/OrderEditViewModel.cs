@@ -151,6 +151,12 @@ namespace PrismApp.ViewModels
                 Region.GoBack();
                 return;
             }
+            
+            var number = id.HasValue ? null : await OrderNumberGenerator.NextAsync();
+            if (number is not null)
+            {
+                order.Number = number;
+            }
 
             var users = await UsersRepository.GetUsersAsync();
             var statuses = await StatusesRepository.GetStatusesAsync();
