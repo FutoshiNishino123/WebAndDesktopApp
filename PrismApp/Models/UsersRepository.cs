@@ -19,7 +19,7 @@ namespace PrismApp.Models
                 using var db = new AppDbContext();
 
                 var users = db.Users.Include(u => u.Account)
-                                    .OrderBy(u => u.Id)
+                                    .OrderBy(u => u.Kana)
                                     .ToList();
 
                 return users;

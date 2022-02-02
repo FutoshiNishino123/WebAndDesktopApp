@@ -25,7 +25,8 @@
                 <ComboBox ItemsSource="{Binding Users}" SelectedValue="{Binding Order.User}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock><Run Text="{Binding Name}"/> (<Run Text="{Binding Kana}"/>)</TextBlock>
+                            <!--<TextBlock><Run Text="{Binding Name}"/> (<Run Text="{Binding Kana}"/>)</TextBlock>-->
+                            <TextBlock Text="{Binding Name}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -34,12 +35,12 @@
             <!--ステータス-->
             <StackPanel Margin="10">
                 <TextBlock Text="ステータス:"/>
-                <ComboBox ItemsSource="{Binding Statuses}" SelectedValue="{Binding Order.Status}" DisplayMemberPath="Text">
-                    <!--<ComboBox.ItemTemplate>
+                <ComboBox ItemsSource="{Binding Statuses}" SelectedValue="{Binding Order.Status}">
+                    <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Text}" />
                         </DataTemplate>
-                    </ComboBox.ItemTemplate>-->
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
             

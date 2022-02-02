@@ -26,15 +26,17 @@ namespace PrismApp.Models
             ea.GetEvent<LogInEvent>().Subscribe(user => LogInUser = user);
             ea.GetEvent<LogOutEvent>().Subscribe(() => LogInUser = null);
 
+#if DEBUG
             // 管理者として起動
-            ea.GetEvent<LogInEvent>().Publish(new User 
+            LogInUser = new User 
             {
                 Name = "ゲスト",
                 Account = new Account 
                 { 
                     IsAdmin = true,
                 } 
-            });
+            };
+#endif
         }
     }
 }
