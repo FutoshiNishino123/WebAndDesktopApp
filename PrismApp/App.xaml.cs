@@ -47,7 +47,7 @@ namespace PrismApp
             containerRegistry.RegisterSingleton<IEventPublisher, EventPublisher>();
             containerRegistry.RegisterSingleton<IContentRegionManager, ContentRegionManager>();
             containerRegistry.RegisterSingleton<OrdersFunction>();
-            containerRegistry.RegisterSingleton<AppData>();
+            containerRegistry.RegisterSingleton<LogInUser>();
         }
     }
 }

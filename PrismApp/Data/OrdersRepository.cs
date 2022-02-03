@@ -1,6 +1,4 @@
-﻿using Common.Extensions;
-using Common.Utils;
-using Data;
+﻿using Data;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -48,6 +46,17 @@ namespace PrismApp.Data
                     .FirstOrDefault(o => o.Id == id);
 
                 return order;
+            });
+        }
+
+        public static async Task<string?> GetMaxNumberAsync()
+        {
+            return await Task.Run(() =>
+            {
+                using var db = new AppDbContext();
+
+                // NOTE: 0埋め必須 ("1000" < "999"であるため"0999"とする)
+                return db.Orders.Max(o => o.Number);
             });
         }
 

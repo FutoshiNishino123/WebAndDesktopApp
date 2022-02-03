@@ -25,7 +25,7 @@ namespace PrismApp.ViewModels
         public IEventPublisher Event { get; set; }
 
         [Dependency]
-        public AppData Data { get; set; }
+        public LogInUser LogInUser { get; set; }
 
         #region Greeting property
         private static readonly string DefaultGreeting = "ようこそ";
@@ -113,7 +113,7 @@ namespace PrismApp.ViewModels
 
         private string GetGreeting()
         {
-            var user = Data.LogInUser;
+            var user = LogInUser.User;
             if (user is null)
             {
                 return "ようこそ";

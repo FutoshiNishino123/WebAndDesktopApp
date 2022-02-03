@@ -1,8 +1,4 @@
-﻿using Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using PrismApp.Data;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -12,12 +8,9 @@ namespace PrismApp.Generators
     {
         private readonly static Regex Regex = new Regex(@"SN(?<number>\d+)");
 
-        public static string? Next()
+        public static async Task<string?> NextAsync()
         {
-            using var db = new AppDbContext();
-
-            // NOTE: 文字列順なので数字は0埋め必須
-            var max = db.Orders.Max(o => o.Number);
+            var max = await OrdersRepository.GetMaxNumberAsync();
             if (max is null)
             {
                 return null;
@@ -36,14 +29,6 @@ namespace PrismApp.Generators
 
             var next = value + 1;
             return "SN" + next.ToString("D8");
-        }
-
-        public static async Task<string?> NextAsync()
-        {
-            return await Task.Run(() =>
-            {
-                return Next();
-            });
         }
     }
 }

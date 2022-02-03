@@ -28,7 +28,7 @@ namespace PrismApp.ViewModels
         public IEventPublisher Event { get; set; }
 
         [Dependency]
-        public AppData Data { get; set; }
+        public LogInUser LogInUser { get; set; }
 
         #region Order property
         private BindableOrder? _order;
@@ -167,9 +167,9 @@ namespace PrismApp.ViewModels
             {
                 order.User = users.FirstOrDefault(u => u.Id == order.User.Id);
             }
-            else if (Data.LogInUser != null)
+            else if (LogInUser.User != null)
             {
-                order.User = users.FirstOrDefault(u => u.Id == Data.LogInUser.Id);
+                order.User = users.FirstOrDefault(u => u.Id == LogInUser.User.Id);
             }
 
             if (order.Status != null)
