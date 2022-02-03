@@ -60,6 +60,10 @@ void DeleteAllData()
         .Build();
 
     var connectionString = config.GetConnectionString("AppDbContext");
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new InvalidOperationException("ConnectionString is not found.");
+    }
 
     using var connection = new MySqlConnection(connectionString);
     connection.Open();

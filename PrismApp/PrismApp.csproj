@@ -8,19 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\default-user.png" />
-    <None Remove="Resources\ribbon-add.png" />
-    <None Remove="Resources\ribbon-back.png" />
-    <None Remove="Resources\ribbon-delete.png" />
-    <None Remove="Resources\ribbon-edit.png" />
-    <None Remove="Resources\ribbon-home.png" />
-    <None Remove="Resources\ribbon-orders.png" />
-    <None Remove="Resources\ribbon-refresh.png" />
-    <None Remove="Resources\ribbon-upload.png" />
-    <None Remove="Resources\ribbon-users.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Prism.Unity" Version="8.1.97" />
   </ItemGroup>
 
@@ -30,34 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\default-user.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\ribbon-add.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\ribbon-back.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\ribbon-delete.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\ribbon-edit.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\ribbon-home.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\ribbon-orders.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\ribbon-refresh.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\ribbon-upload.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\ribbon-users.png">
+    <Resource Include="Resources\*.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

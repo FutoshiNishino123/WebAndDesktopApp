@@ -2,6 +2,7 @@
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
 namespace Data
