@@ -28,7 +28,7 @@ namespace PrismApp.ViewModels
         public OrdersFunction Orders { get; set; }
 
         [Dependency]
-        public LogInUser LogInUser { get; set; }
+        public AppFunction App { get; set; }
 
         #region Title property
         private string _title = "Demo";

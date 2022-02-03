@@ -2,10 +2,9 @@
 using Prism.Events;
 using Prism.Mvvm;
 using PrismApp.Events;
-
 namespace PrismApp.Models
 {
-    public class LogInUser : BindableBase
+    public class AppFunction : BindableBase
     {
         #region User property
         private User? _user;
@@ -16,7 +15,7 @@ namespace PrismApp.Models
         }
         #endregion
 
-        public LogInUser(IEventAggregator ea)
+        public AppFunction(IEventAggregator ea)
         {
             ea.GetEvent<LogInEvent>().Subscribe(LogIn);
             ea.GetEvent<LogOutEvent>().Subscribe(LogOut);

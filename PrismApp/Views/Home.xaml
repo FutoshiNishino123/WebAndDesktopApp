@@ -23,8 +23,8 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Button Content="ログイン" Margin="10" Width="70" Height="30" Command="{Binding LogInCommand}" Visibility="{Binding LogInUser.User, Converter={StaticResource NullToVisible}}"/>
-            <Button Content="ログアウト" Margin="10" Width="70" Height="30" Command="{Binding LogOutCommand}" Visibility="{Binding LogInUser.User, Converter={StaticResource NotNullToVisible}}"/>
+            <Button Content="ログイン" Margin="10" Width="70" Height="30" Command="{Binding LogInCommand}" Visibility="{Binding App.User, Converter={StaticResource NullToVisible}}"/>
+            <Button Content="ログアウト" Margin="10" Width="70" Height="30" Command="{Binding LogOutCommand}" Visibility="{Binding App.User, Converter={StaticResource NotNullToVisible}}"/>
         </Grid>
     </DockPanel>
 </UserControl>
