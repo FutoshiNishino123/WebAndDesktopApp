@@ -19,7 +19,7 @@ namespace WebApp.Controllers
         {
             if (page <= 0)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index), new { search = search });
             }
 
             var condition = new OrdersSearchCondition

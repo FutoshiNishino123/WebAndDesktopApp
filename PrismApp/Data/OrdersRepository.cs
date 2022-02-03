@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PrismApp.Models
+namespace PrismApp.Data
 {
     public static class OrdersRepository
     {

@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
+using PrismApp.Models;
 using PrismApp.ViewModels;
 
-namespace PrismApp.Models
+namespace PrismApp.Data
 {
     internal static class AboutRepository
     {

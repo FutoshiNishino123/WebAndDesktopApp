@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace SampleData.Data
 {
-
-#pragma warning disable CS8618 // null 非許容のフィールドには、コンストラクターの終了時に null 以外の値が入っていなければなりません。Null 許容として宣言することをご検討ください。
-
     // 以下、自動生成コード
     // 1. json文字列をコピー
     // 2. メニューバーより 編集 → 形式を選択して貼り付け
@@ -55,6 +52,4 @@ namespace SampleData.Data
     {
         public string[] items { get; set; }
     }
-
-#pragma warning restore CS8618 // null 非許容のフィールドには、コンストラクターの終了時に null 以外の値が入っていなければなりません。Null 許容として宣言することをご検討ください。
 }

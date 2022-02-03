@@ -13,6 +13,7 @@ using Common.Utils;
 using System;
 using System.Threading.Tasks;
 using PrismApp.Regions;
+using PrismApp.Data;
 
 namespace PrismApp.ViewModels
 {
