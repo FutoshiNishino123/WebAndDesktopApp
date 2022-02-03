@@ -18,8 +18,8 @@ namespace PrismApp.Models
 
         public LogInUser(IEventAggregator ea)
         {
-            ea.GetEvent<LogInEvent>().Subscribe(user => User = user);
-            ea.GetEvent<LogOutEvent>().Subscribe(() => User = null);
+            ea.GetEvent<LogInEvent>().Subscribe(LogIn);
+            ea.GetEvent<LogOutEvent>().Subscribe(LogOut);
 
 #if DEBUG
             // デバッグ時はログインしなくても管理者権限を付与
@@ -32,6 +32,16 @@ namespace PrismApp.Models
                 } 
             };
 #endif
+        }
+
+        public void LogIn(User user)
+        {
+            User = user;
+        }
+
+        public void LogOut()
+        {
+            User = null;
         }
     }
 }
