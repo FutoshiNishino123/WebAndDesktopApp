@@ -8,22 +8,6 @@
         public OrdersSearchResult? Result { get; set; }
 
         /// <summary>
-        /// ページ数
-        /// </summary>
-        public string? Pages
-        {
-            get
-            {
-                if (Result is null
-                    || Result.Pages == 0)
-                {
-                    return "1";
-                }
-                return Result.Pages.ToString();
-            }
-        }
-
-        /// <summary>
         /// ページ
         /// </summary>
         public string? Page
@@ -36,6 +20,38 @@
                     return "1";
                 }
                 return Result.Condition.Page.ToString();
+            }
+        }
+
+        /// <summary>
+        /// 検索文字列
+        /// </summary>
+        public string? SearchString
+        {
+            get
+            {
+                if (Result is null
+                    || Result.Condition is null)
+                {
+                    return string.Empty;
+                }
+                return Result.Condition.SearchString;
+            }
+        }
+
+        /// <summary>
+        /// ページ数
+        /// </summary>
+        public string? Pages
+        {
+            get
+            {
+                if (Result is null
+                    || Result.Pages == 0)
+                {
+                    return "1";
+                }
+                return Result.Pages.ToString();
             }
         }
 

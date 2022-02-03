@@ -25,6 +25,6 @@
         /// <summary>
         /// 取得データ
         /// </summary>
-        public List<T>? Data { get; set; }
+        public ICollection<T>? Data { get; set; }
     }
 }
