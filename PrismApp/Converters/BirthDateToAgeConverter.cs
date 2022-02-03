@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace PrismApp.Converters
@@ -17,7 +18,7 @@ namespace PrismApp.Converters
                 return age;
             }
 
-            return -1;
+            return Binding.DoNothing;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

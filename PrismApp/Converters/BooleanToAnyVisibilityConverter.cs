@@ -30,7 +30,7 @@ namespace PrismApp.Converters
 
             if (value is not bool b)
             {
-                return DependencyProperty.UnsetValue;
+                return Binding.DoNothing;
             }
 
             return b ? TrueTo : FalseTo;

@@ -2,6 +2,7 @@
 using Data.Models;
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace PrismApp.Converters
@@ -16,7 +17,7 @@ namespace PrismApp.Converters
                 Gender.Male => "男",
                 Gender.Female => "女",
                 Gender.Other => "他",
-                _ => "？",
+                _ => Binding.DoNothing,
             };
         }
 

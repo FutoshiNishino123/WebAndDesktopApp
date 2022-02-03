@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace PrismApp.Converters
@@ -20,7 +21,7 @@ namespace PrismApp.Converters
                 return days >= 0 ? $"残り {days} 日" : $"{Math.Abs(days)} 日 超過";
             }
 
-            return "";
+            return Binding.DoNothing;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

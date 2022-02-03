@@ -9,8 +9,8 @@
         <converter:BooleanToAnyVisibilityConverter x:Key="FalseToVisible" TrueTo="Collapsed" FalseTo="Visible"/>
         <converter:BooleanInversionConverter x:Key="Not"/>
         <converter:EnumToBooleanConverter x:Key="EnumToBool"/>
-        <converter:NotNullToVisibleConverter x:Key="NotNullToVisible"/>
-        <converter:NullToVisibleConverter x:Key="NullToVisible"/>
+        <converter:ObjectToAnyVisiblityConverter x:Key="NullToVisible" NullTo="Visible" NotNullTo="Collapsed"/>
+        <converter:ObjectToAnyVisiblityConverter x:Key="NotNullToVisible" NullTo="Collapsed" NotNullTo="Visible"/>
         <converter:ExpirationToTextConverter x:Key="ExpirationToText"/>
         <converter:BirthDateToAgeConverter x:Key="BirthDateToAge"/>
         <converter:GenderToTextConverter x:Key="GenderToText"/>

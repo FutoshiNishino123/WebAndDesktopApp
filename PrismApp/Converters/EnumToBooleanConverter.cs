@@ -24,9 +24,11 @@ namespace PrismApp.Converters
                 return Binding.DoNothing;
             }
 
-            if ((bool)value)
+            var s = parameter.ToString();
+
+            if ((bool)value && s != null)
             {
-                return Enum.Parse(targetType, parameter.ToString() ?? "");
+                return Enum.Parse(targetType, s);
             }
 
             return Binding.DoNothing;
