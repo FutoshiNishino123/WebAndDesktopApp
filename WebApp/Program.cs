@@ -1,5 +1,6 @@
 using Data;
 using Data.Models;
+using Microsoft.AspNetCore.HttpOverrides;
 using WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,13 @@ builder.Services.AddScoped<IOrdersSearch, OrdersSearch>();
 builder.Services.AddScoped<IOrdersService, OrdersService>();
 
 var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
+app.UseAuthentication();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

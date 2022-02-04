@@ -9,14 +9,10 @@ InitializeDb();
 
 void InitializeDb()
 {
-    // 最初にDataプロジェクトからデータベースをマイグレーションすること
-    // `dotnet ef add migrations Sample`
-    // `dotnet ef database update`
-
-    Console.Write("すべてのデータを削除して新しいデータを登録します。続行しますか？(y/n): ");
-    var key = Console.ReadKey().Key;
-    Console.WriteLine();
-    if (key != ConsoleKey.Y)
+    Console.WriteLine("すべてのデータを削除して新しいデータを登録します。");
+    Console.Write("続行しますか？ [y/N]");
+    var line = Console.ReadLine();
+    if (line != "y" && line != "Y")
     {
         Console.WriteLine("キャンセルされました。");
         return;
