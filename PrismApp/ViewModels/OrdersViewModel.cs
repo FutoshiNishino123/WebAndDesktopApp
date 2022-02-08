@@ -1,20 +1,16 @@
-﻿using Data;
-using Data.Models;
+﻿using Data.Models;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
+using PrismApp.Data;
 using PrismApp.Events;
+using PrismApp.Regions;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using Unity;
-using PrismApp.Regions;
-using PrismApp.Data;
 
 namespace PrismApp.ViewModels
 {
@@ -57,7 +53,7 @@ namespace PrismApp.ViewModels
         #endregion
 
         #region Filter property
-        private OrderFilter _filter = new OrderFilter();
+        private OrderFilter _filter = new OrderFilter() { ActiveOnly = true };
         public OrderFilter Filter
         {
             get => _filter;
@@ -140,7 +136,7 @@ namespace PrismApp.ViewModels
             }
         }
 
-        public bool CanEditItem => Order != null && !Order.IsClosed;
+        public bool CanEditItem => Order != null && Order.IsActive;
         public void EditItem()
         {
             if (CanEditItem)
@@ -150,7 +146,7 @@ namespace PrismApp.ViewModels
             }
         }
 
-        public bool CanDeleteItem => Order != null && !Order.IsClosed;
+        public bool CanDeleteItem => Order != null && Order.IsActive;
         public async void DeleteItem()
         {
             if (CanDeleteItem)

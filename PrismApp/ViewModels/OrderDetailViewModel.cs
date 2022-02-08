@@ -72,7 +72,7 @@ namespace PrismApp.ViewModels
             throw new NotSupportedException();
         }
 
-        public bool CanEditItem => Order != null && !Order.IsClosed;
+        public bool CanEditItem => Order != null && Order.IsActive;
         public void EditItem()
         {
             if (Order != null)
@@ -81,7 +81,7 @@ namespace PrismApp.ViewModels
             }
         }
 
-        public bool CanDeleteItem => Order != null && !Order.IsClosed;
+        public bool CanDeleteItem => Order != null && Order.IsActive;
         public async void DeleteItem()
         {
             if (Order != null)

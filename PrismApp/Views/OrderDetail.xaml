@@ -22,7 +22,7 @@
 
                 <!--CLOSED-->
                 <TextBlock FontSize="16" Text="CLOSED" Foreground="Red" Margin="5" HorizontalAlignment="Center"
-                           Visibility="{Binding Order.IsClosed, Converter={StaticResource TrueToVisible}, Mode=OneWay, FallbackValue=Collapsed}"/>
+                           Visibility="{Binding Order.IsActive, Converter={StaticResource FalseToVisible}, Mode=OneWay, FallbackValue=Collapsed}"/>
 
                 <!--番号-->
                 <TextBlock FontSize="30" Text="{Binding Order.Number}" Margin="5" Background="LightYellow" HorizontalAlignment="Center" />

@@ -30,7 +30,7 @@ namespace WebApp.Controllers
                 Filter = new OrderFilter
                 {
                     Number = search,
-                    ShowClosed = false,
+                    ActiveOnly = false,
                 }
             };
 

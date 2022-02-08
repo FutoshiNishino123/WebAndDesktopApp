@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Data;
 using Data.Models;
-using Common.Extensions;
 using Common.Utils;
+using Data.Extensions;
 
 namespace SampleData
 {
@@ -30,7 +30,7 @@ namespace SampleData
                     User = people?.ElementAtRandom(),
                     Status = statuses?.ElementAtRandom(),
                     Remarks = "テスト案件",
-                    IsClosed = i % 5 == 0,
+                    IsActive = i % 5 == 0,
                 };
 
                 return order;
@@ -39,7 +39,7 @@ namespace SampleData
             return orders;
         }
 
-        public void AddData(int count = 100)
+        public void AddData(int count)
         {
             var data = CreateData(count);
             var hash = 1000;
@@ -72,7 +72,7 @@ namespace SampleData
             Console.WriteLine();
         }
 
-        public void PrintData(int count = 10)
+        public void PrintData(int count)
         {
             var orders = _db.Orders
                 .Include(o => o.User)

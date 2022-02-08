@@ -47,7 +47,7 @@
                     <RibbonButton Label="ステータス" SmallImageSource="../Resources/ribbon-upload.png" Command="{Binding NavigateCommand}" CommandParameter="Statuses"/>
                 </RibbonGroup>
                 <RibbonGroup Header="指図" Visibility="{Binding Orders.IsEnabled, Converter={StaticResource TrueToVisible}, FallbackValue=Collapsed}">
-                    <RibbonCheckBox Label="クローズ表示" IsChecked="{Binding Orders.Filter.ShowClosed}" Command="{Binding Orders.FilterChangedCommand}"/>
+                    <RibbonCheckBox Label="完了表示" IsChecked="{Binding Orders.Filter.ActiveOnly, Converter={StaticResource Not}}" Command="{Binding Orders.FilterChangedCommand}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>

@@ -8,10 +8,10 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:OrderEditViewModel}"
              d:DesignHeight="500" d:DesignWidth="800" >
     <ScrollViewer VerticalScrollBarVisibility="Auto" Width="400" HorizontalAlignment="Left">
-        <StackPanel Margin="10" IsEnabled="{Binding Order.IsClosed, Converter={StaticResource Not}, Mode=OneWay}">
+        <StackPanel Margin="10" IsEnabled="{Binding Order.IsActive, Mode=OneWay}">
             
             <!--編集禁止メッセージ-->
-            <TextBlock Text="変更は禁止されています。" Foreground="Red" Margin="10" Visibility="{Binding Order.IsClosed, Converter={StaticResource TrueToVisible}, Mode=OneWay, FallbackValue=Collapsed}" />
+            <TextBlock Text="変更は禁止されています。" Foreground="Red" Margin="10" Visibility="{Binding Order.IsActive, Converter={StaticResource FalseToVisible}, Mode=OneWay, FallbackValue=Collapsed}" />
 
             <!--番号-->
             <StackPanel Margin="10">

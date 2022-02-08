@@ -22,10 +22,10 @@
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" />
                     <GridViewColumn>
-                        <GridViewColumnHeader Content="クローズ"/>
+                        <GridViewColumnHeader Content="完了"/>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsClosed}" Command="{Binding DataContext.SaveCommand, ElementName=ControlRoot}" CommandParameter="{Binding}"/>
+                                <CheckBox IsChecked="{Binding IsActive, Converter={StaticResource Not}}" Command="{Binding DataContext.SaveCommand, ElementName=ControlRoot}" CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

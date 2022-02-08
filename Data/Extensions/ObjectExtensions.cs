@@ -1,9 +1,6 @@
 ﻿using Common.Utils;
-using System;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Common.Extensions
+namespace Data.Extensions
 {
     public static class ObjectExtensions
     {

@@ -22,7 +22,7 @@ namespace PrismApp.Models
         #endregion
 
         #region Filter property
-        private OrderFilter _filter = new OrderFilter();
+        private OrderFilter _filter = new OrderFilter() { ActiveOnly = true };
         public OrderFilter Filter
         {
             get => _filter;

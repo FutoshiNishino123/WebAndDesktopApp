@@ -1,18 +1,27 @@
-﻿using Common.Extensions;
+﻿using Common.Utils;
+using Data.Extensions;
 using Data.Models;
 using Prism.Mvvm;
-using Common.Utils;
 
 namespace PrismApp.Models
 {
     public class BindableAccount : BindableBase
     {
         #region Id property
-        private string? _id;
-        public string? Id
+        private int _id;
+        public int Id
         {
             get => _id;
             set => SetProperty(ref _id, value);
+        }
+        #endregion
+
+        #region Name property
+        private string? _name;
+        public string? Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
         #endregion
 

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Models
 {
@@ -13,7 +12,7 @@ namespace Data.Models
         /// </summary>
         [Key]
         [Display(Name = "ID")]
-        public int Id { get; set; }
+        public int Id { get; protected set; }
 
         /// <summary>
         /// 番号
@@ -49,17 +48,23 @@ namespace Data.Models
         public DateTime? Expiration { get; set; }
 
         /// <summary>
-        /// クローズ
+        /// アクティブ状態
         /// </summary>
-        [Display(Name = "クローズ")]
-        public bool IsClosed { get; set; }
+        [Display(Name = "アクティブ状態")]
+        public bool IsActive { get; set; }
 
-        #region ITimeStamp
+        /// <summary>
+        /// 作成日時
+        /// </summary>
+        [Required]
         [Display(Name = "作成")]
         public DateTime Created { get; set; }
 
+        /// <summary>
+        /// 更新日時
+        /// </summary>
+        [Required]
         [Display(Name = "更新")]
         public DateTime Updated { get; set; }
-        #endregion
     }
 }

@@ -1,10 +1,8 @@
-﻿using Data;
-using Common.Extensions;
+﻿using Data.Extensions;
 using Data.Models;
 using Prism.Mvvm;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System;
+using System.Text.RegularExpressions;
 
 namespace PrismApp.Models
 {

@@ -12,14 +12,14 @@ namespace Data.Models
         /// </summary>
         [Key]
         [Display(Name = "ID")]
-        public int Id { get; set; }
+        public int Id { get; protected set; }
 
         /// <summary>
-        /// 名前
+        /// ステータス名
         /// </summary>
         [Required]
         [MaxLength(30)]
-        [Display(Name = "名前")]
+        [Display(Name = "ステータス名")]
         public string? Text { get; set; }
     }
 }

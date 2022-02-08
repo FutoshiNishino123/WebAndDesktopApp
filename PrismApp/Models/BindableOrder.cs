@@ -1,12 +1,7 @@
-﻿using Data;
-using Common.Extensions;
+﻿using Data.Extensions;
 using Data.Models;
 using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PrismApp.Models
 {
@@ -84,12 +79,12 @@ namespace PrismApp.Models
         }
         #endregion
 
-        #region IsClosed property
-        private bool _isClosed;
-        public bool IsClosed
+        #region IsActive property
+        private bool _isActive;
+        public bool IsActive
         {
-            get => _isClosed;
-            set => SetProperty(ref _isClosed, value);
+            get => _isActive;
+            set => SetProperty(ref _isActive, value);
         }
         #endregion
 

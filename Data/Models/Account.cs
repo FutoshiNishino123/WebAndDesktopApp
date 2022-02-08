@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Data.Models
 {
@@ -13,12 +8,19 @@ namespace Data.Models
     public class Account
     {
         /// <summary>
-        /// アカウントID
+        /// ID
         /// </summary>
         [Key]
+        [Display(Name = "ID")]
+        public int Id { get; protected set; }
+
+        /// <summary>
+        /// アカウント名
+        /// </summary>
+        [Required]
         [MaxLength(100)]
-        [Display(Name = "アカウントID")]
-        public string? Id { get; set; }
+        [Display(Name = "アカウント名")]
+        public string? Name { get; set; }
 
         /// <summary>
         /// パスワード（ハッシュ値）

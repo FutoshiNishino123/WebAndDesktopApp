@@ -1,6 +1,4 @@
-﻿using Common.Utils;
-using Data;
-using Data.Models;
+﻿using Data;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
 using SampleData;
@@ -28,7 +26,7 @@ void InitializeDb()
     var orders = new SampleOrders(db);
 
     Console.WriteLine("Adding Users...");
-    users.AddData();
+    users.AddData(10);
     Console.WriteLine("Done.");
 
     Console.WriteLine("Adding Statuses...");
@@ -36,16 +34,16 @@ void InitializeDb()
     Console.WriteLine("Done.");
 
     Console.WriteLine("Adding Orders...");
-    orders.AddData();
+    orders.AddData(10);
     Console.WriteLine("Done.");
 
     Console.WriteLine("Adding Admin User...");
     users.AddAdmin();
     Console.WriteLine("Done.");
 
-    users.PrintData();
+    users.PrintData(10);
     statuses.PrintData();
-    orders.PrintData();
+    orders.PrintData(10);
 }
 
 void DeleteAllData()

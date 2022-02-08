@@ -37,14 +37,14 @@ namespace PrismApp.Data
             });
         }
 
-        public static async Task<User?> FindAsync(string accountId, string password)
+        public static async Task<User?> FindAsync(string accountName, string password)
         {
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
 
                 var user = db.Users.Include(u => u.Account)
-                                   .FirstOrDefault(u => u.Account.Id == accountId
+                                   .FirstOrDefault(u => u.Account.Name == accountName
                                                         && u.Account.Password == password);
 
                 return user;

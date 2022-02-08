@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Models
 {
@@ -13,7 +12,7 @@ namespace Data.Models
         /// </summary>
         [Key]
         [Display(Name = "ID")]
-        public int Id { get; set; }
+        public int Id { get; protected set; }
 
         /// <summary>
         /// アカウント
@@ -23,11 +22,11 @@ namespace Data.Models
         public Account? Account { get; set; }
 
         /// <summary>
-        /// 名前
+        /// ユーザ名
         /// </summary>
         [Required]
         [MaxLength(50)]
-        [Display(Name = "名前")]
+        [Display(Name = "ユーザ名")]
         public string? Name { get; set; }
 
         /// <summary>

@@ -4,7 +4,7 @@
     {
         public string? Number { get; set; }
 
-        public bool ShowClosed { get; set; }
+        public bool ActiveOnly { get; set; }
 
         public IQueryable<Order> Apply(IQueryable<Order> query)
         {
@@ -13,9 +13,9 @@
                 query = query.Where(o => o.Number.Contains(Number));
             }
 
-            if (!ShowClosed)
+            if (ActiveOnly)
             {
-                query = query.Where(o => o.IsClosed == false);
+                query = query.Where(o => o.IsActive == true);
             }
 
             return query;

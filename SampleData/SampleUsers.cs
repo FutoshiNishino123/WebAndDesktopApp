@@ -1,9 +1,8 @@
-﻿using Common.Extensions;
-using Common.Utils;
+﻿using Common.Utils;
 using Data;
+using Data.Extensions;
 using Data.Models;
-using System.Data.Entity;
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace SampleData
 {
@@ -50,7 +49,7 @@ namespace SampleData
 
                 var account = new Account
                 {
-                    Id = "sample" + i,
+                    Name = "sample" + i,
                     Password = PasswordUtils.GetHash("sample" + i),
                 };
 
@@ -70,22 +69,15 @@ namespace SampleData
             return users;
         }
 
-        public void AddData(int count = 5)
-        {
-            var data = CreateData(count);
-            _db.AddRange(data);
-            _db.SaveChanges();
-        }
-
         public void AddAdmin()
         {
             var account = new Account
             {
-                Id = "admin",
+                Name = "admin",
                 Password = PasswordUtils.GetHash("admin"),
                 IsAdmin = true,
             };
-            
+
             var user = new User
             {
                 Account = account,
@@ -93,16 +85,23 @@ namespace SampleData
                 Kana = "admin",
             };
 
-            _db.Add(user);
+            _db.AddRange(user);
             _db.SaveChanges();
         }
 
-        public void PrintData(int count = 10)
+        public void AddData(int count)
         {
-            var users = _db.Users.Include(u => u.Account).Take(count).ToList();
+            var users = CreateData(count);
+            _db.AddRange(users);
+            _db.SaveChanges();
+        }
+
+        public void PrintData(int count)
+        {
+            var users = _db.Users.Include("Account").ToList();
 
             Console.WriteLine("--- Users ---");
-            foreach (var u in users)
+            foreach (var u in users.Take(count))
             {
                 Console.WriteLine($"{u.Account?.Id}: {u.Name} ({u.Kana})");
             }

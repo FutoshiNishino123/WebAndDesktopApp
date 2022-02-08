@@ -21,7 +21,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="アカウント ID" DisplayMemberBinding="{Binding Account.Id}" />
+                    <GridViewColumn Header="アカウント名" DisplayMemberBinding="{Binding Account.Name}" />
                     <GridViewColumn Header="名前" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="カナ" DisplayMemberBinding="{Binding Kana}" />
                     <GridViewColumn Header="性別" DisplayMemberBinding="{Binding Gender, Converter={StaticResource GenderToText}}" />

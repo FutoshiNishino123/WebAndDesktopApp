@@ -1,5 +1,4 @@
-﻿using Data;
-using Common.Extensions;
+﻿using Data.Extensions;
 using Data.Models;
 using Prism.Mvvm;
 

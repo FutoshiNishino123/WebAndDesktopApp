@@ -18,10 +18,10 @@
                 <CheckBox Margin="10,2,0,0" IsChecked="{Binding Account.IsAdmin, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>-->
 
-            <!--ユーザID-->
+            <!--アカウント名-->
             <StackPanel Margin="10">
-                <TextBlock><Run Text="ユーザID:"/><Run Text="*" Foreground="Red"/></TextBlock>
-                <TextBox Text="{Binding Account.Id, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock><Run Text="アカウント名:"/><Run Text="*" Foreground="Red"/></TextBlock>
+                <TextBox Text="{Binding Account.Name, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
             <!--パスワード-->

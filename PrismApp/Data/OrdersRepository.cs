@@ -8,8 +8,18 @@ using System.Threading.Tasks;
 
 namespace PrismApp.Data
 {
-    public static class OrdersRepository
+    public class OrdersRepository : Repository<Order>
     {
+        public OrdersRepository(AppDbContext dbContext)
+            : base(dbContext)
+        {
+        }
+
+        public override Order? GetById(int id)
+        {
+            return base.GetById(id);
+        }
+
         public static async Task<IEnumerable<Order>> GetAllAsync(OrderFilter? filter = null)
         {
             return await Task.Run(() =>
