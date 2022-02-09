@@ -68,7 +68,7 @@ namespace PrismApp.ViewModels
 
             try
             {
-                await StatusesRepository.SaveAsync(status);
+                await StatusRepository.SaveAsync(status);
             }
             catch (Exception e)
             {
@@ -110,7 +110,7 @@ namespace PrismApp.ViewModels
         {
             Status = null;
 
-            var status = id.HasValue ? await StatusesRepository.FindAsync(id.Value) : new Status();
+            var status = id.HasValue ? await StatusRepository.FindAsync(id.Value) : new Status();
             if (status is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);

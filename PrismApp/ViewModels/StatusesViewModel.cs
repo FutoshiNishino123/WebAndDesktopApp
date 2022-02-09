@@ -110,7 +110,7 @@ namespace PrismApp.ViewModels
                     try
                     {
                         Debug.Assert(Status != null);
-                        await StatusesRepository.DeleteAsync(Status.Id);
+                        await StatusRepository.DeleteAsync(Status.Id);
                     }
                     catch (Exception e)
                     {
@@ -126,7 +126,7 @@ namespace PrismApp.ViewModels
 
         private async void Initialize()
         {
-            var statuses = await StatusesRepository.GetAllAsync();
+            var statuses = await StatusRepository.GetAllAsync();
             Statuses = new ObservableCollection<Status>(statuses);
         }
     }

@@ -1,5 +1,4 @@
-﻿using Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Data
@@ -10,6 +9,7 @@ namespace Data
         T? GetById(int id);
         IEnumerable<T> List();
         IEnumerable<T> List(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> List(ISpecification<T> spec);
         void Insert(T entity);
         void Update(T entity);
         void Delete(T entity);

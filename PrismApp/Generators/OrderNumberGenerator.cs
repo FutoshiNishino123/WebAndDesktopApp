@@ -10,7 +10,7 @@ namespace PrismApp.Generators
 
         public static async Task<string?> NextAsync()
         {
-            var max = await OrdersRepository.GetMaxNumberAsync();
+            var max = await OrderRepository.GetMaxNumberAsync();
             if (max is null)
             {
                 return null;

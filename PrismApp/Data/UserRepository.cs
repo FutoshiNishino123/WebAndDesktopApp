@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PrismApp.Data
 {
-    public static class UsersRepository
+    public static class UserRepository
     {
         public static async Task<IEnumerable<User>> GetAllAsync()
         {

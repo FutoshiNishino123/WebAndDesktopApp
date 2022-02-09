@@ -1,4 +1,5 @@
-﻿using Data.Models;
+﻿using Data;
+using Data.Models;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -86,7 +87,7 @@ namespace PrismApp.ViewModels
 
         private async void Save(Order order)
         {
-            await OrdersRepository.SaveAsync(order);
+            await OrderRepository.SaveAsync(order);
 
             Event.RaiseSituationChanged();
         }
@@ -156,7 +157,7 @@ namespace PrismApp.ViewModels
                     try
                     {
                         Debug.Assert(Order != null);
-                        await OrdersRepository.DeleteAsync(Order.Id);
+                        await OrderRepository.DeleteAsync(Order.Id);
                     }
                     catch (Exception e)
                     {
@@ -181,7 +182,7 @@ namespace PrismApp.ViewModels
 
         public async void Initialize()
         {
-            var orders = await OrdersRepository.GetAllAsync(Filter);
+            var orders = await OrderRepository.ListAsync();
             Orders = new ObservableCollection<Order>(orders);
         }
     }

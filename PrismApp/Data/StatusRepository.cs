@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PrismApp.Data
 {
-    public static class StatusesRepository
+    public static class StatusRepository
     {
         public static async Task<IEnumerable<Status>> GetAllAsync()
         {

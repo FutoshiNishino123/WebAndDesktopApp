@@ -4,47 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace PrismApp.Data
 {
-    public class OrdersRepository : Repository<Order>
+    public class OrderRepository
     {
-        public OrdersRepository(AppDbContext dbContext)
-            : base(dbContext)
-        {
-        }
-
-        public override Order? GetById(int id)
-        {
-            return base.GetById(id);
-        }
-
-        public static async Task<IEnumerable<Order>> GetAllAsync(OrderFilter? filter = null)
-        {
-            return await Task.Run(() =>
-            {
-                using var db = new AppDbContext();
-
-                var query = from order in db.Orders
-                            select order;
-
-                if (filter is not null)
-                {
-                    query = filter.Apply(query);
-                }
-
-                var orders = query
-                    .Include(o => o.User)
-                    .Include(o => o.Status)
-                    .OrderByDescending(o => o.Id)
-                    .ToList();
-
-                return orders;
-            });
-        }
-
-        public static async Task<Order?> FindAsync(int id)
+        public static async Task<Order?> GetByIdAsync(int id)
         {
             return await Task.Run(() =>
             {
@@ -59,13 +26,42 @@ namespace PrismApp.Data
             });
         }
 
-        public static async Task<string?> GetMaxNumberAsync()
+        public static async Task<IEnumerable<Order>> ListAsync()
         {
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
 
-                // NOTE: 0埋め必須 ("1000" < "999"であるため"0999"とする)
+                var orders = db.Orders
+                    .Include(o => o.User)
+                    .Include(o => o.Status)
+                    .ToList();
+
+                return orders;
+            });
+        }
+
+        public static async Task<IEnumerable<Order>> ListAsync(Expression<Func<Order, bool>> filter)
+        {
+            return await Task.Run(() =>
+            {
+                using var db = new AppDbContext();
+
+                var orders = db.Orders
+                    .Include(o => o.User)
+                    .Include(o => o.Status)
+                    .Where(filter)
+                    .ToList();
+
+                return orders;
+            });
+        }
+
+        public static async Task<string?> GetMaxNumberAsync()
+        {
+            return await Task.Run(() =>
+            {
+                using var db = new AppDbContext();
                 return db.Orders.Max(o => o.Number);
             });
         }
@@ -83,7 +79,6 @@ namespace PrismApp.Data
                 }
 
                 db.Update(order);
-
                 db.SaveChanges();
             });
         }
@@ -101,7 +96,6 @@ namespace PrismApp.Data
                 }
 
                 db.Remove(order);
-
                 db.SaveChanges();
             });
         }
