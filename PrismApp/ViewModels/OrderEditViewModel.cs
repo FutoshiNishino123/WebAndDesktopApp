@@ -86,11 +86,8 @@ namespace PrismApp.ViewModels
         private void Save()
         {
             if (_saving) { return; }
-
             _saving = true;
-
             Save(true);
-
             _saving = false;
         }
 
@@ -102,7 +99,7 @@ namespace PrismApp.ViewModels
 
                 try
                 {
-                    await OrderRepository.SaveAsync(order);
+                    await OrderRepository.InsertAsync(order);
                 }
                 catch (Exception e)
                 {
@@ -116,8 +113,7 @@ namespace PrismApp.ViewModels
 
         private bool CanSave()
         {
-            return Order != null
-                   && !string.IsNullOrEmpty(Order.Number);
+            return Order != null && !string.IsNullOrEmpty(Order.Number);
         }
         #endregion
 
@@ -125,7 +121,6 @@ namespace PrismApp.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             Event.RaiseSituationChanged();
-
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
         }
@@ -154,15 +149,16 @@ namespace PrismApp.ViewModels
                 return;
             }
 
-            var number = id.HasValue ? null : await OrderNumberGenerator.NextAsync();
-            if (number is not null)
+            var users = await UserRepository.List();
+            var statuses = await StatusRepository.ListAsync();
+
+            // 自動採番
+            if (id is null)
             {
-                order.Number = number;
+                order.Number = await OrderNumberGenerator.NextAsync();
             }
 
-            var users = await UserRepository.GetAllAsync();
-            var statuses = await StatusRepository.GetAllAsync();
-
+            // ユーザー選択
             if (order.User != null)
             {
                 order.User = users.FirstOrDefault(u => u.Id == order.User.Id);
@@ -172,6 +168,7 @@ namespace PrismApp.ViewModels
                 order.User = users.FirstOrDefault(u => u.Id == App.User.Id);
             }
 
+            // ステータス選択
             if (order.Status != null)
             {
                 order.Status = statuses.FirstOrDefault(s => s.Id == order.Status.Id);

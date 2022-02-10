@@ -41,7 +41,7 @@ namespace PrismApp.Data
             });
         }
 
-        public static async Task<IEnumerable<Order>> ListAsync(Expression<Func<Order, bool>> filter)
+        public static async Task<IEnumerable<Order>> ListAsync(OrderFilter filter)
         {
             return await Task.Run(() =>
             {
@@ -49,11 +49,9 @@ namespace PrismApp.Data
 
                 var orders = db.Orders
                     .Include(o => o.User)
-                    .Include(o => o.Status)
-                    .Where(filter)
-                    .ToList();
+                    .Include(o => o.Status);
 
-                return orders;
+                return filter.Apply(orders).ToList();
             });
         }
 
@@ -66,18 +64,21 @@ namespace PrismApp.Data
             });
         }
 
-        public static async Task SaveAsync(Order order)
+        public static async Task InsertAsync(Order order)
         {
             await Task.Run(() =>
             {
                 using var db = new AppDbContext();
+                db.Add(order);
+                db.SaveChanges();
+            });
+        }
 
-                if (db.Orders.Any(o => o.Number == order.Number
-                                       && o.Id != order.Id))
-                {
-                    throw new InvalidOperationException("番号が重複しています。");
-                }
-
+        public static async Task UpdateAsync(Order order)
+        {
+            await Task.Run(() =>
+            {
+                using var db = new AppDbContext();
                 db.Update(order);
                 db.SaveChanges();
             });

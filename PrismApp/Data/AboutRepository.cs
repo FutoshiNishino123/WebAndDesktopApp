@@ -6,7 +6,7 @@ namespace PrismApp.Data
 {
     internal static class AboutRepository
     {
-        public static async Task<About> GetAboutAsync()
+        public static async Task<About> GetAsync()
         {
             return await Task.Run(() =>
             {

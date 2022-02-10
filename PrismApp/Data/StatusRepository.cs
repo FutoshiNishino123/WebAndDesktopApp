@@ -10,44 +10,42 @@ namespace PrismApp.Data
 {
     public static class StatusRepository
     {
-        public static async Task<IEnumerable<Status>> GetAllAsync()
+        public static async Task<IEnumerable<Status>> ListAsync()
         {
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-
                 var statuses = db.Statuses.OrderBy(s => s.Id).ToList();
-
                 return statuses;
             });
         }
 
-        public static async Task<Status?> FindAsync(int id)
+        public static async Task<Status?> GetByIdAsync(int id)
         {
             return await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-
                 var status = db.Statuses.FirstOrDefault(s => s.Id == id);
-
                 return status;
             });
         }
 
-        public static async Task SaveAsync(Status status)
+        public static async Task InsertAsync(Status status)
         {
             await Task.Run(() =>
             {
                 using var db = new AppDbContext();
+                db.Add(status);
+                db.SaveChanges();
+            });
+        }
 
-                if (db.Statuses.Any(s => s.Text == status.Text
-                                         && s.Id != status.Id))
-                {
-                    throw new InvalidOperationException("ステータス名が重複しています。");
-                }
-
+        public static async Task UpdateAsync(Status status)
+        {
+            await Task.Run(() =>
+            {
+                using var db = new AppDbContext();
                 db.Update(status);
-
                 db.SaveChanges();
             });
         }
@@ -57,18 +55,14 @@ namespace PrismApp.Data
             await Task.Run(() =>
             {
                 using var db = new AppDbContext();
-
                 var status = db.Statuses.FirstOrDefault(s => s.Id == id);
                 if (status == null)
                 {
-                    throw new InvalidOperationException("Status was not found.");
+                    throw new InvalidOperationException("status not found.");
                 }
 
-                // カスケード削除
                 db.Orders.Where(o => o.Status.Id == id).ForEachAsync(o => o.Status = null).Wait();
-
                 db.Remove(status);
-
                 db.SaveChanges();
             });
         }

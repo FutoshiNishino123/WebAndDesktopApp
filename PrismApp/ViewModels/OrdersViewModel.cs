@@ -6,6 +6,7 @@ using Prism.Mvvm;
 using Prism.Regions;
 using PrismApp.Data;
 using PrismApp.Events;
+using PrismApp.Models;
 using PrismApp.Regions;
 using System;
 using System.Collections.ObjectModel;
@@ -22,6 +23,9 @@ namespace PrismApp.ViewModels
 
         [Dependency]
         public IEventPublisher Event { get; set; }
+
+        [Dependency]
+        public OrdersFunction OrdersFunction { get; set; }
 
         #region Order property
         private Order? _order;
@@ -53,15 +57,6 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region Filter property
-        private OrderFilter _filter = new OrderFilter() { ActiveOnly = true };
-        public OrderFilter Filter
-        {
-            get => _filter;
-            set => SetProperty(ref _filter, value);
-        }
-        #endregion
-
         #region ShowDetailCommand property
         private DelegateCommand<int?>? _showDetailCommand;
         public DelegateCommand<int?> ShowDetailCommand => _showDetailCommand ??= new DelegateCommand<int?>(ShowDetail, CanShowDetail)
@@ -87,8 +82,7 @@ namespace PrismApp.ViewModels
 
         private async void Save(Order order)
         {
-            await OrderRepository.SaveAsync(order);
-
+            await OrderRepository.UpdateAsync(order);
             Event.RaiseSituationChanged();
         }
 
@@ -103,7 +97,6 @@ namespace PrismApp.ViewModels
         {
             Event.RaiseSituationChanged();
             Event.RaiseOrdersActivated();
-
             Initialize();
         }
 
@@ -173,16 +166,12 @@ namespace PrismApp.ViewModels
 
         public OrdersViewModel(IEventAggregator ea)
         {
-            ea.GetEvent<OrderFilterChangedEvent>().Subscribe(filter =>
-            {
-                Filter = filter;
-                Initialize();
-            });
+            ea.GetEvent<OrderFilterChangedEvent>().Subscribe(_ => Initialize());
         }
 
         public async void Initialize()
         {
-            var orders = await OrderRepository.ListAsync();
+            var orders = await OrderRepository.ListAsync(OrdersFunction.Filter);
             Orders = new ObservableCollection<Order>(orders);
         }
     }

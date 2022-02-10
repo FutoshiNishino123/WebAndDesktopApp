@@ -125,7 +125,7 @@ namespace PrismApp.ViewModels
             }
 
             var hash = PasswordUtils.GetHash(Password);
-            var user = await UserRepository.FindAsync(AccountId, hash);
+            var user = await UserRepository.GetByAccountNameAndPassword(AccountId, hash);
 
             return user;
         }

@@ -88,7 +88,14 @@ namespace PrismApp.ViewModels
 
             try
             {
-                await UserRepository.SaveAsync(user);
+                if (user.Id == 0)
+                {
+                    await UserRepository.InsertAsync(user);
+                }
+                else
+                {
+                    await UserRepository.UpdateAsync(user);
+                }
             }
             catch (Exception e)
             {
@@ -134,7 +141,7 @@ namespace PrismApp.ViewModels
             User = null;
             Account = null;
 
-            var user = id.HasValue ? await UserRepository.FindAsync(id.Value) : new User();
+            var user = id.HasValue ? await UserRepository.GetById(id.Value) : new User();
             if (user is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);

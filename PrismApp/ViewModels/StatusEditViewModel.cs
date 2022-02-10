@@ -1,20 +1,14 @@
-﻿using Data;
-using Data.Models;
+﻿using Data.Models;
 using Prism.Commands;
-using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using PrismApp.Models;
+using PrismApp.Data;
 using PrismApp.Events;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
+using PrismApp.Models;
+using PrismApp.Regions;
+using System;
 using System.Windows;
 using Unity;
-using System;
-using PrismApp.Regions;
-using PrismApp.Data;
 
 namespace PrismApp.ViewModels
 {
@@ -54,9 +48,7 @@ namespace PrismApp.ViewModels
             if (_saving) { return; }
 
             _saving = true;
-
             Save(true);
-
             _saving = false;
         }
 
@@ -68,7 +60,14 @@ namespace PrismApp.ViewModels
 
             try
             {
-                await StatusRepository.SaveAsync(status);
+                if (status.Id == 0)
+                {
+                    await StatusRepository.InsertAsync(status);
+                }
+                else
+                {
+                    await StatusRepository.UpdateAsync(status);
+                }
             }
             catch (Exception e)
             {
@@ -110,7 +109,7 @@ namespace PrismApp.ViewModels
         {
             Status = null;
 
-            var status = id.HasValue ? await StatusRepository.FindAsync(id.Value) : new Status();
+            var status = id.HasValue ? await StatusRepository.GetByIdAsync(id.Value) : new Status();
             if (status is null)
             {
                 MessageBox.Show("レコードが見つかりません", "警告", MessageBoxButton.OK, MessageBoxImage.Exclamation);

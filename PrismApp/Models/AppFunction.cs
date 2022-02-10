@@ -21,7 +21,6 @@ namespace PrismApp.Models
             ea.GetEvent<LogOutEvent>().Subscribe(LogOut);
 
 #if DEBUG
-            // デバッグ時は管理者権限
             User = new User 
             {
                 Name = "ゲスト",

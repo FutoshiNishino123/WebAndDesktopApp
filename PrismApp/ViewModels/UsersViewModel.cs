@@ -60,8 +60,7 @@ namespace PrismApp.ViewModels
 
         private async void Save(User user)
         {
-            await UserRepository.SaveAsync(user);
-
+            await UserRepository.UpdateAsync(user);
             Event.RaiseSituationChanged();
         }
 
@@ -75,7 +74,6 @@ namespace PrismApp.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             Event.RaiseSituationChanged();
-
             Initialize();
         }
 
@@ -129,14 +127,12 @@ namespace PrismApp.ViewModels
                     {
                         Debug.Assert(User != null);
                         await UserRepository.DeleteAsync(User.Id);
+                        Users?.Remove(User);
                     }
                     catch (Exception e)
                     {
                         MessageBox.Show(e.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
                     }
-
-                    Users?.Remove(User);
                 }
             }
         }
@@ -144,7 +140,7 @@ namespace PrismApp.ViewModels
 
         private async void Initialize()
         {
-            var users = await UserRepository.GetAllAsync();
+            var users = await UserRepository.List();
             Users = new ObservableCollection<User>(users);
         }
     }

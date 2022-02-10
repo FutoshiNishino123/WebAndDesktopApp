@@ -41,7 +41,6 @@ namespace PrismApp.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             Event.RaiseSituationChanged();
-
             var id = (int?)navigationContext.Parameters["id"];
             Initialize(id);
         }

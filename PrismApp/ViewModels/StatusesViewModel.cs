@@ -126,7 +126,7 @@ namespace PrismApp.ViewModels
 
         private async void Initialize()
         {
-            var statuses = await StatusRepository.GetAllAsync();
+            var statuses = await StatusRepository.ListAsync();
             Statuses = new ObservableCollection<Status>(statuses);
         }
     }

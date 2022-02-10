@@ -105,7 +105,7 @@ namespace PrismApp.ViewModels
 
         public async void Initialize()
         {
-            var about = await AboutRepository.GetAboutAsync();
+            var about = await AboutRepository.GetAsync();
             Description = about.Description;
             Version = about.Version;
             Greeting = GetGreeting();
