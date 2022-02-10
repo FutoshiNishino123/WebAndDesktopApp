@@ -93,7 +93,7 @@ namespace PrismApp.Data
                 var order = db.Orders.FirstOrDefault(o => o.Id == id);
                 if (order is null)
                 {
-                    throw new InvalidOperationException("Order was not found.");
+                    throw new InvalidOperationException("order not found.");
                 }
 
                 db.Remove(order);

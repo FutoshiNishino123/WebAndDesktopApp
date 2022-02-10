@@ -53,6 +53,10 @@ namespace Data
                  .HasIndex(o => o.Number)
                  .IsUnique();
 
+            model.Entity<Account>()
+                 .HasIndex(o => o.Name)
+                 .IsUnique();
+
             model.Entity<Status>()
                  .HasIndex(s => s.Text)
                  .IsUnique();

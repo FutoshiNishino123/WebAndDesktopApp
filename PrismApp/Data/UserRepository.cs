@@ -78,12 +78,12 @@ namespace PrismApp.Data
 
                 if (user is null)
                 {
-                    throw new InvalidOperationException("User not found.");
+                    throw new InvalidOperationException("user not found.");
                 }
 
                 if (user.Account is null)
                 {
-                    throw new InvalidOperationException("User account not found.");
+                    throw new InvalidOperationException("user account not found.");
                 }
 
                 db.Orders.Where(o => o.User.Id == id).ForEachAsync(o => o.User = null).Wait();
