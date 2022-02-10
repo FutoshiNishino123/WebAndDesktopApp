@@ -14,7 +14,7 @@ using PrismApp.Data;
 
 namespace PrismApp.ViewModels
 {
-    public class OrderDetailViewModel : BindableBase, INavigationAware, IRibbon
+    public class OrderDetailViewModel : BindableBase, INavigationAware, IOperationCommands
     {
         [Dependency]
         public IContentRegionManager Region { get; set; }
@@ -55,7 +55,7 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region IRibbon
+        #region IOperationCommands
         public bool CanRefresh => Order != null;
         public void Refresh()
         {

@@ -15,7 +15,7 @@ using PrismApp.Data;
 
 namespace PrismApp.ViewModels
 {
-    public class StatusesViewModel : BindableBase, INavigationAware, IRibbon
+    public class StatusesViewModel : BindableBase, INavigationAware, IOperationCommands
     {
         [Dependency]
         public IContentRegionManager Region { get; set; }
@@ -71,7 +71,7 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region IRibbon
+        #region IOperationCommands
         public bool CanRefresh => Statuses != null;
         public void Refresh()
         {

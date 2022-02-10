@@ -15,7 +15,7 @@ using PrismApp.Data;
 
 namespace PrismApp.ViewModels
 {
-    public class UsersViewModel : BindableBase, INavigationAware, IRibbon
+    public class UsersViewModel : BindableBase, INavigationAware, IOperationCommands
     {
         [Dependency]
         public IContentRegionManager Region { get; set; }
@@ -87,7 +87,7 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region IRibbon
+        #region IOperationCommands
         public bool CanRefresh => Users != null;
         public void Refresh()
         {

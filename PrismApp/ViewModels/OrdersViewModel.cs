@@ -16,7 +16,7 @@ using Unity;
 
 namespace PrismApp.ViewModels
 {
-    public class OrdersViewModel : BindableBase, INavigationAware, IRibbon
+    public class OrdersViewModel : BindableBase, INavigationAware, IOperationCommands
     {
         [Dependency]
         public IContentRegionManager Region { get; set; }
@@ -111,7 +111,7 @@ namespace PrismApp.ViewModels
         }
         #endregion
 
-        #region IRibbon
+        #region IOperationCommands
         public bool CanRefresh => Orders != null;
         public void Refresh()
         {
